@@ -312,5 +312,25 @@ function toggleLang(){
 }
 </script>
 
-</body>
+<div id="connection-status" style="padding:15px;text-align:center">
+  جارٍ اختبار الاتصال بقاعدة البيانات...
+</div>
+
+<script>
+(async function () {
+  const status = document.getElementById('connection-status');
+
+  try {
+    const { count, error } = await window.arkanSupabase
+      .from('branches')
+      .select('*', { count: 'exact', head: true });
+
+    if (error) throw error;
+
+    status.textContent = 'تم الاتصال بنجاح! عدد الفروع: ' + count;
+  } catch (error) {
+    status.textContent = 'تعذر الاتصال: ' + error.message;
+  }
+})();
+</script></body>
 </html>

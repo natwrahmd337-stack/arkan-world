@@ -1,1 +1,315 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#428177">
+<title>أركان العالم | للسياحة والسفر</title>
+<meta name="description" content="مؤسسة أركان العالم للسياحة والسفر والحج والعمرة. نصحبكم في كل رحلة، معكم في كل وجهة.">
+
+<style>
+:root {
+  --green:#428177;
+  --wine:#6b1f2a;
+  --cream:#edebe0;
+  --white:#fff;
+  --dark:#161616;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Tahoma,sans-serif;
+  background:var(--cream);
+  color:var(--dark);
+  line-height:1.8;
+}
+a{text-decoration:none;color:inherit}
+header{
+  background:var(--white);
+  padding:15px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:10;
+  box-shadow:0 3px 15px #0000000c;
+}
+.logo{font-size:21px;font-weight:bold;color:var(--green)}
+.logo small{display:block;font-size:10px;letter-spacing:3px;color:var(--wine)}
+nav{display:flex;gap:22px;align-items:center}
+nav a{font-size:14px}
+.lang{
+  background:var(--wine);
+  color:white;
+  border:0;
+  padding:8px 15px;
+  border-radius:7px;
+  cursor:pointer;
+}
+.hero{
+  min-height:590px;
+  padding:100px 8%;
+  display:flex;
+  align-items:center;
+  background:
+  linear-gradient(90deg,#161616d9,#16161670),
+  url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85') center/cover;
+  color:white;
+}
+.hero-content{max-width:650px}
+.hero .tag{color:#e6d7b0;letter-spacing:2px}
+h1{font-size:clamp(36px,6vw,65px);line-height:1.3;margin:18px 0}
+.hero p{font-size:18px;color:#eee;margin-bottom:28px}
+.btn{
+  display:inline-block;
+  padding:12px 25px;
+  border-radius:7px;
+  background:var(--green);
+  color:white;
+  margin:5px;
+  border:0;
+  cursor:pointer;
+}
+.btn.alt{background:var(--wine)}
+section{padding:75px 7%}
+.section-title{text-align:center;margin-bottom:40px}
+.section-title h2{font-size:32px;color:var(--green)}
+.section-title p{color:#777}
+.services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:20px;
+}
+.card{
+  background:white;
+  border-radius:14px;
+  padding:27px;
+  box-shadow:0 8px 25px #00000008;
+}
+.card .symbol{font-size:35px;margin-bottom:12px}
+.card h3{color:var(--wine);margin-bottom:8px}
+.about{
+  background:white;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:center;
+}
+.about h2{font-size:34px;color:var(--green);margin-bottom:15px}
+.about img{width:100%;border-radius:15px}
+.offices{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.office{
+  background:white;
+  border-right:5px solid var(--green);
+  padding:25px;
+  border-radius:10px;
+}
+.contact{
+  background:var(--dark);
+  color:white;
+  text-align:center;
+}
+.contact h2{color:#d8c99d;font-size:32px}
+.contact p{margin:12px 0}
+footer{
+  background:#101010;
+  color:#aaa;
+  padding:25px;
+  text-align:center;
+  font-size:13px;
+}
+.whatsapp{
+  position:fixed;
+  bottom:22px;
+  left:20px;
+  background:#20b96b;
+  color:white;
+  padding:13px 20px;
+  border-radius:50px;
+  z-index:20;
+  box-shadow:0 5px 20px #0003;
+}
+@media(max-width:700px){
+  nav{gap:9px}
+  nav a{font-size:11px}
+  .hero{min-height:510px;padding:70px 7%}
+  .about{grid-template-columns:1fr}
+  section{padding:55px 6%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="#" class="logo">
+    أركان العالم
+    <small>PILLARS OF THE WORLD</small>
+  </a>
+  <nav>
+    <a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+    <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+    <a href="#about" data-ar="من نحن" data-en="About">من نحن</a>
+    <a href="#contact" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+    <button class="lang" onclick="toggleLang()">EN</button>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="tag" data-ar="سفر • سياحة • ثقة"
+         data-en="TRAVEL • TOURISM • TRUST">
+      سفر • سياحة • ثقة
+    </div>
+    <h1 data-ar="العالم أقرب إليك مما تتخيل"
+        data-en="The World Is Closer Than You Think">
+      العالم أقرب إليك مما تتخيل
+    </h1>
+    <p data-ar="نصحبكم في كل رحلة... معكم في كل وجهة. خدمات سياحية متكاملة ورحلات الحج والعمرة والسفر."
+       data-en="With you on every journey, by your side at every destination. Travel, tourism, Hajj and Umrah services.">
+      نصحبكم في كل رحلة... معكم في كل وجهة.
+      خدمات سياحية متكاملة ورحلات الحج والعمرة والسفر.
+    </p>
+    <a class="btn" href="#services" data-ar="اكتشف خدماتنا" data-en="Explore Services">اكتشف خدماتنا</a>
+    <a class="btn alt" href="#contact" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
+  </div>
+</section>
+
+<section id="services">
+  <div class="section-title">
+    <h2 data-ar="خدماتنا" data-en="Our Services">خدماتنا</h2>
+    <p data-ar="كل ما تحتاجه لرحلة مريحة وآمنة"
+       data-en="Everything you need for a comfortable journey">
+      كل ما تحتاجه لرحلة مريحة وآمنة
+    </p>
+  </div>
+  <div class="services">
+    <div class="card">
+      <div class="symbol">🕋</div>
+      <h3 data-ar="الحج والعمرة" data-en="Hajj & Umrah">الحج والعمرة</h3>
+      <p data-ar="تنظيم رحلات إيمانية وخدمات متكاملة لضيوف الرحمن."
+         data-en="Organized spiritual journeys and services for pilgrims.">
+        تنظيم رحلات إيمانية وخدمات متكاملة لضيوف الرحمن.
+      </p>
+    </div>
+    <div class="card">
+      <div class="symbol">✈️</div>
+      <h3 data-ar="حجوزات الطيران" data-en="Flight Booking">حجوزات الطيران</h3>
+      <p data-ar="مساعدتكم في ترتيبات السفر واختيار الرحلات المناسبة."
+         data-en="Assistance with travel arrangements and flight options.">
+        مساعدتكم في ترتيبات السفر واختيار الرحلات المناسبة.
+      </p>
+    </div>
+    <div class="card">
+      <div class="symbol">🌍</div>
+      <h3 data-ar="التأشيرات" data-en="Visas">التأشيرات</h3>
+      <p data-ar="خدمات متابعة وإجراءات التأشيرات."
+         data-en="Visa application guidance and assistance.">
+        خدمات متابعة وإجراءات التأشيرات.
+      </p>
+    </div>
+    <div class="card">
+      <div class="symbol">🏨</div>
+      <h3 data-ar="الفنادق والإقامة" data-en="Hotels & Accommodation">الفنادق والإقامة</h3>
+      <p data-ar="المساعدة في اختيار أماكن إقامة تناسب احتياجاتكم."
+         data-en="Help finding accommodation suited to your needs.">
+        المساعدة في اختيار أماكن إقامة تناسب احتياجاتكم.
+      </p>
+    </div>
+    <div class="card">
+      <div class="symbol">🚌</div>
+      <h3 data-ar="الرحلات السياحية" data-en="Tourist Trips">الرحلات السياحية</h3>
+      <p data-ar="رحلات سياحية وتجارب لا تنسى."
+         data-en="Tourist trips and memorable experiences.">
+        رحلات سياحية وتجارب لا تنسى.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div>
+    <h2 data-ar="من نحن" data-en="Who We Are">من نحن</h2>
+    <p data-ar="مؤسسة أركان العالم للسياحة والسفر، نعمل على تقديم خدمات السفر والسياحة والحج والعمرة، ونحرص على مرافقة عملائنا في كل خطوة من رحلتهم."
+       data-en="Pillars of the World Travel & Tourism provides travel, tourism, Hajj and Umrah services, supporting our customers at every step of their journey.">
+      مؤسسة أركان العالم للسياحة والسفر، نعمل على تقديم خدمات السفر والسياحة والحج والعمرة، ونحرص على مرافقة عملائنا في كل خطوة من رحلتهم.
+    </p>
+    <br>
+    <strong style="color:var(--wine)"
+      data-ar="نصحبكم في كل رحلة... معكم في كل وجهة"
+      data-en="With you on every journey, by your side at every destination">
+      نصحبكم في كل رحلة... معكم في كل وجهة
+    </strong>
+  </div>
+  <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=85" alt="Travel destination">
+</section>
+
+<section id="branches">
+  <div class="section-title">
+    <h2 data-ar="فروعنا" data-en="Our Branches">فروعنا</h2>
+    <p data-ar="نحن أقرب إليكم" data-en="We are closer to you">نحن أقرب إليكم</p>
+  </div>
+  <div class="offices">
+    <div class="office">
+      <h3>📍 إدلب</h3>
+      <p>حي الجامعة – جانب المستوصف – بناء الحضارة</p>
+      <p dir="ltr">0956553485</p>
+      <a class="btn" href="https://wa.me/963956553485">واتساب</a>
+    </div>
+    <div class="office">
+      <h3>📍 سراقب</h3>
+      <p>إدلب – سراقب – شرقي شركة الكهرباء</p>
+      <p dir="ltr">0932077243</p>
+      <a class="btn" href="https://wa.me/963932077243">واتساب</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2 data-ar="لنخطط لرحلتك القادمة" data-en="Let's Plan Your Next Journey">
+    لنخطط لرحلتك القادمة
+  </h2>
+  <p data-ar="تواصل معنا وسنكون سعداء بخدمتكم"
+     data-en="Contact us. We will be happy to assist you.">
+    تواصل معنا وسنكون سعداء بخدمتكم
+  </p>
+  <a class="btn" href="https://wa.me/963956553485"
+     data-ar="تواصل عبر واتساب" data-en="Contact via WhatsApp">
+    تواصل عبر واتساب
+  </a>
+</section>
+</main>
+
+<footer>
+  PILLARS OF THE WORLD © 2026
+  <br>
+  سفر • سياحة • ثقة
+</footer>
+
+<a class="whatsapp" href="https://wa.me/963956553485">واتساب</a>
+
+<script>
+let currentLang = "ar";
+
+function toggleLang(){
+  currentLang = currentLang === "ar" ? "en" : "ar";
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+
+  document.querySelectorAll("[data-ar]").forEach(el=>{
+    el.textContent = el.getAttribute("data-" + currentLang);
+  });
+
+  document.querySelector(".lang").textContent =
+    currentLang === "ar" ? "EN" : "AR";
+}
+</script>
+
+</body>
+</html>

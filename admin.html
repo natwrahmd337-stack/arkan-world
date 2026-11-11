@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة أركان العالم</title>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #edebe0;
+      color: #161616;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      padding: 35px 25px;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px #00000012;
+      text-align: center;
+    }
+    .logo {
+      color: #428177;
+      font-size: 27px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: #6b1f2a;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+    h2 { margin-bottom: 24px; }
+    input {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      direction: ltr;
+      text-align: left;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #428177;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #356b63; }
+    #message {
+      margin-top: 18px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .hidden { display: none; }
+    .welcome { color: #428177; }
+    .logout {
+      background: #6b1f2a;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="logo">PILLARS OF THE WORLD</div>
+    <div class="sub">سفر • سياحة • ثقة</div>
+
+    <section id="loginSection">
+      <h2>تسجيل دخول الإدارة</h2>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="البريد الإلكتروني"
+        autocomplete="username"
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="كلمة المرور"
+        autocomplete="current-password"
+      >
+
+      <button id="loginButton" onclick="login()">
+        تسجيل الدخول
+      </button>
+
+      <div id="message"></div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <h2 class="welcome">أهلاً بك في إدارة أركان العالم</h2>
+      <p id="ownerName"></p>
+      <p>تم التحقق من صلاحية حساب المالك.</p>
+      <button class="logout" onclick="logout()">
+        تسجيل الخروج
+      </button>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <script>
+    const db = window.arkanSupabase;
+
+    async function verifyOwner(user) {
+      const { data, error } = await db
+        .from('profiles')
+        .select('full_name, email, role')
+        .eq('id', user.id)
+        .single();
+
+      if (error) throw error;
+
+      if (data.role !== 'مالك') {
+        await db.auth.signOut();
+        throw new Error('هذا الحساب لا يملك صلاحية الدخول إلى لوحة المالك.');
+      }
+
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      document.getElementById('ownerName').textContent =
+        'مرحباً ' + (data.full_name || data.email);
+    }
+
+    async function login() {
+      const message = document.getElementById('message');
+      const button = document.getElementById('loginButton');
+
+      message.textContent = 'جارٍ التحقق من الحساب...';
+      button.disabled = true;
+
+      try {
+        if (!db) throw new Error('إعدادات الاتصال غير موجودة.');
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        const { data, error } = await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        await verifyOwner(data.user);
+
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function logout() {
+      await db.auth.signOut();
+      location.reload();
+    }
+
+    async function checkSession() {
+      try {
+        const { data } = await db.auth.getSession();
+        if (data.session) {
+          await verifyOwner(data.session.user);
+        }
+      } catch (error) {
+        document.getElementById('message').textContent = error.message;
+      }
+    }
+
+    checkSession();
+  </script>
+
+</body>
+</html>

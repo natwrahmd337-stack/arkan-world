@@ -1,58 +1,64 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>إدارة أركان العالم</title>
 
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #edebe0;
-      color: #161616;
+      padding: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      background: #edebe0;
+      color: #161616;
+      font-family: Arial, sans-serif;
     }
+
     .card {
-      background: white;
       width: 100%;
-      max-width: 420px;
-      padding: 35px 25px;
+      max-width: 440px;
+      padding: 32px 24px;
+      background: white;
       border-radius: 20px;
       box-shadow: 0 12px 40px #00000012;
       text-align: center;
     }
+
     .logo {
       color: #428177;
-      font-size: 27px;
+      font-size: 25px;
       font-weight: bold;
-      margin-bottom: 8px;
+      direction: ltr;
     }
+
     .sub {
       color: #6b1f2a;
-      margin-bottom: 28px;
-      font-size: 14px;
+      margin: 10px 0 28px;
     }
-    h2 { margin-bottom: 24px; }
+
+    h2 { font-size: 21px; }
+
     input {
       width: 100%;
       padding: 15px;
-      margin-bottom: 14px;
+      margin: 8px 0;
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
       direction: ltr;
       text-align: left;
     }
+
     button {
       width: 100%;
       padding: 15px;
+      margin-top: 12px;
       border: 0;
       border-radius: 10px;
       background: #428177;
@@ -61,134 +67,214 @@
       font-weight: bold;
       cursor: pointer;
     }
-    button:hover { background: #356b63; }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .logout { background: #6b1f2a; }
+
     #message {
       margin-top: 18px;
+      padding: 12px;
+      border-radius: 10px;
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
     }
+
     .hidden { display: none; }
-    .welcome { color: #428177; }
-    .logout {
-      background: #6b1f2a;
-      margin-top: 20px;
+
+    .success {
+      background: #e7f2ed;
+      color: #245d4f;
     }
+
+    .error {
+      background: #f8e8e8;
+      color: #8b2635;
+    }
+
+    .welcome { color: #428177; }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <div class="logo">PILLARS OF THE WORLD</div>
-    <div class="sub">سفر • سياحة • ثقة</div>
+<div class="card">
 
-    <section id="loginSection">
-      <h2>تسجيل دخول الإدارة</h2>
+  <div class="logo">PILLARS OF THE WORLD</div>
+  <div class="sub">سفر • سياحة • ثقة</div>
 
-      <input
-        id="email"
-        type="email"
-        placeholder="البريد الإلكتروني"
-        autocomplete="username"
-      >
+  <section id="loginSection">
+    <h2>تسجيل دخول الإدارة</h2>
 
-      <input
-        id="password"
-        type="password"
-        placeholder="كلمة المرور"
-        autocomplete="current-password"
-      >
+    <input
+      id="email"
+      type="email"
+      placeholder="البريد الإلكتروني"
+      autocomplete="username"
+    >
 
-      <button id="loginButton" onclick="login()">
-        تسجيل الدخول
-      </button>
+    <input
+      id="password"
+      type="password"
+      placeholder="كلمة المرور"
+      autocomplete="current-password"
+    >
 
-      <div id="message"></div>
-    </section>
+    <button id="loginButton" type="button" onclick="login()">
+      تسجيل الدخول
+    </button>
+  </section>
 
-    <section id="dashboard" class="hidden">
-      <h2 class="welcome">أهلاً بك في إدارة أركان العالم</h2>
-      <p id="ownerName"></p>
-      <p>تم التحقق من صلاحية حساب المالك.</p>
-      <button class="logout" onclick="logout()">
-        تسجيل الخروج
-      </button>
-    </section>
-  </div>
+  <section id="dashboard" class="hidden">
+    <h2 class="welcome">أهلاً بك في إدارة أركان العالم</h2>
+    <p id="ownerName"></p>
+    <p>تم التحقق من صلاحية حسابك.</p>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
+    <button class="logout" onclick="logout()">
+      تسجيل الخروج
+    </button>
+  </section>
 
-  <script>
-    const db = window.arkanSupabase;
+  <div id="message"></div>
 
-    async function verifyOwner(user) {
-      const { data, error } = await db
-        .from('profiles')
-        .select('full_name, email, role')
-        .eq('id', user.id)
-        .single();
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<script>
+  const db = window.arkanSupabase;
+
+  const message = document.getElementById('message');
+  const button = document.getElementById('loginButton');
+
+  function showMessage(text, type = 'error') {
+    message.textContent = text;
+    message.className = type;
+  }
+
+  async function verifyOwner(user) {
+
+    if (!db) {
+      throw new Error('إعدادات الاتصال بقاعدة البيانات غير موجودة.');
+    }
+
+    const { data, error } = await db
+      .from('profiles')
+      .select('full_name, email, role')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (error) {
+      throw new Error(
+        'تعذر قراءة بيانات الصلاحيات: ' + error.message
+      );
+    }
+
+    if (!data) {
+      throw new Error(
+        'تم تسجيل الدخول، لكن لم يتم العثور على ملف لهذا المستخدم في جدول profiles.'
+      );
+    }
+
+    const actualRole = String(data.role ?? '')
+      .normalize('NFKC')
+      .trim();
+
+    if (actualRole !== 'مالك') {
+      await db.auth.signOut();
+
+      throw new Error(
+        'تم تسجيل الدخول بنجاح، لكن صلاحية الحساب غير مطابقة. ' +
+        'القيمة التي قرأها الموقع هي: ' +
+        JSON.stringify(data.role)
+      );
+    }
+
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+
+    document.getElementById('ownerName').textContent =
+      'مرحباً ' + (data.full_name || data.email || '');
+
+    showMessage('تم التحقق بنجاح.', 'success');
+  }
+
+  async function login() {
+
+    if (!db) {
+      showMessage('تعذر الاتصال. تحقق من ملف config.js.');
+      return;
+    }
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+      showMessage('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = 'جارٍ التحقق...';
+    showMessage('جارٍ تسجيل الدخول...', 'success');
+
+    try {
+
+      const { data, error } = await db.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        throw new Error('فشل تسجيل الدخول: ' + error.message);
+      }
+
+      await verifyOwner(data.user);
+
+    } catch (error) {
+      showMessage(error.message);
+    } finally {
+      button.disabled = false;
+      button.textContent = 'تسجيل الدخول';
+    }
+  }
+
+  async function logout() {
+    await db.auth.signOut();
+
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+
+    document.getElementById('password').value = '';
+    showMessage('تم تسجيل الخروج.', 'success');
+  }
+
+  async function checkSession() {
+    if (!db) {
+      showMessage('إعدادات الاتصال غير موجودة.');
+      return;
+    }
+
+    try {
+      const { data, error } = await db.auth.getSession();
 
       if (error) throw error;
 
-     throw new Error('القيمة التي قرأها الموقع للدور هي: ' + JSON.stringify(data.role));
-        await db.auth.signOut();
-        throw new Error('هذا الحساب لا يملك صلاحية الدخول إلى لوحة المالك.');
+      if (data.session) {
+        await verifyOwner(data.session.user);
       }
-
-      document.getElementById('loginSection').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
-      document.getElementById('ownerName').textContent =
-        'مرحباً ' + (data.full_name || data.email);
+    } catch (error) {
+      showMessage(error.message);
     }
+  }
 
-    async function login() {
-      const message = document.getElementById('message');
-      const button = document.getElementById('loginButton');
-
-      message.textContent = 'جارٍ التحقق من الحساب...';
-      button.disabled = true;
-
-      try {
-        if (!db) throw new Error('إعدادات الاتصال غير موجودة.');
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        const { data, error } = await db.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (error) throw error;
-
-        await verifyOwner(data.user);
-
-      } catch (error) {
-        message.textContent = error.message;
-      } finally {
-        button.disabled = false;
-      }
-    }
-
-    async function logout() {
-      await db.auth.signOut();
-      location.reload();
-    }
-
-    async function checkSession() {
-      try {
-        const { data } = await db.auth.getSession();
-        if (data.session) {
-          await verifyOwner(data.session.user);
-        }
-      } catch (error) {
-        document.getElementById('message').textContent = error.message;
-      }
-    }
-
-    checkSession();
-  </script>
+  checkSession();
+</script>
 
 </body>
 </html>

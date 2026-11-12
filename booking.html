@@ -911,9 +911,14 @@
 
 
 
+
 <script>
   const db = window.arkanSupabase;
   const BOOKING_FUNCTION = "create-public-booking";
+  const PAYMENT_FUNCTION = "submit-sham-cash-payment";
+
+  const SHAM_CASH_NAME = "منير محمد نور سويد";
+  const SHAM_CASH_ID = "bcbb75e2438cdf28a3359ece7d88f0d7";
 
   let allTrips = [];
   let selectedTrip = null;
@@ -1043,10 +1048,36 @@
     const typeField = document.getElementById("tripType");
     const selectedType = typeField ? typeField.value : "";
 
+    const destinationSearch =
+      document.getElementById("destinationSearch")?.value
+        .trim()
+        .toLowerCase() || "";
+
+    const departureDate =
+      document.getElementById("departureDate")?.value || "";
+
     const filtered = allTrips.filter(trip => {
-      return !selectedType ||
+      const matchesType =
+        !selectedType ||
         selectedType === "all" ||
         trip.trip_type === selectedType;
+
+      const destination = String(
+        trip.destination || trip.title_ar || ""
+      ).toLowerCase();
+
+      const matchesDestination =
+        !destinationSearch ||
+        destination.includes(destinationSearch);
+
+      const tripDate = trip.departure_at
+        ? new Date(trip.departure_at).toISOString().slice(0, 10)
+        : "";
+
+      const matchesDate =
+        !departureDate || tripDate === departureDate;
+
+      return matchesType && matchesDestination && matchesDate;
     });
 
     list.replaceChildren();
@@ -1226,8 +1257,10 @@
         money(price, currency);
 
       document.getElementById("bookingTotal").textContent =
-        money(price * (Number.isInteger(count) && count > 0 ? count : 0),
-          currency);
+        money(
+          price * (Number.isInteger(count) && count > 0 ? count : 0),
+          currency
+        );
     }
 
     roomSelect.addEventListener("change", updateBookingTotal);
@@ -1252,6 +1285,305 @@
       "submit",
       submitPublicBooking
     );
+  }
+
+  function showPaymentStep(data) {
+    const form = document.getElementById("publicBookingForm");
+    if (!form) return;
+
+    const totalAmount = Number(data.total_amount);
+    const currency = data.currency || "USD";
+
+    form.hidden = true;
+
+    const paymentStep = document.createElement("div");
+    paymentStep.id = "paymentStep";
+
+    paymentStep.innerHTML = `
+      <div style="
+        background:#edf7f0;border:1px solid #c8e5d1;
+        border-radius:12px;padding:15px;margin:12px 0;
+        color:#26734d;line-height:1.9
+      ">
+        <strong>تم استلام طلب الحجز بنجاح ✓</strong>
+        <div>رقم الحجز: <strong id="successBookingCode"></strong></div>
+        <div>إجمالي الحجز: <strong id="successBookingTotal"></strong></div>
+      </div>
+
+      <div style="
+        border:1px solid #e4e9e6;border-radius:13px;
+        padding:16px;margin-top:15px
+      ">
+        <h3 style="margin:0 0 12px;color:#315f58">
+          الدفع عبر شام كاش
+        </h3>
+
+        <p style="font-size:13px;color:#666;line-height:1.8">
+          حوّل المبلغ إلى حساب أركان العالم، ثم أرفق صورة إيصال التحويل.
+          ستتم مراجعة الدفعة من الإدارة قبل اعتمادها.
+        </p>
+
+        <div style="
+          background:#f3f7f6;padding:13px;border-radius:10px;
+          margin:12px 0
+        ">
+          <div style="font-size:12px;color:#666">اسم المستفيد</div>
+          <strong id="shamCashName"></strong>
+
+          <div style="font-size:12px;color:#666;margin-top:12px">
+            معرّف شام كاش
+          </div>
+
+          <div style="
+            direction:ltr;text-align:left;word-break:break-all;
+            font-weight:bold;color:#315f58;margin:6px 0
+          " id="shamCashId"></div>
+
+          <button id="copyShamCashId" type="button" style="
+            width:100%;padding:10px;border:1px solid #428177;
+            border-radius:8px;background:white;color:#315f58;
+            font-weight:bold;cursor:pointer
+          ">نسخ معرّف شام كاش</button>
+
+          <div id="copyMessage" style="
+            font-size:12px;color:#26734d;margin-top:7px
+          "></div>
+        </div>
+
+        <form id="shamCashPaymentForm">
+
+          <label style="display:block;font-weight:bold">
+            المبلغ المراد تحويله *
+          </label>
+
+          <input
+            id="paymentAmount"
+            name="amount"
+            type="number"
+            min="0.01"
+            step="0.01"
+            required
+            style="
+              width:100%;padding:12px;margin:7px 0 14px;
+              border:1px solid #ddd;border-radius:8px;
+              box-sizing:border-box
+            "
+          >
+
+          <label style="display:block;font-weight:bold">
+            رقم مرجع التحويل (اختياري)
+          </label>
+
+          <input
+            name="reference_number"
+            maxlength="100"
+            placeholder="رقم العملية إن وجد"
+            style="
+              width:100%;padding:12px;margin:7px 0 14px;
+              border:1px solid #ddd;border-radius:8px;
+              box-sizing:border-box
+            "
+          >
+
+          <label style="display:block;font-weight:bold">
+            صورة إيصال التحويل *
+          </label>
+
+          <input
+            name="receipt"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            required
+            style="
+              width:100%;padding:10px;margin:7px 0 5px;
+              border:1px solid #ddd;border-radius:8px;
+              box-sizing:border-box;background:white
+            "
+          >
+
+          <p style="font-size:11px;color:#777;margin:0 0 14px">
+            الصيغ المقبولة: JPG وPNG وWEBP، والحد الأقصى 5 ميغابايت.
+          </p>
+
+          <input
+            name="website"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            style="position:absolute;left:-9999px"
+          >
+
+          <div id="paymentMessage" role="status" style="
+            margin:10px 0;font-size:13px;line-height:1.8
+          "></div>
+
+          <button id="submitPayment" type="submit" style="
+            width:100%;padding:14px;border:0;border-radius:10px;
+            background:#428177;color:white;font-size:16px;
+            font-weight:bold;cursor:pointer
+          ">
+            إرسال إيصال الدفع للمراجعة
+          </button>
+        </form>
+      </div>
+
+      <p style="
+        font-size:12px;color:#777;text-align:center;
+        line-height:1.8;margin-top:15px
+      ">
+        تنبيه: إرسال الإيصال لا يعني اعتماد الدفع.
+        يتم تأكيد الدفعة بعد مراجعة الإدارة.
+      </p>
+    `;
+
+    form.insertAdjacentElement("afterend", paymentStep);
+
+    document.getElementById("successBookingCode").textContent =
+      data.booking_code || "قيد المعالجة";
+
+    document.getElementById("successBookingTotal").textContent =
+      money(totalAmount, currency);
+
+    document.getElementById("shamCashName").textContent =
+      SHAM_CASH_NAME;
+
+    document.getElementById("shamCashId").textContent =
+      SHAM_CASH_ID;
+
+    const amountInput = document.getElementById("paymentAmount");
+    amountInput.value = totalAmount;
+    amountInput.max = totalAmount;
+
+    document.getElementById("copyShamCashId").addEventListener(
+      "click",
+      async () => {
+        const copyMessage = document.getElementById("copyMessage");
+
+        try {
+          await navigator.clipboard.writeText(SHAM_CASH_ID);
+          copyMessage.textContent = "تم نسخ معرّف شام كاش.";
+        } catch (error) {
+          copyMessage.textContent =
+            "تعذر النسخ التلقائي. يمكنك تحديد المعرّف ونسخه يدوياً.";
+        }
+      }
+    );
+
+    document.getElementById("shamCashPaymentForm").addEventListener(
+      "submit",
+      event => submitShamCashPayment(event, data.booking_code)
+    );
+  }
+
+  async function submitShamCashPayment(event, bookingCode) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const button = document.getElementById("submitPayment");
+    const message = document.getElementById("paymentMessage");
+    const file = form.elements.receipt.files[0];
+    const amount = Number(form.elements.amount.value);
+
+    if (!db || !bookingCode) {
+      message.style.color = "#a32626";
+      message.textContent = "تعذر الاتصال بالنظام أو العثور على رقم الحجز.";
+      return;
+    }
+
+    if (!file) {
+      message.style.color = "#a32626";
+      message.textContent = "يرجى اختيار صورة إيصال التحويل.";
+      return;
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      message.style.color = "#a32626";
+      message.textContent = "صيغة الصورة غير مدعومة.";
+      return;
+    }
+
+    if (file.size <= 0 || file.size > 5 * 1024 * 1024) {
+      message.style.color = "#a32626";
+      message.textContent = "حجم الصورة يجب ألا يتجاوز 5 ميغابايت.";
+      return;
+    }
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      message.style.color = "#a32626";
+      message.textContent = "يرجى إدخال مبلغ صحيح.";
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("booking_code", bookingCode);
+    formData.append("amount", String(amount));
+    formData.append(
+      "reference_number",
+      String(form.elements.reference_number.value || "").trim()
+    );
+    formData.append("receipt", file);
+    formData.append(
+      "website",
+      String(form.elements.website.value || "")
+    );
+
+    button.disabled = true;
+    button.textContent = "جارٍ إرسال الإيصال...";
+    message.style.color = "#555";
+    message.textContent = "يرجى الانتظار حتى يكتمل رفع صورة الإيصال.";
+
+    try {
+      const { data, error } = await db.functions.invoke(
+        PAYMENT_FUNCTION,
+        { body: formData }
+      );
+
+      if (error) throw error;
+
+      if (!data || data.success !== true) {
+        throw new Error(
+          data?.message || "تعذر تسجيل طلب الدفع."
+        );
+      }
+
+      message.style.color = "#26734d";
+      message.innerHTML = "";
+
+      const successText = document.createElement("strong");
+      successText.textContent =
+        "تم استلام إيصال التحويل بنجاح ✓";
+
+      const detail = document.createElement("div");
+      detail.textContent =
+        "طلب الدفع بانتظار مراجعة الإدارة. لم يتم اعتماد الدفعة بعد.";
+
+      message.append(successText, detail);
+
+      button.textContent = "تم إرسال الإيصال";
+      button.disabled = true;
+
+      Array.from(form.elements).forEach(element => {
+        element.disabled = true;
+      });
+
+    } catch (error) {
+      console.error("Payment submission error:", error);
+
+      message.style.color = "#a32626";
+      message.textContent =
+        error.message || "تعذر إرسال الإيصال. حاول مجدداً.";
+
+      button.disabled = false;
+      button.textContent = "إعادة إرسال الإيصال";
+    }
   }
 
   async function submitPublicBooking(event) {
@@ -1298,21 +1630,7 @@
         );
       }
 
-      message.style.color = "#26734d";
-      message.innerHTML =
-        "تم استلام طلبك بنجاح.<br>" +
-        "رقم الحجز: <strong></strong><br>" +
-        "الإجمالي: <strong></strong>";
-
-      const strong = message.querySelectorAll("strong");
-      strong[0].textContent = data.booking_code || "قيد المعالجة";
-      strong[1].textContent = money(
-        data.total_amount,
-        data.currency || "USD"
-      );
-
-      button.textContent = "تم إرسال الطلب";
-      form.reset();
+      showPaymentStep(data);
 
     } catch (error) {
       console.error("Booking submission error:", error);
@@ -1360,6 +1678,7 @@
 
   loadTrips();
 </script>
+
 </body>
 </html>
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -50,6 +49,10 @@ button {
   cursor: pointer;
   font-size: 15px;
 }
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
 .primary {
   background: var(--teal);
   color: white;
@@ -74,6 +77,7 @@ label { font-weight: bold; }
   grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
   gap: 16px;
 }
+.table-wrap { overflow-x: auto; }
 table {
   width: 100%;
   border-collapse: collapse;
@@ -85,12 +89,17 @@ th, td {
   text-align: right;
 }
 th { background: var(--ivory); }
-.table-wrap { overflow-x: auto; }
 #message {
   margin-top: 15px;
   font-weight: bold;
+  line-height: 1.8;
 }
 .hidden { display: none; }
+.success { color: #247747; }
+.error { color: var(--burgundy); }
+.muted { color: #777; }
+.status-active { color: #247747; font-weight: bold; }
+.status-inactive { color: var(--burgundy); font-weight: bold; }
 </style>
 </head>
 
@@ -116,41 +125,49 @@ th { background: var(--ivory); }
       <h3>إضافة موظف جديد</h3>
 
       <div class="grid">
+
         <div class="field">
-          <label>الاسم الكامل</label>
+          <label for="fullName">الاسم الكامل</label>
           <input id="fullName" placeholder="اسم الموظف">
         </div>
 
         <div class="field">
-          <label>البريد الإلكتروني</label>
+          <label for="email">البريد الإلكتروني</label>
           <input id="email" type="email" placeholder="employee@example.com">
         </div>
 
         <div class="field">
-          <label>الصلاحية</label>
+          <label for="role">الصلاحية</label>
           <select id="role">
             <option value="branch_manager">مدير فرع</option>
             <option value="accountant">محاسب</option>
             <option value="booking_agent">موظف حجوزات</option>
-            <option value="admin">مدير النظام</option>
+            <option value="admin" id="adminOption">مدير النظام</option>
           </select>
         </div>
 
         <div class="field">
-          <label>الفرع</label>
+          <label for="branch">الفرع</label>
           <select id="branch">
             <option value="">جارٍ تحميل الفروع...</option>
           </select>
         </div>
+
       </div>
 
-      <button class="primary" onclick="addEmployee()">إرسال دعوة الموظف</button>
+      <button id="addButton" class="primary" type="button" onclick="addEmployee()">
+        إرسال دعوة الموظف
+      </button>
     </div>
 
     <div class="panel">
       <h3>قائمة الموظفين</h3>
-      <p>ستظهر حسابات الموظفين هنا بعد ربط قاعدة البيانات.</p>
-      <div class="table-wrap">
+
+      <button class="secondary" type="button" onclick="loadEmployees()">
+        تحديث القائمة
+      </button>
+
+      <div class="table-wrap" style="margin-top:18px">
         <table>
           <thead>
             <tr>
@@ -161,27 +178,53 @@ th { background: var(--ivory); }
               <th>الحالة</th>
             </tr>
           </thead>
+
           <tbody id="employeesList">
-            <tr><td colspan="5">لم يتم تحميل الموظفين بعد.</td></tr>
+            <tr>
+              <td colspan="5">جارٍ تحميل الموظفين...</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
 
   </div>
-
 </div>
 
 <script>
 
 const db = window.arkanSupabase;
 
+const FUNCTION_URL =
+  "https://pwjntufyeydlbzolmgsi.supabase.co/functions/v1/manage-employees";
+
+let currentProfile = null;
+let branchesMap = {};
+
+function showMessage(message, type = "") {
+  const box = document.getElementById("message");
+  box.textContent = message;
+  box.className = type;
+}
+
+function roleName(role) {
+  const names = {
+    owner: "مالك المؤسسة",
+    admin: "مدير النظام",
+    branch_manager: "مدير فرع",
+    accountant: "محاسب",
+    booking_agent: "موظف حجوزات"
+  };
+
+  return names[role] || role || "غير محدد";
+}
+
 async function checkAccess() {
-  const message = document.getElementById("message");
+
   const userInfo = document.getElementById("userInfo");
 
   if (!db) {
-    message.textContent = "تعذر الاتصال بقاعدة البيانات.";
+    userInfo.textContent = "تعذر الاتصال بقاعدة البيانات. تحقق من config.js";
     return;
   }
 
@@ -191,60 +234,286 @@ async function checkAccess() {
   const session = sessionData?.session;
 
   if (sessionError || !session) {
-    userInfo.textContent = "يرجى تسجيل الدخول أولاً من لوحة الإدارة.";
+    userInfo.textContent =
+      "يرجى تسجيل الدخول أولاً من لوحة الإدارة.";
     return;
   }
 
   const { data: profile, error } = await db
     .from("profiles")
-    .select("full_name, role, is_active")
+    .select("id, full_name, role, branch_id, is_active")
     .eq("id", session.user.id)
     .single();
 
   if (error || !profile || !profile.is_active) {
-    userInfo.textContent = "تعذر التحقق من صلاحية الحساب.";
+    userInfo.textContent =
+      "تعذر التحقق من صلاحية الحساب أو أن الحساب غير مفعل.";
     return;
   }
 
   if (!["owner", "admin"].includes(profile.role)) {
-    userInfo.textContent = "ليس لديك صلاحية إدارة الموظفين.";
+    userInfo.textContent =
+      "ليس لديك صلاحية إدارة الموظفين.";
     return;
   }
 
-  userInfo.textContent = "مرحباً " + profile.full_name;
-  document.getElementById("employeeArea").classList.remove("hidden");
+  currentProfile = profile;
+
+  userInfo.textContent =
+    "مرحباً " + (profile.full_name || "بك") +
+    " — " + roleName(profile.role);
+
+  // المدير العادي لا يستطيع إنشاء مدير نظام
+  if (profile.role !== "owner") {
+    document.getElementById("adminOption").hidden = true;
+  }
+
+  document.getElementById("employeeArea")
+    .classList.remove("hidden");
+
+  await loadBranches();
+  await loadEmployees();
 }
 
-checkAccess();
-
 async function loadBranches() {
+
   const branchSelect = document.getElementById("branch");
+
+  branchSelect.innerHTML =
+    '<option value="">جارٍ تحميل الفروع...</option>';
 
   const { data, error } = await db
     .from("branches")
-    .select("*");
+    .select("id, name, is_active")
+    .eq("is_active", true)
+    .order("name");
 
   if (error) {
     branchSelect.innerHTML =
       '<option value="">تعذر تحميل الفروع</option>';
+
+    showMessage(
+      "تعذر تحميل الفروع: " + error.message,
+      "error"
+    );
     return;
   }
+
+  branchesMap = {};
 
   branchSelect.innerHTML =
     '<option value="">اختر الفرع</option>';
 
-  data.forEach(branch => {
+  (data || []).forEach(branch => {
+
+    branchesMap[branch.id] =
+      branch.name || branch.id;
+
     const option = document.createElement("option");
+
     option.value = branch.id;
-    option.textContent = branch.name || branch.branch_name || branch.id;
+    option.textContent =
+      branch.name || branch.id;
+
     branchSelect.appendChild(option);
+  });
+
+  // المدير العادي يُحصر بفرعه
+  if (
+    currentProfile.role === "admin" &&
+    currentProfile.branch_id
+  ) {
+    branchSelect.value = currentProfile.branch_id;
+    branchSelect.disabled = true;
+  }
+}
+
+async function addEmployee() {
+
+  const button = document.getElementById("addButton");
+
+  const fullName =
+    document.getElementById("fullName").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const role =
+    document.getElementById("role").value;
+
+  const branchId =
+    document.getElementById("branch").value;
+
+  if (!fullName || !email || !role || !branchId) {
+    showMessage(
+      "يرجى إدخال الاسم والبريد والصلاحية واختيار الفرع.",
+      "error"
+    );
+    return;
+  }
+
+  if (!email.includes("@")) {
+    showMessage(
+      "يرجى إدخال بريد إلكتروني صحيح.",
+      "error"
+    );
+    return;
+  }
+
+  if (
+    currentProfile.role === "admin" &&
+    role === "admin"
+  ) {
+    showMessage(
+      "لا يمكنك إنشاء حساب مدير نظام.",
+      "error"
+    );
+    return;
+  }
+
+  const { data: sessionData, error: sessionError } =
+    await db.auth.getSession();
+
+  const session = sessionData?.session;
+
+  if (sessionError || !session) {
+    showMessage(
+      "انتهت جلسة الدخول. سجل الدخول مجدداً.",
+      "error"
+    );
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ إرسال الدعوة...";
+
+  showMessage("جارٍ إنشاء حساب الموظف وإرسال الدعوة...");
+
+  try {
+
+    const response = await fetch(FUNCTION_URL, {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + session.access_token
+      },
+
+      body: JSON.stringify({
+        full_name: fullName,
+        email: email,
+        role: role,
+        branch_id: branchId
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.error || "تعذر إنشاء حساب الموظف."
+      );
+    }
+
+    showMessage(
+      result.message ||
+      "تم إنشاء حساب الموظف وإرسال الدعوة بنجاح.",
+      "success"
+    );
+
+    document.getElementById("fullName").value = "";
+    document.getElementById("email").value = "";
+
+    document.getElementById("role").value =
+      "booking_agent";
+
+    await loadEmployees();
+
+  } catch (error) {
+
+    showMessage(
+      "حدث خطأ: " + error.message,
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "إرسال دعوة الموظف";
+
+  }
+}
+
+async function loadEmployees() {
+
+  const tbody = document.getElementById("employeesList");
+
+  tbody.innerHTML =
+    '<tr><td colspan="5">جارٍ تحميل الموظفين...</td></tr>';
+
+  const { data, error } = await db
+    .from("profiles")
+    .select("id, full_name, email, role, branch_id, is_active")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+
+    tbody.innerHTML =
+      '<tr><td colspan="5">تعذر تحميل الموظفين: ' +
+      error.message +
+      '</td></tr>';
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    tbody.innerHTML =
+      '<tr><td colspan="5">لا يوجد موظفون حالياً.</td></tr>';
+
+    return;
+  }
+
+  tbody.innerHTML = "";
+
+  data.forEach(employee => {
+
+    const tr = document.createElement("tr");
+
+    const values = [
+      employee.full_name || "غير محدد",
+      employee.email || "غير محدد",
+      roleName(employee.role),
+      branchesMap[employee.branch_id] || "غير محدد"
+    ];
+
+    values.forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+
+    const statusCell = document.createElement("td");
+
+    statusCell.textContent =
+      employee.is_active ? "نشط" : "غير نشط";
+
+    statusCell.className =
+      employee.is_active
+        ? "status-active"
+        : "status-inactive";
+
+    tr.appendChild(statusCell);
+
+    tbody.appendChild(tr);
   });
 }
 
-loadBranches();
+checkAccess();
 
 </script>
 
 </body>
 </html>
+>
 

@@ -1,1 +1,224 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بوابة الموظفين | أركان العالم</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<style>
+:root {
+  --teal:#428177;
+  --burgundy:#6b1f2a;
+  --ivory:#edebe0;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f5f2;
+  color:#26302e;
+}
+header {
+  background:var(--teal);
+  color:white;
+  padding:25px;
+  text-align:center;
+}
+header h2 {margin:0 0 8px}
+.container {
+  max-width:850px;
+  margin:35px auto;
+  padding:15px;
+}
+.card {
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px #0000000b;
+}
+input {
+  width:100%;
+  padding:14px;
+  margin:9px 0 17px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:16px;
+}
+button {
+  border:0;
+  padding:13px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:15px;
+}
+.primary {background:var(--teal);color:white}
+.logout {background:var(--burgundy);color:white}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+.item {
+  background:var(--ivory);
+  padding:20px;
+  border-radius:10px;
+}
+.hidden {display:none}
+#message {margin-top:15px;color:var(--burgundy)}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>أركان العالم للسياحة والسفر</h2>
+  <div>PILLARS OF THE WORLD</div>
+  <p>بوابة الموظفين</p>
+</header>
+
+<div class="container">
+
+  <div class="card" id="loginBox">
+    <h3>تسجيل دخول الموظف</h3>
+
+    <label>البريد الإلكتروني</label>
+    <input id="email" type="email" placeholder="أدخل بريدك الإلكتروني">
+
+    <label>كلمة المرور</label>
+    <input id="password" type="password" placeholder="أدخل كلمة المرور">
+
+    <button class="primary" onclick="login()">دخول إلى البوابة</button>
+    <div id="message"></div>
+  </div>
+
+  <div class="card hidden" id="employeeBox">
+    <h3>مرحباً بك في بوابة الموظفين</h3>
+    <p id="employeeName"></p>
+    <p id="employeeRole"></p>
+    <p id="employeeBranch"></p>
+
+    <h3>الأقسام المتاحة لك</h3>
+    <div class="grid" id="sections"></div>
+
+    <br>
+    <button class="logout" onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+</div>
+
+<script>
+const db = window.arkanSupabase;
+
+const roleNames = {
+  owner:"مالك المؤسسة",
+  admin:"مدير النظام",
+  branch_manager:"مدير فرع",
+  accountant:"محاسب",
+  booking_agent:"موظف حجوزات"
+};
+
+const roleSections = {
+  owner:["لوحة التحكم","الرحلات","الحجوزات","العملاء","الفروع","المالية","التقارير","الموظفون"],
+  admin:["لوحة التحكم","الرحلات","الحجوزات","العملاء","الفروع","المالية","التقارير","الموظفون"],
+  branch_manager:["لوحة التحكم","الرحلات","الحجوزات","العملاء","التقارير"],
+  accountant:["لوحة التحكم","المالية","التقارير المالية"],
+  booking_agent:["الحجوزات","العملاء","المسافرون"]
+};
+
+function showMessage(text) {
+  document.getElementById("message").textContent = text;
+}
+
+async function login() {
+  if (!db) {
+    showMessage("تعذر الاتصال بقاعدة البيانات.");
+    return;
+  }
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!email || !password) {
+    showMessage("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+    return;
+  }
+
+  const {error} = await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    showMessage("تعذر تسجيل الدخول: تحقق من البريد وكلمة المرور.");
+    return;
+  }
+
+  await loadEmployee();
+}
+
+async function loadEmployee() {
+  const {data:{user}} = await db.auth.getUser();
+
+  if (!user) return;
+
+  const {data:profile,error} = await db
+    .from("profiles")
+    .select("full_name,email,role,branch_id,is_active")
+    .eq("id",user.id)
+    .single();
+
+  if (error || !profile || !profile.is_active) {
+    await db.auth.signOut();
+    showMessage("الحساب غير فعال أو لا يملك ملف موظف صحيح.");
+    return;
+  }
+
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("employeeBox").classList.remove("hidden");
+
+  document.getElementById("employeeName").textContent =
+    "الاسم: " + profile.full_name;
+
+  document.getElementById("employeeRole").textContent =
+    "الصلاحية: " + (roleNames[profile.role] || "موظف");
+
+  document.getElementById("employeeBranch").textContent =
+    "رقم الفرع: " + (profile.branch_id || "غير محدد");
+
+  const sections = document.getElementById("sections");
+  sections.innerHTML = "";
+
+  (roleSections[profile.role] || []).forEach(name => {
+    const item = document.createElement("div");
+    item.className = "item";
+    item.textContent = name;
+    sections.appendChild(item);
+  });
+}
+
+async function logout() {
+  await db.auth.signOut();
+  location.reload();
+}
+
+async function checkSession() {
+  if (!db) {
+    showMessage("تعذر الاتصال بقاعدة البيانات.");
+    return;
+  }
+
+  const {data:{session}} = await db.auth.getSession();
+
+  if (session) await loadEmployee();
+}
+
+checkSession();
+</script>
+
+</body>
+</html>
+

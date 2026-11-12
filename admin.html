@@ -1278,7 +1278,413 @@ function toggleLanguage(){
     :"تمت العودة إلى العربية.");
   renderTrips();renderBookings();renderCustomers();renderPayments();
 }
+/* ==========================================
+   A5 PAYMENT RECEIPT PRINTING
+   PILLARS OF THE WORLD
+========================================== */
 
+(function installReceiptPrinting(){
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .receipt-print-btn{
+      background:#428177;
+      color:#fff;
+      border:0;
+      border-radius:7px;
+      padding:8px 12px;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .receipt-print-btn:hover{background:#32645c}
+  `;
+  document.head.appendChild(style);
+
+  const header = document.querySelector("#finance .panel:last-child thead tr");
+  if(header && !header.querySelector(".receipt-action-heading")){
+    const th=document.createElement("th");
+    th.className="receipt-action-heading";
+    th.textContent="السند";
+    header.appendChild(th);
+  }
+
+  const originalRenderPayments = renderPayments;
+
+  renderPayments = function(){
+    const tbody=document.getElementById("paymentsTableBody");
+
+    if(!paymentsCache.length){
+      tbody.innerHTML='<tr><td colspan="8" class="empty-state">لا توجد دفعات مسجلة</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML=paymentsCache.map(p=>`
+      <tr>
+        <td>${esc(formatDate(p.received_at))}</td>
+        <td>${esc(p.bookings?.booking_code||"—")}</td>
+        <td>${esc(p.bookings?.customers?.full_name||"—")}</td>
+        <td>${esc(money(p.amount,p.currency))}</td>
+        <td>${esc({cash:"نقدي",bank_transfer:"حوالة بنكية",card:"بطاقة",other:"أخرى"}[p.payment_method]||p.payment_method)}</td>
+        <td>${esc({deposit:"عربون",balance:"تكملة",refund:"استرداد",other:"أخرى"}[p.payment_type]||p.payment_type)}</td>
+        <td>${esc(p.reference_number||"—")}</td>
+        <td>
+          <button class="receipt-print-btn" onclick="printPaymentReceipt('${p.id}')">
+            طباعة السند
+          </button>
+        </td>
+      </tr>
+    `).join("");
+  };
+
+  window.printPaymentReceipt = function(paymentId){
+
+    const payment=paymentsCache.find(p=>p.id===paymentId);
+    if(!payment){
+      alert("لم يتم العثور على الدفعة.");
+      return;
+    }
+
+    const booking=bookingsCache.find(b=>b.id===payment.booking_id);
+    const customer=customersCache.find(c=>c.id===booking?.customer_id);
+    const trip=tripsCache.find(t=>t.id===booking?.trip_id);
+
+    const customerName=
+      customer?.full_name ||
+      payment.bookings?.customers?.full_name ||
+      "—";
+
+    const customerPhone=customer?.phone||"—";
+    const bookingCode=
+      booking?.booking_code ||
+      payment.bookings?.booking_code ||
+      "—";
+
+    const tripName=trip?.title_ar||"—";
+    const currency=payment.currency||booking?.currency||"USD";
+
+    const total=Number(booking?.total_amount||0);
+    const paid=Number(booking?.paid_amount||0);
+    const remaining=Math.max(0,total-paid);
+
+    const receiptNumber=
+      "AW-RCP-"+String(payment.id).replace(/-/g,"").slice(0,8).toUpperCase();
+
+    const methods={
+      cash:"نقدي",
+      bank_transfer:"حوالة بنكية",
+      card:"بطاقة",
+      other:"أخرى"
+    };
+
+    const types={
+      deposit:"عربون",
+      balance:"تكملة",
+      refund:"استرداد",
+      other:"أخرى"
+    };
+
+    const date=formatDate(payment.received_at);
+
+    const printWindow=window.open("","_blank","width=850,height=900");
+
+    if(!printWindow){
+      alert("يرجى السماح بالنوافذ المنبثقة لهذا الموقع حتى تتمكن من طباعة السند.");
+      return;
+    }
+
+    const receiptHTML=`
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سند قبض ${esc(receiptNumber)}</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:12mm;
+  font-family:Arial,Tahoma,sans-serif;
+  color:#222;
+  background:#fff;
+}
+.receipt{
+  width:100%;
+  min-height:185mm;
+  border:2px solid #428177;
+  padding:9mm;
+  position:relative;
+}
+.top-border{
+  height:7px;
+  background:#428177;
+  margin:-9mm -9mm 8mm;
+}
+.brand{
+  text-align:center;
+  padding-bottom:6mm;
+  border-bottom:1px solid #ddd;
+}
+.brand-name{
+  font-size:22px;
+  font-weight:800;
+  color:#428177;
+  letter-spacing:1px;
+  direction:ltr;
+}
+.brand-slogan{
+  color:#6b1f2a;
+  font-size:13px;
+  margin-top:5px;
+}
+.brand-desc{
+  font-size:12px;
+  color:#666;
+  margin-top:6px;
+}
+.heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:8mm 0;
+}
+.heading h1{
+  margin:0;
+  color:#6b1f2a;
+  font-size:25px;
+}
+.receipt-number{
+  font-size:12px;
+  color:#555;
+  direction:ltr;
+  text-align:left;
+}
+.date{
+  font-size:12px;
+  margin-bottom:7mm;
+  color:#555;
+}
+.section-title{
+  color:#428177;
+  font-size:14px;
+  font-weight:bold;
+  border-bottom:1px solid #ddd;
+  padding-bottom:7px;
+  margin:6mm 0 4mm;
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px 20px;
+}
+.info-item{
+  font-size:13px;
+  line-height:1.8;
+}
+.info-item strong{
+  color:#555;
+  margin-left:4px;
+}
+.amount-box{
+  border:1px solid #428177;
+  background:#f3f8f6;
+  padding:7mm;
+  text-align:center;
+  margin:8mm 0;
+}
+.amount-label{
+  color:#555;
+  font-size:13px;
+}
+.amount{
+  color:#428177;
+  font-size:27px;
+  font-weight:800;
+  margin-top:7px;
+}
+.financial-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:5mm;
+}
+.financial-item{
+  border:1px solid #ddd;
+  padding:10px 5px;
+  text-align:center;
+  border-radius:5px;
+}
+.financial-item span{
+  display:block;
+  color:#666;
+  font-size:11px;
+  margin-bottom:7px;
+}
+.financial-item strong{
+  font-size:13px;
+}
+.notes{
+  margin-top:7mm;
+  font-size:12px;
+  line-height:1.8;
+}
+.signatures{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-top:15mm;
+  text-align:center;
+}
+.signature{
+  border-top:1px solid #aaa;
+  padding-top:8px;
+  font-size:12px;
+  color:#555;
+}
+.footer{
+  border-top:1px solid #ddd;
+  margin-top:12mm;
+  padding-top:5mm;
+  text-align:center;
+  color:#428177;
+  font-size:12px;
+  font-weight:bold;
+}
+.footer small{
+  display:block;
+  color:#777;
+  font-weight:normal;
+  margin-top:5px;
+}
+@page{
+  size:A5 portrait;
+  margin:0;
+}
+@media print{
+  body{padding:0}
+  .receipt{
+    width:148mm;
+    min-height:210mm;
+    border:2px solid #428177;
+    padding:9mm;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="receipt">
+
+  <div class="top-border"></div>
+
+  <div class="brand">
+    <div class="brand-name">PILLARS OF THE WORLD</div>
+    <div class="brand-slogan">سفر • سياحة • ثقة</div>
+    <div class="brand-desc">للسياحة والسفر والحج والعمرة</div>
+  </div>
+
+  <div class="heading">
+    <h1>سند قبض</h1>
+    <div class="receipt-number">
+      رقم السند<br>
+      ${esc(receiptNumber)}
+    </div>
+  </div>
+
+  <div class="date">
+    تاريخ القبض: ${esc(date)}
+  </div>
+
+  <div class="section-title">بيانات العميل والحجز</div>
+
+  <div class="info-grid">
+    <div class="info-item"><strong>اسم العميل:</strong>${esc(customerName)}</div>
+    <div class="info-item"><strong>رقم الهاتف:</strong>${esc(customerPhone)}</div>
+    <div class="info-item"><strong>رقم الحجز:</strong>${esc(bookingCode)}</div>
+    <div class="info-item"><strong>الرحلة:</strong>${esc(tripName)}</div>
+  </div>
+
+  <div class="amount-box">
+    <div class="amount-label">
+      ${payment.payment_type==="refund"?"مبلغ الاسترداد":"المبلغ المقبوض"}
+    </div>
+    <div class="amount">${esc(money(payment.amount,currency))}</div>
+  </div>
+
+  <div class="section-title">تفاصيل عملية الدفع</div>
+
+  <div class="info-grid">
+    <div class="info-item">
+      <strong>طريقة الدفع:</strong>
+      ${esc(methods[payment.payment_method]||payment.payment_method||"—")}
+    </div>
+    <div class="info-item">
+      <strong>نوع العملية:</strong>
+      ${esc(types[payment.payment_type]||payment.payment_type||"—")}
+    </div>
+    <div class="info-item">
+      <strong>رقم المرجع:</strong>
+      ${esc(payment.reference_number||"—")}
+    </div>
+    <div class="info-item">
+      <strong>العملة:</strong>${esc(currency)}
+    </div>
+  </div>
+
+  <div class="section-title">ملخص الحساب الحالي</div>
+
+  <div class="financial-grid">
+    <div class="financial-item">
+      <span>إجمالي الحجز</span>
+      <strong>${esc(money(total,currency))}</strong>
+    </div>
+    <div class="financial-item">
+      <span>المدفوع حالياً</span>
+      <strong>${esc(money(paid,currency))}</strong>
+    </div>
+    <div class="financial-item">
+      <span>المتبقي حالياً</span>
+      <strong>${esc(money(remaining,currency))}</strong>
+    </div>
+  </div>
+
+  ${payment.notes?`
+    <div class="notes">
+      <strong>ملاحظات:</strong> ${esc(payment.notes)}
+    </div>
+  `:""}
+
+  <div class="signatures">
+    <div class="signature">توقيع المستلم</div>
+    <div class="signature">توقيع العميل</div>
+  </div>
+
+  <div class="footer">
+    PILLARS OF THE WORLD
+    <small>نصحبكم في كل رحلة... معكم في كل وجهة</small>
+  </div>
+
+</div>
+
+<script>
+window.onload=function(){
+  window.focus();
+  setTimeout(function(){window.print();},500);
+};
+<\/script>
+
+</body>
+</html>`;
+
+    printWindow.document.open();
+    printWindow.document.write(receiptHTML);
+    printWindow.document.close();
+  };
+
+  console.log("A5 receipt printing installed.");
+})();
 checkSession();
 </script>
 

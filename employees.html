@@ -1,1 +1,186 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة الموظفين | أركان العالم</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<style>
+:root {
+  --teal: #428177;
+  --burgundy: #6b1f2a;
+  --ivory: #edebe0;
+  --dark: #252b2a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f5f2;
+  color: var(--dark);
+}
+header {
+  background: var(--teal);
+  color: white;
+  padding: 22px;
+}
+header h2 { margin: 0 0 8px; }
+header p { margin: 0; opacity: .9; }
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 18px;
+}
+.panel {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 15px #0000000b;
+}
+h3 { margin-top: 0; }
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 15px;
+}
+.primary {
+  background: var(--teal);
+  color: white;
+}
+.secondary {
+  background: var(--ivory);
+  color: var(--dark);
+}
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 7px;
+  font-size: 15px;
+  background: white;
+}
+.field { margin-bottom: 16px; }
+label { font-weight: bold; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 16px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+th, td {
+  padding: 13px;
+  border-bottom: 1px solid #eee;
+  text-align: right;
+}
+th { background: var(--ivory); }
+.table-wrap { overflow-x: auto; }
+#message {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>أركان العالم للسياحة والسفر</h2>
+  <p>PILLARS OF THE WORLD | إدارة الموظفين والصلاحيات</p>
+</header>
+
+<div class="container">
+
+  <div class="panel">
+    <h3>إدارة الموظفين</h3>
+    <p>إضافة الموظفين وتنظيم حساباتهم وصلاحياتهم داخل المؤسسة.</p>
+    <div id="userInfo">جارٍ التحقق من الحساب...</div>
+    <div id="message"></div>
+  </div>
+
+  <div id="employeeArea" class="hidden">
+
+    <div class="panel">
+      <h3>إضافة موظف جديد</h3>
+
+      <div class="grid">
+        <div class="field">
+          <label>الاسم الكامل</label>
+          <input id="fullName" placeholder="اسم الموظف">
+        </div>
+
+        <div class="field">
+          <label>البريد الإلكتروني</label>
+          <input id="email" type="email" placeholder="employee@example.com">
+        </div>
+
+        <div class="field">
+          <label>الصلاحية</label>
+          <select id="role">
+            <option value="branch_manager">مدير فرع</option>
+            <option value="accountant">محاسب</option>
+            <option value="booking_agent">موظف حجوزات</option>
+            <option value="admin">مدير النظام</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>الفرع</label>
+          <select id="branch">
+            <option value="">جارٍ تحميل الفروع...</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="primary" onclick="addEmployee()">إرسال دعوة الموظف</button>
+    </div>
+
+    <div class="panel">
+      <h3>قائمة الموظفين</h3>
+      <p>ستظهر حسابات الموظفين هنا بعد ربط قاعدة البيانات.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الاسم</th>
+              <th>البريد الإلكتروني</th>
+              <th>الصلاحية</th>
+              <th>الفرع</th>
+              <th>الحالة</th>
+            </tr>
+          </thead>
+          <tbody id="employeesList">
+            <tr><td colspan="5">لم يتم تحميل الموظفين بعد.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const db = window.arkanSupabase;
+
+if (!db) {
+  document.getElementById("message").textContent =
+    "تعذر الاتصال بقاعدة البيانات. تحقق من config.js";
+}
+</script>
+
+</body>
+</html>
+

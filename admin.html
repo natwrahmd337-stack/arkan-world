@@ -185,7 +185,7 @@
       .normalize('NFKC')
       .trim();
 
-    if (actualRole !== 'مالك') {
+    if (!['مالك', 'owner'].includes(actualRole.toLowerCase())) {
       await db.auth.signOut();
 
       throw new Error(

@@ -173,12 +173,50 @@ th { background: var(--ivory); }
 </div>
 
 <script>
+
 const db = window.arkanSupabase;
 
-if (!db) {
-  document.getElementById("message").textContent =
-    "تعذر الاتصال بقاعدة البيانات. تحقق من config.js";
+async function checkAccess() {
+  const message = document.getElementById("message");
+  const userInfo = document.getElementById("userInfo");
+
+  if (!db) {
+    message.textContent = "تعذر الاتصال بقاعدة البيانات.";
+    return;
+  }
+
+  const { data: sessionData, error: sessionError } =
+    await db.auth.getSession();
+
+  const session = sessionData?.session;
+
+  if (sessionError || !session) {
+    userInfo.textContent = "يرجى تسجيل الدخول أولاً من لوحة الإدارة.";
+    return;
+  }
+
+  const { data: profile, error } = await db
+    .from("profiles")
+    .select("full_name, role, is_active")
+    .eq("id", session.user.id)
+    .single();
+
+  if (error || !profile || !profile.is_active) {
+    userInfo.textContent = "تعذر التحقق من صلاحية الحساب.";
+    return;
+  }
+
+  if (!["owner", "admin"].includes(profile.role)) {
+    userInfo.textContent = "ليس لديك صلاحية إدارة الموظفين.";
+    return;
+  }
+
+  userInfo.textContent = "مرحباً " + profile.full_name;
+  document.getElementById("employeeArea").classList.remove("hidden");
 }
+
+checkAccess();
+
 </script>
 
 </body>

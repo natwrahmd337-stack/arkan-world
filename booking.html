@@ -9,7 +9,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
   <style>
     :root {
       --teal: #428177;
@@ -748,26 +749,27 @@
       </div>
     </section>
 
-    <section class="trips-section" id="trips">
-      <div class="container">
-        <div class="section-heading">
-          <div>
-            <div class="section-kicker">الرحلات المتاحة</div>
-            <h2>اختر رحلتك القادمة</h2>
-            <p>ستظهر هنا الرحلات المنشورة من إدارة أركان العالم</p>
-          </div>
-        </div>
-
-        <div class="empty-state" id="tripsState">
-          <div class="empty-icon">✈</div>
-          <h3>نجهّز لك تجربة الحجز الإلكتروني</h3>
-          <p>
-            سيتم ربط هذه الصفحة بالرحلات الفعلية في نظام أركان العالم،
-            لتتمكن من مشاهدة الأسعار والمواعيد والمقاعد المتاحة والحجز مباشرة.
-          </p>
-        </div>
+ 
+<section class="trips-section" id="trips">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <div class="section-kicker">الرحلات المتاحة</div>
+        <h2>اختر رحلتك القادمة</h2>
+        <p>اكتشف رحلات أركان العالم واختر وجهتك القادمة</p>
       </div>
-    </section>
+    </div>
+
+    <div id="tripsState" class="empty-state">
+      <div class="empty-icon">✈</div>
+      <h3>جاري تحميل الرحلات...</h3>
+      <p>لحظات ونجهز لك الرحلات المتاحة.</p>
+    </div>
+
+    <div id="tripsList" class="trips-grid"></div>
+  </div>
+</section>
+
 
     <section id="how">
       <div class="container">

@@ -1,279 +1,682 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>إدارة أركان العالم</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إدارة أركان العالم</title>
 
-  <style>
-    * { box-sizing: border-box; }
+<style>
+:root {
+  --teal: #428177;
+  --burgundy: #6b1f2a;
+  --ivory: #edebe0;
+  --white: #ffffff;
+  --dark: #161616;
+  --muted: #777;
+  --border: #e8e8e8;
+}
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #edebe0;
-      color: #161616;
-      font-family: Arial, sans-serif;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--ivory);
+  color: var(--dark);
+}
+button { font-family: inherit; cursor: pointer; }
 
-    .card {
-      width: 100%;
-      max-width: 440px;
-      padding: 32px 24px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 12px 40px #00000012;
-      text-align: center;
-    }
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.login-card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 25px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 35px #00000010;
+}
+.logo {
+  color: var(--teal);
+  font-size: 24px;
+  font-weight: bold;
+  direction: ltr;
+}
+.sub {
+  color: var(--burgundy);
+  margin: 10px 0 25px;
+}
+.login-card input {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 16px;
+  direction: ltr;
+}
+.primary-btn {
+  border: 0;
+  background: var(--teal);
+  color: white;
+  padding: 13px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.login-card .primary-btn { width: 100%; }
+#message {
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.error { color: var(--burgundy); }
+.success { color: var(--teal); }
 
-    .logo {
-      color: #428177;
-      font-size: 25px;
-      font-weight: bold;
-      direction: ltr;
-    }
+.hidden { display: none !important; }
 
-    .sub {
-      color: #6b1f2a;
-      margin: 10px 0 28px;
-    }
+/* Dashboard */
+.app {
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 255px;
+  background: white;
+  padding: 25px 16px;
+  border-inline-end: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.brand {
+  text-align: center;
+  padding: 10px 5px 25px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-name {
+  color: var(--teal);
+  font-size: 19px;
+  font-weight: bold;
+  direction: ltr;
+}
+.brand-sub {
+  color: var(--burgundy);
+  font-size: 12px;
+  margin-top: 8px;
+}
+.nav-title {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 25px 12px 10px;
+}
+.nav-btn {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  padding: 13px 14px;
+  margin: 3px 0;
+  border-radius: 10px;
+  color: #444;
+  font-size: 14px;
+}
+.nav-btn.active {
+  color: var(--teal);
+  background: #eaf2f0;
+  font-weight: bold;
+}
+.nav-btn:hover { background: #f3f5f4; }
 
-    h2 { font-size: 21px; }
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 25px;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.topbar h1 {
+  font-size: 23px;
+  margin: 0 0 7px;
+}
+.muted { color: var(--muted); font-size: 13px; }
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.secondary-btn {
+  background: white;
+  color: var(--dark);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 14px;
+}
+.logout-btn {
+  background: var(--burgundy);
+  color: white;
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 14px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+.stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+.stat-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+.stat-value {
+  font-size: 29px;
+  font-weight: bold;
+  color: var(--teal);
+  margin-top: 14px;
+}
+.panel {
+  background: white;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  min-height: 210px;
+}
+.panel h2 { margin-top: 0; font-size: 19px; }
+.welcome {
+  background: var(--teal);
+  color: white;
+  border-radius: 14px;
+  padding: 23px;
+  margin-bottom: 22px;
+}
+.welcome h2 { margin: 0 0 9px; }
+.welcome p { margin: 0; opacity: .9; font-size: 14px; }
+.placeholder {
+  padding: 25px 10px;
+  text-align: center;
+  color: var(--muted);
+  line-height: 2;
+}
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 25px;
+}
 
-    input {
-      width: 100%;
-      padding: 15px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-      direction: ltr;
-      text-align: left;
-    }
+/* English layout */
+html[dir="ltr"] .sidebar { border-inline-end: 1px solid var(--border); }
+html[dir="ltr"] .nav-btn { text-align: left; }
 
-    button {
-      width: 100%;
-      padding: 15px;
-      margin-top: 12px;
-      border: 0;
-      border-radius: 10px;
-      background: #428177;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    .logout { background: #6b1f2a; }
-
-    #message {
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      line-height: 1.8;
-      overflow-wrap: anywhere;
-    }
-
-    .hidden { display: none; }
-
-    .success {
-      background: #e7f2ed;
-      color: #245d4f;
-    }
-
-    .error {
-      background: #f8e8e8;
-      color: #8b2635;
-    }
-
-    .welcome { color: #428177; }
-  </style>
+@media (max-width: 900px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+  .app { display: block; }
+  .sidebar {
+    width: 100%;
+    padding: 13px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { padding: 5px 5px 13px; }
+  .nav-title { display: none; }
+  .nav-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+    padding-top: 10px;
+  }
+  .nav-btn {
+    white-space: nowrap;
+    width: auto;
+    margin: 0;
+    padding: 10px 12px;
+  }
+  .main { padding: 17px; }
+  .topbar h1 { font-size: 19px; }
+  .stat-card { padding: 15px; }
+  .stat-value { font-size: 24px; }
+  .panel { padding: 18px; }
+}
+</style>
 </head>
 
 <body>
 
-<div class="card">
+<!-- Login -->
+<div id="loginScreen" class="login-wrap">
+  <div class="login-card">
+    <div class="logo">PILLARS OF THE WORLD</div>
+    <div class="sub">سفر • سياحة • ثقة</div>
 
-  <div class="logo">PILLARS OF THE WORLD</div>
-  <div class="sub">سفر • سياحة • ثقة</div>
+    <h2 data-i18n="loginTitle">تسجيل دخول الإدارة</h2>
 
-  <section id="loginSection">
-    <h2>تسجيل دخول الإدارة</h2>
-
-    <input
-      id="email"
-      type="email"
+    <input id="email" type="email"
       placeholder="البريد الإلكتروني"
-      autocomplete="username"
-    >
+      autocomplete="username">
 
-    <input
-      id="password"
-      type="password"
+    <input id="password" type="password"
       placeholder="كلمة المرور"
-      autocomplete="current-password"
-    >
+      autocomplete="current-password">
 
-    <button id="loginButton" type="button" onclick="login()">
+    <button id="loginButton" class="primary-btn"
+      onclick="login()" data-i18n="loginButton">
       تسجيل الدخول
     </button>
-  </section>
 
-  <section id="dashboard" class="hidden">
-    <h2 class="welcome">أهلاً بك في إدارة أركان العالم</h2>
-    <p id="ownerName"></p>
-    <p>تم التحقق من صلاحية حسابك.</p>
+    <div id="message"></div>
+  </div>
+</div>
 
-    <button class="logout" onclick="logout()">
-      تسجيل الخروج
-    </button>
-  </section>
+<!-- Dashboard -->
+<div id="app" class="app hidden">
 
-  <div id="message"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-name">PILLARS OF THE WORLD</div>
+      <div class="brand-sub">سفر • سياحة • ثقة</div>
+    </div>
 
+    <div class="nav-title" data-i18n="mainMenu">القائمة الرئيسية</div>
+
+    <nav class="nav-list">
+      <button class="nav-btn active" data-page="home"
+        onclick="openPage('home', this)" data-i18n="home">
+        الرئيسية
+      </button>
+
+      <button class="nav-btn" data-page="trips"
+        onclick="openPage('trips', this)" data-i18n="trips">
+        الرحلات
+      </button>
+
+      <button class="nav-btn" data-page="bookings"
+        onclick="openPage('bookings', this)" data-i18n="bookings">
+        الحجوزات
+      </button>
+
+      <button class="nav-btn" data-page="customers"
+        onclick="openPage('customers', this)" data-i18n="customers">
+        العملاء
+      </button>
+
+      <button class="nav-btn" data-page="branches"
+        onclick="openPage('branches', this)" data-i18n="branches">
+        الفروع
+      </button>
+
+      <button class="nav-btn" data-page="finance"
+        onclick="openPage('finance', this)" data-i18n="finance">
+        المالية
+      </button>
+
+      <button class="nav-btn" data-page="reports"
+        onclick="openPage('reports', this)" data-i18n="reports">
+        التقارير
+      </button>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <h1 data-i18n="dashboardTitle">لوحة التحكم</h1>
+        <div class="muted" id="welcomeName">إدارة مؤسسة أركان العالم</div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary-btn" onclick="toggleLanguage()"
+          id="languageButton">English</button>
+        <button class="logout-btn" onclick="logout()"
+          data-i18n="logout">خروج</button>
+      </div>
+    </header>
+
+    <section id="page-home" class="page">
+      <div class="welcome">
+        <h2 data-i18n="welcomeTitle">أهلاً بك في إدارة أركان العالم</h2>
+        <p data-i18n="welcomeText">
+          منصة الإدارة المركزية لمتابعة أعمال المؤسسة وفروعها.
+        </p>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="tripsCount">الرحلات</div>
+          <div class="stat-value" id="tripsCount">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="bookingsCount">الحجوزات</div>
+          <div class="stat-value" id="bookingsCount">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="customersCount">العملاء</div>
+          <div class="stat-value" id="customersCount">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="branchesCount">الفروع</div>
+          <div class="stat-value" id="branchesCount">—</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 data-i18n="overview">نظرة عامة</h2>
+        <p class="muted" data-i18n="overviewText">
+          تم تسجيل الدخول والتحقق من صلاحية حساب الإدارة.
+          سيتم تفعيل أدوات إدارة البيانات في المراحل القادمة.
+        </p>
+      </div>
+    </section>
+
+    <section id="page-trips" class="page hidden">
+      <div class="panel">
+        <h2 data-i18n="trips">الرحلات</h2>
+        <div class="placeholder" data-i18n="comingSoon">
+          سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-bookings" class="page hidden">
+      <div class="panel">
+        <h2 data-i18n="bookings">الحجوزات</h2>
+        <div class="placeholder" data-i18n="comingSoon">
+          سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-customers" class="page hidden">
+      <div class="panel">
+        <h2 data-i18n="customers">العملاء</h2>
+        <div class="placeholder" data-i18n="comingSoon">
+          سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-branches" class="page hidden">
+      <div class="panel">
+        <h2 data-i18n="branches">الفروع</h2>
+        <div class="placeholder" data-i18n="comingSoon">
+          سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-finance" class="page hidden">
+      <div class="panel">
+        <h2 data-i18n="finance">المالية</h2>
+        <div class="placeholder" data-i18n="comingSoon">
+          سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-reports" class="page hidden">
+      <div class="panel">
+        <h2 data-i18n="reports">التقارير</h2>
+        <div class="placeholder" data-i18n="comingSoon">
+          سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.
+        </div>
+      </div>
+    </section>
+
+    <div class="footer" data-i18n="footer">
+      مؤسسة أركان العالم للسياحة والسفر
+    </div>
+
+  </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 
 <script>
-  const db = window.arkanSupabase;
+const db = window.arkanSupabase;
 
-  const message = document.getElementById('message');
+let currentLanguage = 'ar';
+
+const translations = {
+  ar: {
+    loginTitle: 'تسجيل دخول الإدارة',
+    loginButton: 'تسجيل الدخول',
+    mainMenu: 'القائمة الرئيسية',
+    home: 'الرئيسية',
+    trips: 'الرحلات',
+    bookings: 'الحجوزات',
+    customers: 'العملاء',
+    branches: 'الفروع',
+    finance: 'المالية',
+    reports: 'التقارير',
+    dashboardTitle: 'لوحة التحكم',
+    welcomeTitle: 'أهلاً بك في إدارة أركان العالم',
+    welcomeText: 'منصة الإدارة المركزية لمتابعة أعمال المؤسسة وفروعها.',
+    tripsCount: 'الرحلات',
+    bookingsCount: 'الحجوزات',
+    customersCount: 'العملاء',
+    branchesCount: 'الفروع',
+    overview: 'نظرة عامة',
+    overviewText: 'تم تسجيل الدخول والتحقق من صلاحية حساب الإدارة. سيتم تفعيل أدوات إدارة البيانات في المراحل القادمة.',
+    comingSoon: 'سيتم تجهيز هذا القسم وربطه بقاعدة البيانات في المرحلة القادمة.',
+    logout: 'تسجيل الخروج',
+    footer: 'مؤسسة أركان العالم للسياحة والسفر',
+    loading: 'جارٍ التحقق...',
+    loginError: 'حدث خطأ أثناء تسجيل الدخول: ',
+    missingProfile: 'لم يتم العثور على ملف المستخدم في جدول profiles.',
+    wrongRole: 'هذا الحساب لا يملك صلاحية المالك. الدور المقروء: ',
+    connectionError: 'إعدادات الاتصال غير موجودة. تحقق من config.js.'
+  },
+  en: {
+    loginTitle: 'Admin Login',
+    loginButton: 'Sign In',
+    mainMenu: 'MAIN MENU',
+    home: 'Dashboard',
+    trips: 'Trips',
+    bookings: 'Bookings',
+    customers: 'Customers',
+    branches: 'Branches',
+    finance: 'Finance',
+    reports: 'Reports',
+    dashboardTitle: 'Dashboard',
+    welcomeTitle: 'Welcome to Pillars of the World',
+    welcomeText: 'Central management platform for the company and its branches.',
+    tripsCount: 'Trips',
+    bookingsCount: 'Bookings',
+    customersCount: 'Customers',
+    branchesCount: 'Branches',
+    overview: 'Overview',
+    overviewText: 'You are signed in and your admin role has been verified. Data management tools will be enabled in upcoming stages.',
+    comingSoon: 'This section will be connected to the database in the next stage.',
+    logout: 'Sign Out',
+    footer: 'Pillars of the World Travel & Tourism',
+    loading: 'Verifying...',
+    loginError: 'Login error: ',
+    missingProfile: 'No user profile was found in the profiles table.',
+    wrongRole: 'This account does not have owner permission. Detected role: ',
+    connectionError: 'Connection settings are missing. Check config.js.'
+  }
+};
+
+function t(key) {
+  return translations[currentLanguage][key] || key;
+}
+
+function setLanguage(lang) {
+  currentLanguage = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+
+  document.getElementById('languageButton').textContent =
+    lang === 'ar' ? 'English' : 'العربية';
+}
+
+function toggleLanguage() {
+  setLanguage(currentLanguage === 'ar' ? 'en' : 'ar');
+}
+
+function showMessage(text, type = 'error') {
+  const box = document.getElementById('message');
+  box.textContent = text;
+  box.className = type;
+}
+
+async function verifyOwner(user) {
+  if (!db) throw new Error(t('connectionError'));
+
+  const { data, error } = await db
+    .from('profiles')
+    .select('full_name, email, role')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) throw new Error(t('missingProfile'));
+
+  const role = String(data.role || '').trim().toLowerCase();
+
+  if (!['owner', 'مالك'].includes(role)) {
+    await db.auth.signOut();
+    throw new Error(t('wrongRole') + JSON.stringify(data.role));
+  }
+
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+
+  document.getElementById('welcomeName').textContent =
+    data.full_name || data.email || user.email || '';
+
+  await loadStatistics();
+}
+
+async function login() {
+  if (!db) {
+    showMessage(t('connectionError'));
+    return;
+  }
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
   const button = document.getElementById('loginButton');
 
-  function showMessage(text, type = 'error') {
-    message.textContent = text;
-    message.className = type;
+  if (!email || !password) {
+    showMessage(currentLanguage === 'ar'
+      ? 'يرجى إدخال البريد الإلكتروني وكلمة المرور.'
+      : 'Please enter your email and password.');
+    return;
   }
 
-  async function verifyOwner(user) {
+  button.disabled = true;
+  button.textContent = t('loading');
 
-    if (!db) {
-      throw new Error('إعدادات الاتصال بقاعدة البيانات غير موجودة.');
-    }
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
 
-    const { data, error } = await db
-      .from('profiles')
-      .select('full_name, email, role')
-      .eq('id', user.id)
-      .maybeSingle();
+    if (error) throw error;
+    await verifyOwner(data.user);
 
-    if (error) {
-      throw new Error(
-        'تعذر قراءة بيانات الصلاحيات: ' + error.message
-      );
-    }
-
-    if (!data) {
-      throw new Error(
-        'تم تسجيل الدخول، لكن لم يتم العثور على ملف لهذا المستخدم في جدول profiles.'
-      );
-    }
-
-    const actualRole = String(data.role ?? '')
-      .normalize('NFKC')
-      .trim();
-
-    if (!['مالك', 'owner'].includes(actualRole.toLowerCase())) {
-      await db.auth.signOut();
-
-      throw new Error(
-        'تم تسجيل الدخول بنجاح، لكن صلاحية الحساب غير مطابقة. ' +
-        'القيمة التي قرأها الموقع هي: ' +
-        JSON.stringify(data.role)
-      );
-    }
-
-    document.getElementById('loginSection').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-
-    document.getElementById('ownerName').textContent =
-      'مرحباً ' + (data.full_name || data.email || '');
-
-    showMessage('تم التحقق بنجاح.', 'success');
+  } catch (error) {
+    showMessage(t('loginError') + error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = t('loginButton');
   }
+}
 
-  async function login() {
+async function loadStatistics() {
+  const tables = [
+    ['trips', 'tripsCount'],
+    ['bookings', 'bookingsCount'],
+    ['customers', 'customersCount'],
+    ['branches', 'branchesCount']
+  ];
 
-    if (!db) {
-      showMessage('تعذر الاتصال. تحقق من ملف config.js.');
-      return;
-    }
-
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    if (!email || !password) {
-      showMessage('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
-      return;
-    }
-
-    button.disabled = true;
-    button.textContent = 'جارٍ التحقق...';
-    showMessage('جارٍ تسجيل الدخول...', 'success');
+  for (const [table, elementId] of tables) {
+    const element = document.getElementById(elementId);
 
     try {
-
-      const { data, error } = await db.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-      if (error) {
-        throw new Error('فشل تسجيل الدخول: ' + error.message);
-      }
-
-      await verifyOwner(data.user);
-
-    } catch (error) {
-      showMessage(error.message);
-    } finally {
-      button.disabled = false;
-      button.textContent = 'تسجيل الدخول';
-    }
-  }
-
-  async function logout() {
-    await db.auth.signOut();
-
-    document.getElementById('dashboard').classList.add('hidden');
-    document.getElementById('loginSection').classList.remove('hidden');
-
-    document.getElementById('password').value = '';
-    showMessage('تم تسجيل الخروج.', 'success');
-  }
-
-  async function checkSession() {
-    if (!db) {
-      showMessage('إعدادات الاتصال غير موجودة.');
-      return;
-    }
-
-    try {
-      const { data, error } = await db.auth.getSession();
+      const { count, error } = await db
+        .from(table)
+        .select('*', { count: 'exact', head: true });
 
       if (error) throw error;
-
-      if (data.session) {
-        await verifyOwner(data.session.user);
-      }
+      element.textContent = count ?? 0;
     } catch (error) {
-      showMessage(error.message);
+      element.textContent = '—';
+      console.warn('Statistics error:', table, error.message);
     }
   }
+}
 
-  checkSession();
+function openPage(page, button) {
+  document.querySelectorAll('.page').forEach(section => {
+    section.classList.add('hidden');
+  });
+
+  document.getElementById('page-' + page).classList.remove('hidden');
+
+  document.querySelectorAll('.nav-btn').forEach(item => {
+    item.classList.remove('active');
+  });
+
+  button.classList.add('active');
+}
+
+async function logout() {
+  if (db) await db.auth.signOut();
+
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('password').value = '';
+  showMessage('');
+}
+
+async function checkSession() {
+  if (!db) {
+    showMessage(t('connectionError'));
+    return;
+  }
+
+  try {
+    const { data, error } = await db.auth.getSession();
+    if (error) throw error;
+
+    if (data.session) {
+      await verifyOwner(data.session.user);
+    }
+  } catch (error) {
+    showMessage(error.message);
+  }
+}
+
+setLanguage('ar');
+checkSession();
 </script>
 
 </body>

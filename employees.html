@@ -217,6 +217,32 @@ async function checkAccess() {
 
 checkAccess();
 
+async function loadBranches() {
+  const branchSelect = document.getElementById("branch");
+
+  const { data, error } = await db
+    .from("branches")
+    .select("*");
+
+  if (error) {
+    branchSelect.innerHTML =
+      '<option value="">تعذر تحميل الفروع</option>';
+    return;
+  }
+
+  branchSelect.innerHTML =
+    '<option value="">اختر الفرع</option>';
+
+  data.forEach(branch => {
+    const option = document.createElement("option");
+    option.value = branch.id;
+    option.textContent = branch.name || branch.branch_name || branch.id;
+    branchSelect.appendChild(option);
+  });
+}
+
+loadBranches();
+
 </script>
 
 </body>

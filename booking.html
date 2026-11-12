@@ -909,23 +909,179 @@
     <a href="#contact"><span>☏</span>تواصل</a>
   </nav>
 
-  <script>
-    function showLoginMessage() {
-      alert("سيتم تفعيل حساب المسافر وتسجيل الدخول في المرحلة القادمة.");
+
+<script>
+  const db = window.arkanSupabase;
+
+  let allTrips = [];
+
+  const tripTypeNames = {
+    umrah: "العمرة",
+    tourism: "رحلة سياحية",
+    flight: "تذاكر طيران",
+    visa: "تأشيرات",
+    other: "خدمات أخرى"
+  };
+
+  function showLoginMessage() {
+    alert("سيتم تفعيل حساب المسافر وتسجيل الدخول في المرحلة القادمة.");
+  }
+
+  function selectCategory(type) {
+    const field = document.getElementById("tripType");
+    if (field) field.value = type;
+    renderTrips();
+    document.getElementById("trips").scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  function searchTrips() {
+    renderTrips();
+    document.getElementById("trips").scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  function formatDate(value) {
+    if (!value) return "يحدد لاحقاً";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return "يحدد لاحقاً";
+
+    return new Intl.DateTimeFormat("ar", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }).format(date);
+  }
+
+  function createTripCard(trip) {
+    const card = document.createElement("article");
+    card.className = "trip-card";
+
+    const title = document.createElement("h3");
+    title.textContent = trip.title_ar || "رحلة من أركان العالم";
+
+    const type = document.createElement("span");
+    type.className = "trip-type";
+    type.textContent = tripTypeNames[trip.trip_type] || "رحلة";
+
+    const destination = document.createElement("p");
+    destination.textContent = "الوجهة: " + (trip.destination || "حسب البرنامج");
+
+    const departure = document.createElement("p");
+    departure.textContent = "الانطلاق: " + formatDate(trip.departure_at);
+
+    const returnDate = document.createElement("p");
+    returnDate.textContent = "العودة: " + formatDate(trip.return_at);
+
+    const prices = document.createElement("div");
+    prices.className = "trip-prices";
+
+    const currency = trip.currency || "USD";
+
+    [
+      ["رباعي", trip.price_quad],
+      ["ثلاثي", trip.price_triple],
+      ["ثنائي", trip.price_double]
+    ].forEach(([label, price]) => {
+      if (price === null || price === undefined) return;
+
+      const item = document.createElement("div");
+      item.textContent = label + ": " + Number(price).toLocaleString("en-US") + " " + currency;
+      prices.appendChild(item);
+    });
+
+    const description = document.createElement("p");
+    description.className = "trip-description";
+    description.textContent = trip.description_ar || "";
+
+    card.append(
+      type,
+      title,
+      destination,
+      departure,
+      returnDate,
+      description,
+      prices
+    );
+
+    return card;
+  }
+
+  function renderTrips() {
+    const state = document.getElementById("tripsState");
+    const list = document.getElementById("tripsList");
+
+    if (!state || !list) return;
+
+    const typeField = document.getElementById("tripType");
+    const selectedType = typeField ? typeField.value : "";
+
+    const filtered = allTrips.filter(trip => {
+      return !selectedType || selectedType === "all" ||
+        trip.trip_type === selectedType;
+    });
+
+    list.replaceChildren();
+
+    if (filtered.length === 0) {
+      state.style.display = "block";
+      state.innerHTML = `
+        <div class="empty-icon">✈</div>
+        <h3>لا توجد رحلات متاحة حالياً</h3>
+        <p>تابعنا باستمرار للاطلاع على الرحلات الجديدة.</p>
+      `;
+      return;
     }
 
-    function selectCategory(type) {
-      document.getElementById("tripType").value = type;
-    }
+    state.style.display = "none";
 
-    function searchTrips() {
-      document.getElementById("trips").scrollIntoView({
-        behavior: "smooth"
-      });
+    filtered.forEach(trip => {
+      list.appendChild(createTripCard(trip));
+    });
+  }
 
-      alert("سيتم تفعيل البحث بعد ربط الرحلات بقاعدة البيانات.");
+  async function loadTrips() {
+    const state = document.getElementById("tripsState");
+
+    try {
+      if (!db) {
+        throw new Error("لم يتم العثور على اتصال Supabase. تحقق من config.js.");
+      }
+
+      const { data, error } = await db
+        .from("public_trips")
+        .select("*")
+        .order("departure_at", { ascending: true });
+
+      if (error) throw error;
+
+      allTrips = data || [];
+
+      renderTrips();
+
+    } catch (error) {
+      console.error("Trips loading error:", error);
+
+      if (state) {
+        state.style.display = "block";
+        state.innerHTML = `
+          <div class="empty-icon">!</div>
+          <h3>تعذر تحميل الرحلات</h3>
+          <p>حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.</p>
+        `;
+      }
     }
-  </script>
+  }
+
+  loadTrips();
+</script>
+</body>
+</html>
+
 
 </body>
 </html>

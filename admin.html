@@ -10,1315 +10,1277 @@
 
   <style>
     :root {
-      --teal: #428177;
-      --burgundy: #6b1f2a;
-      --ivory: #edebe0;
-      --white: #fff;
-      --dark: #161616;
-      --muted: #777;
-      --border: #e5e5e5;
-      --bg: #f5f6f5;
-      --shadow: 0 4px 18px rgba(0,0,0,.06);
+      --teal:#428177;
+      --burgundy:#6b1f2a;
+      --ivory:#edebe0;
+      --white:#fff;
+      --dark:#161616;
+      --muted:#777;
+      --border:#e5e5e5;
+      --bg:#f5f6f5;
+      --shadow:0 4px 18px rgba(0,0,0,.06);
     }
 
-    * { box-sizing: border-box; }
-
+    * { box-sizing:border-box; }
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--dark);
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:var(--bg);
+      color:var(--dark);
     }
-
-    button, input, select, textarea { font: inherit; }
-
-    button { cursor: pointer; }
-
-    .hidden { display: none !important; }
+    button,input,select,textarea { font:inherit; }
+    button { cursor:pointer; }
+    .hidden { display:none!important; }
 
     .login-page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #428177, #234e48);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:linear-gradient(135deg,#428177,#234e48);
     }
-
     .login-card {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      border-radius: 18px;
-      padding: 32px 25px;
-      box-shadow: 0 15px 45px rgba(0,0,0,.18);
+      width:100%;
+      max-width:420px;
+      background:white;
+      border-radius:18px;
+      padding:32px 25px;
+      box-shadow:0 15px 45px rgba(0,0,0,.18);
     }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
-    }
-
+    .brand { text-align:center;margin-bottom:28px; }
     .brand-mark {
-      width: 65px;
-      height: 65px;
-      border-radius: 18px;
-      background: var(--teal);
-      color: white;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 14px;
-      font-size: 25px;
-      font-weight: 800;
+      width:65px;height:65px;border-radius:18px;
+      background:var(--teal);color:white;
+      display:grid;place-items:center;
+      margin:0 auto 14px;font-size:25px;font-weight:800;
     }
-
-    .brand h1 {
-      font-size: 21px;
-      margin: 0 0 7px;
-      color: var(--teal);
-    }
-
-    .brand p {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 0;
-    }
-
-    .field { margin-bottom: 16px; }
-
+    .brand h1 { font-size:21px;margin:0 0 7px;color:var(--teal); }
+    .brand p { color:var(--muted);font-size:13px;margin:0; }
+    .field { margin-bottom:15px; }
     .field label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 13px;
-      font-weight: 600;
+      display:block;margin-bottom:7px;
+      font-size:13px;font-weight:600;
     }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      background: white;
-      outline: none;
+    .field input,.field select,.field textarea {
+      width:100%;padding:11px;
+      border:1px solid var(--border);
+      border-radius:9px;background:white;outline:none;
     }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--teal);
+    .field input:focus,.field select:focus,.field textarea:focus {
+      border-color:var(--teal);
     }
-
     .primary-btn {
-      background: var(--teal);
-      color: white;
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 18px;
-      font-weight: 700;
+      background:var(--teal);color:white;border:0;
+      border-radius:9px;padding:11px 17px;font-weight:700;
     }
-
-    .primary-btn:hover { opacity: .92; }
-
-    .login-card .primary-btn { width: 100%; }
-
+    .primary-btn:disabled { opacity:.6;cursor:not-allowed; }
+    .login-card .primary-btn { width:100%; }
     .secondary-btn {
-      background: #eee;
-      color: #333;
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 15px;
+      background:#eee;color:#333;border:0;
+      border-radius:8px;padding:9px 13px;
     }
-
     .danger-btn {
-      background: #f8e8e9;
-      color: var(--burgundy);
-      border: 0;
-      border-radius: 8px;
-      padding: 8px 12px;
+      background:#f8e8e9;color:var(--burgundy);
+      border:0;border-radius:8px;padding:8px 11px;
     }
-
     .message {
-      padding: 11px;
-      border-radius: 8px;
-      margin-top: 14px;
-      font-size: 13px;
-      line-height: 1.6;
+      padding:11px;border-radius:8px;margin-top:12px;
+      font-size:13px;line-height:1.6;
     }
-
-    .error { background: #fbe9e9; color: #9b2020; }
-    .success { background: #e7f4ed; color: #216b45; }
+    .error { background:#fbe9e9;color:#9b2020; }
+    .success { background:#e7f4ed;color:#216b45; }
 
     .topbar {
-      height: 66px;
-      background: white;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      height:66px;background:white;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 20px;position:sticky;top:0;z-index:10;
     }
-
-    .topbar-brand {
-      color: var(--teal);
-      font-weight: 800;
-      font-size: 16px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
+    .topbar-brand { color:var(--teal);font-weight:800;font-size:16px; }
+    .top-actions { display:flex;align-items:center;gap:9px; }
     .top-actions button {
-      border: 1px solid var(--border);
-      background: white;
-      border-radius: 8px;
-      padding: 8px 11px;
+      border:1px solid var(--border);background:white;
+      border-radius:8px;padding:8px 11px;
     }
-
-    .app-layout {
-      display: flex;
-      min-height: calc(100vh - 66px);
-    }
-
+    .app-layout { display:flex;min-height:calc(100vh - 66px); }
     .sidebar {
-      width: 235px;
-      background: white;
-      border-left: 1px solid var(--border);
-      padding: 20px 13px;
-      flex-shrink: 0;
+      width:220px;background:white;border-left:1px solid var(--border);
+      padding:18px 12px;flex-shrink:0;
     }
-
     .sidebar-title {
-      font-size: 11px;
-      color: var(--muted);
-      padding: 8px 12px;
-      margin-bottom: 8px;
+      font-size:11px;color:var(--muted);
+      padding:8px 12px;margin-bottom:8px;
     }
-
     .nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-      border: 0;
-      background: transparent;
-      padding: 12px;
-      border-radius: 9px;
-      text-align: start;
-      color: #555;
-      margin-bottom: 4px;
+      display:flex;align-items:center;gap:10px;width:100%;
+      border:0;background:transparent;padding:12px;
+      border-radius:9px;text-align:start;color:#555;margin-bottom:4px;
     }
-
-    .nav-btn.active,
-    .nav-btn:hover {
-      background: #eaf2f0;
-      color: var(--teal);
-      font-weight: 700;
+    .nav-btn.active,.nav-btn:hover {
+      background:#eaf2f0;color:var(--teal);font-weight:700;
     }
-
-    .main-content {
-      flex: 1;
-      min-width: 0;
-      padding: 25px;
-    }
-
+    .main-content { flex:1;min-width:0;padding:22px; }
     .page-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 23px;
-      flex-wrap: wrap;
+      display:flex;justify-content:space-between;align-items:center;
+      gap:12px;margin-bottom:20px;flex-wrap:wrap;
     }
-
-    .page-heading h2 {
-      margin: 0 0 5px;
-      font-size: 23px;
-    }
-
-    .page-heading p {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 0;
-    }
-
+    .page-heading h2 { margin:0 0 5px;font-size:22px; }
+    .page-heading p { color:var(--muted);font-size:13px;margin:0; }
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:13px;margin-bottom:22px;
     }
-
     .stat-card {
-      background: white;
-      padding: 20px;
-      border-radius: 13px;
-      box-shadow: var(--shadow);
-      border: 1px solid #eee;
+      background:white;padding:18px;border-radius:13px;
+      box-shadow:var(--shadow);border:1px solid #eee;
     }
-
-    .stat-card .stat-label {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .stat-card .stat-number {
-      font-size: 27px;
-      font-weight: 800;
-      margin-top: 10px;
-      color: var(--teal);
-    }
-
+    .stat-label { color:var(--muted);font-size:13px; }
+    .stat-number { font-size:26px;font-weight:800;margin-top:9px;color:var(--teal); }
     .panel {
-      background: white;
-      border: 1px solid #eee;
-      border-radius: 13px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      background:white;border:1px solid #eee;border-radius:13px;
+      padding:18px;box-shadow:var(--shadow);margin-bottom:18px;
     }
-
-    .panel h3 {
-      margin: 0 0 17px;
-      font-size: 17px;
+    .panel h3 { margin:0 0 16px;font-size:16px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%;border-collapse:collapse;min-width:680px; }
+    th,td {
+      text-align:start;padding:12px 9px;
+      border-bottom:1px solid #eee;font-size:13px;white-space:nowrap;
     }
-
-    .table-wrap { overflow-x: auto; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 650px;
-    }
-
-    th, td {
-      text-align: start;
-      padding: 13px 11px;
-      border-bottom: 1px solid #eee;
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    th {
-      color: #666;
-      background: #fafafa;
-      font-weight: 700;
-    }
-
+    th { color:#666;background:#fafafa;font-weight:700; }
     .status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      background: #eee;
+      display:inline-block;padding:5px 9px;
+      border-radius:20px;font-size:11px;background:#eee;
     }
-
-    .status-published { background: #e3f3e9; color: #247447; }
-    .status-draft { background: #eee; color: #555; }
-    .status-full { background: #fff0d8; color: #946000; }
-    .status-cancelled { background: #f9e5e5; color: #a32929; }
-    .status-completed { background: #e5eafa; color: #3e5594; }
-
+    .status-published,.status-confirmed,.status-fully_paid {
+      background:#e3f3e9;color:#247447;
+    }
+    .status-draft,.status-new { background:#eee;color:#555; }
+    .status-full,.status-deposit_paid {
+      background:#fff0d8;color:#946000;
+    }
+    .status-cancelled { background:#f9e5e5;color:#a32929; }
+    .status-completed { background:#e5eafa;color:#3e5594; }
     .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0 15px;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;
     }
-
-    .form-grid .full { grid-column: 1 / -1; }
-
-    .form-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .empty-state {
-      padding: 35px 15px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .section { display: none; }
-    .section.active { display: block; }
-
+    .form-grid .full { grid-column:1/-1; }
+    .form-actions { display:flex;gap:9px;margin-top:10px;flex-wrap:wrap; }
+    .empty-state { padding:30px 12px;text-align:center;color:var(--muted);font-size:14px; }
+    .section { display:none; }
+    .section.active { display:block; }
     .welcome {
-      padding: 24px;
-      border-radius: 13px;
-      background: linear-gradient(120deg, #428177, #32645c);
-      color: white;
-      margin-bottom: 20px;
+      padding:22px;border-radius:13px;
+      background:linear-gradient(120deg,#428177,#32645c);
+      color:white;margin-bottom:20px;
     }
-
-    .welcome h2 { margin: 0 0 8px; }
-    .welcome p { margin: 0; opacity: .9; font-size: 14px; }
-
-    .language-en { direction: ltr; text-align: left; }
-    .language-en .sidebar { border-left: 0; border-right: 1px solid var(--border); }
-    .language-en .topbar-brand { direction: ltr; }
-
-    @media (max-width: 900px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .sidebar { width: 190px; }
+    .welcome h2 { margin:0 0 8px; }
+    .welcome p { margin:0;opacity:.9;font-size:14px; }
+    .inline-actions { display:flex;gap:6px;flex-wrap:wrap; }
+    .hint { font-size:12px;color:var(--muted);margin-top:5px; }
+    .section-tools { display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px; }
+    .section-tools input,.section-tools select {
+      padding:10px;border:1px solid var(--border);border-radius:8px;
+      background:white;min-width:150px;
     }
-
-    @media (max-width: 650px) {
-      .app-layout { display: block; }
+    @media(max-width:900px) {
+      .stats-grid { grid-template-columns:repeat(2,1fr); }
+      .sidebar { width:190px; }
+    }
+    @media(max-width:650px) {
+      .app-layout { display:block; }
       .sidebar {
-        width: 100%;
-        display: flex;
-        overflow-x: auto;
-        padding: 8px;
-        border: 0;
-        border-bottom: 1px solid var(--border);
-        gap: 5px;
+        width:100%;display:flex;overflow-x:auto;padding:8px;
+        border:0;border-bottom:1px solid var(--border);gap:4px;
       }
-      .sidebar-title { display: none; }
-      .nav-btn {
-        width: auto;
-        white-space: nowrap;
-        margin: 0;
-        padding: 10px;
-        font-size: 12px;
-      }
-      .main-content { padding: 15px; }
-      .stats-grid { gap: 9px; }
-      .stat-card { padding: 14px; }
-      .stat-card .stat-number { font-size: 23px; }
-      .form-grid { grid-template-columns: 1fr; }
-      .form-grid .full { grid-column: auto; }
-      .topbar { padding: 0 12px; }
-      .topbar-brand { font-size: 13px; }
+      .sidebar-title { display:none; }
+      .nav-btn { width:auto;white-space:nowrap;margin:0;padding:10px;font-size:12px; }
+      .main-content { padding:13px; }
+      .stats-grid { gap:8px; }
+      .stat-card { padding:13px; }
+      .stat-number { font-size:22px; }
+      .form-grid { grid-template-columns:1fr; }
+      .form-grid .full { grid-column:auto; }
+      .topbar { padding:0 10px; }
+      .topbar-brand { font-size:12px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- LOGIN -->
-  <section id="loginPage" class="login-page">
-    <div class="login-card">
-      <div class="brand">
-        <div class="brand-mark">P</div>
-        <h1>PILLARS OF THE WORLD</h1>
-        <p>سفر • سياحة • ثقة</p>
-        <p style="margin-top:10px">إدارة مؤسسة أركان العالم</p>
-      </div>
-
-      <form id="loginForm">
-        <div class="field">
-          <label data-i18n="email">البريد الإلكتروني</label>
-          <input id="email" type="email" required autocomplete="username">
-        </div>
-
-        <div class="field">
-          <label data-i18n="password">كلمة المرور</label>
-          <input id="password" type="password" required autocomplete="current-password">
-        </div>
-
-        <button class="primary-btn" id="loginBtn" type="submit" data-i18n="login">
-          تسجيل الدخول
-        </button>
-      </form>
-
-      <div id="loginMessage"></div>
+<section id="loginPage" class="login-page">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <h1>PILLARS OF THE WORLD</h1>
+      <p>سفر • سياحة • ثقة</p>
+      <p style="margin-top:10px">إدارة مؤسسة أركان العالم</p>
     </div>
-  </section>
-
-  <!-- ADMIN APP -->
-  <div id="adminApp" class="hidden">
-
-    <header class="topbar">
-      <div class="topbar-brand">PILLARS OF THE WORLD</div>
-      <div class="top-actions">
-        <button type="button" onclick="toggleLanguage()" id="languageBtn">English</button>
-        <button type="button" onclick="logout()" data-i18n="logout">تسجيل الخروج</button>
+    <form id="loginForm">
+      <div class="field">
+        <label>البريد الإلكتروني</label>
+        <input id="email" type="email" required autocomplete="username">
       </div>
-    </header>
-
-    <div class="app-layout">
-
-      <aside class="sidebar">
-        <div class="sidebar-title" data-i18n="mainMenu">القائمة الرئيسية</div>
-
-        <button class="nav-btn active" data-section="dashboard" onclick="showSection('dashboard',this)">
-          <span>▦</span><span data-i18n="dashboard">لوحة التحكم</span>
-        </button>
-
-        <button class="nav-btn" data-section="trips" onclick="showSection('trips',this)">
-          <span>✈</span><span data-i18n="trips">الرحلات</span>
-        </button>
-
-        <button class="nav-btn" data-section="bookings" onclick="showSection('bookings',this)">
-          <span>▤</span><span data-i18n="bookings">الحجوزات</span>
-        </button>
-
-        <button class="nav-btn" data-section="customers" onclick="showSection('customers',this)">
-          <span>♙</span><span data-i18n="customers">العملاء</span>
-        </button>
-
-        <button class="nav-btn" data-section="branches" onclick="showSection('branches',this)">
-          <span>⌂</span><span data-i18n="branches">الفروع</span>
-        </button>
-
-        <button class="nav-btn" data-section="finance" onclick="showSection('finance',this)">
-          <span>＄</span><span data-i18n="finance">المالية</span>
-        </button>
-
-        <button class="nav-btn" data-section="reports" onclick="showSection('reports',this)">
-          <span>▥</span><span data-i18n="reports">التقارير</span>
-        </button>
-      </aside>
-
-      <main class="main-content">
-
-        <!-- DASHBOARD -->
-        <section id="dashboard" class="section active">
-          <div class="welcome">
-            <h2 data-i18n="welcome">مرحباً بك في إدارة أركان العالم</h2>
-            <p id="welcomeName">إدارة مؤسسة أركان العالم</p>
-          </div>
-
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="dashboard">لوحة التحكم</h2>
-              <p data-i18n="dashboardDesc">نظرة عامة على نشاط المؤسسة</p>
-            </div>
-            <button class="secondary-btn" onclick="loadDashboard()" data-i18n="refresh">تحديث البيانات</button>
-          </div>
-
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-label" data-i18n="tripsCount">عدد الرحلات</div>
-              <div class="stat-number" id="tripsCount">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label" data-i18n="bookingsCount">عدد الحجوزات</div>
-              <div class="stat-number" id="bookingsCount">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label" data-i18n="customersCount">عدد العملاء</div>
-              <div class="stat-number" id="customersCount">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label" data-i18n="branchesCount">عدد الفروع</div>
-              <div class="stat-number" id="branchesCount">—</div>
-            </div>
-          </div>
-
-          <div class="panel">
-            <h3 data-i18n="systemStatus">حالة النظام</h3>
-            <p id="systemMessage" style="color:#666;font-size:14px">
-              تم تسجيل الدخول والتحقق من صلاحية حساب الإدارة.
-            </p>
-          </div>
-        </section>
-
-        <!-- TRIPS -->
-        <section id="trips" class="section">
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="manageTrips">إدارة الرحلات</h2>
-              <p data-i18n="manageTripsDesc">إضافة الرحلات وتعديلها وإدارة حالتها</p>
-            </div>
-            <button class="primary-btn" onclick="openTripForm()" data-i18n="addTrip">+ إضافة رحلة</button>
-          </div>
-
-          <div class="panel hidden" id="tripFormPanel">
-            <h3 id="tripFormTitle" data-i18n="newTrip">إضافة رحلة جديدة</h3>
-
-            <form id="tripForm">
-              <input type="hidden" id="tripId">
-
-              <div class="form-grid">
-                <div class="field">
-                  <label data-i18n="titleAr">اسم الرحلة بالعربية *</label>
-                  <input id="titleAr" required>
-                </div>
-
-                <div class="field">
-                  <label data-i18n="titleEn">اسم الرحلة بالإنجليزية</label>
-                  <input id="titleEn">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="tripType">نوع الرحلة *</label>
-                  <select id="tripType" required>
-                    <option value="umrah">عمرة / Umrah</option>
-                    <option value="tourism">سياحة / Tourism</option>
-                    <option value="flight">طيران / Flight</option>
-                    <option value="visa">تأشيرة / Visa</option>
-                    <option value="other">أخرى / Other</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label data-i18n="status">الحالة</label>
-                  <select id="tripStatus">
-                    <option value="draft">مسودة / Draft</option>
-                    <option value="published">منشورة / Published</option>
-                    <option value="full">مكتملة / Full</option>
-                    <option value="cancelled">ملغاة / Cancelled</option>
-                    <option value="completed">منتهية / Completed</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label data-i18n="destination">الوجهة</label>
-                  <input id="destination">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="departureCity">مدينة الانطلاق</label>
-                  <input id="departureCity">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="departureAt">موعد الانطلاق</label>
-                  <input id="departureAt" type="datetime-local">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="returnAt">موعد العودة</label>
-                  <input id="returnAt" type="datetime-local">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="capacity">عدد المقاعد</label>
-                  <input id="capacity" type="number" min="0">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="branch">الفرع</label>
-                  <select id="branchId">
-                    <option value="">بدون تحديد</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label data-i18n="priceQuad">سعر الرباعي</label>
-                  <input id="priceQuad" type="number" min="0" step="0.01">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="priceTriple">سعر الثلاثي</label>
-                  <input id="priceTriple" type="number" min="0" step="0.01">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="priceDouble">سعر الثنائي</label>
-                  <input id="priceDouble" type="number" min="0" step="0.01">
-                </div>
-
-                <div class="field">
-                  <label data-i18n="currency">العملة</label>
-                  <select id="currency">
-                    <option value="USD">USD - دولار</option>
-                    <option value="TRY">TRY - ليرة تركية</option>
-                    <option value="SYP">SYP - ليرة سورية</option>
-                  </select>
-                </div>
-
-                <div class="field full">
-                  <label data-i18n="descriptionAr">الوصف بالعربية</label>
-                  <textarea id="descriptionAr" rows="3"></textarea>
-                </div>
-
-                <div class="field full">
-                  <label data-i18n="descriptionEn">الوصف بالإنجليزية</label>
-                  <textarea id="descriptionEn" rows="3"></textarea>
-                </div>
-              </div>
-
-              <div class="form-actions">
-                <button class="primary-btn" type="submit" id="saveTripBtn" data-i18n="save">حفظ الرحلة</button>
-                <button class="secondary-btn" type="button" onclick="closeTripForm()" data-i18n="cancel">إلغاء</button>
-              </div>
-
-              <div id="tripFormMessage"></div>
-            </form>
-          </div>
-
-          <div class="panel">
-            <h3 data-i18n="tripsList">قائمة الرحلات</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th data-i18n="tripName">اسم الرحلة</th>
-                    <th data-i18n="tripType">النوع</th>
-                    <th data-i18n="destination">الوجهة</th>
-                    <th data-i18n="departureAt">الانطلاق</th>
-                    <th data-i18n="capacity">المقاعد</th>
-                    <th data-i18n="status">الحالة</th>
-                    <th data-i18n="actions">الإجراءات</th>
-                  </tr>
-                </thead>
-                <tbody id="tripsTableBody">
-                  <tr><td colspan="7" class="empty-state">جاري تحميل الرحلات...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- OTHER SECTIONS -->
-        <section id="bookings" class="section">
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="bookings">الحجوزات</h2>
-              <p data-i18n="comingSoon">سيتم تفعيل أدوات إدارة هذا القسم في المرحلة القادمة.</p>
-            </div>
-          </div>
-          <div class="panel"><div class="empty-state" data-i18n="sectionReady">القسم جاهز للتطوير والربط بقاعدة البيانات.</div></div>
-        </section>
-
-        <section id="customers" class="section">
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="customers">العملاء</h2>
-              <p data-i18n="comingSoon">سيتم تفعيل أدوات إدارة هذا القسم في المرحلة القادمة.</p>
-            </div>
-          </div>
-          <div class="panel"><div class="empty-state" data-i18n="sectionReady">القسم جاهز للتطوير والربط بقاعدة البيانات.</div></div>
-        </section>
-
-        <section id="branches" class="section">
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="branches">الفروع</h2>
-              <p data-i18n="comingSoon">سيتم تفعيل أدوات إدارة هذا القسم في المرحلة القادمة.</p>
-            </div>
-          </div>
-          <div class="panel"><div class="empty-state" data-i18n="sectionReady">القسم جاهز للتطوير والربط بقاعدة البيانات.</div></div>
-        </section>
-
-        <section id="finance" class="section">
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="finance">المالية</h2>
-              <p data-i18n="comingSoon">سيتم تفعيل أدوات إدارة هذا القسم في المرحلة القادمة.</p>
-            </div>
-          </div>
-          <div class="panel"><div class="empty-state" data-i18n="sectionReady">القسم جاهز للتطوير والربط بقاعدة البيانات.</div></div>
-        </section>
-
-        <section id="reports" class="section">
-          <div class="page-heading">
-            <div>
-              <h2 data-i18n="reports">التقارير</h2>
-              <p data-i18n="comingSoon">سيتم تفعيل أدوات إدارة هذا القسم في المرحلة القادمة.</p>
-            </div>
-          </div>
-          <div class="panel"><div class="empty-state" data-i18n="sectionReady">القسم جاهز للتطوير والربط بقاعدة البيانات.</div></div>
-        </section>
-
-      </main>
-    </div>
+      <div class="field">
+        <label>كلمة المرور</label>
+        <input id="password" type="password" required autocomplete="current-password">
+      </div>
+      <button class="primary-btn" id="loginBtn" type="submit">تسجيل الدخول</button>
+    </form>
+    <div id="loginMessage"></div>
   </div>
+</section>
 
-  <script>
-    let db = null;
-    let currentUser = null;
-    let currentProfile = null;
-    let currentLanguage = "ar";
-    let tripsCache = [];
-    let branchesCache = [];
+<div id="adminApp" class="hidden">
+  <header class="topbar">
+    <div class="topbar-brand">PILLARS OF THE WORLD</div>
+    <div class="top-actions">
+      <button type="button" onclick="toggleLanguage()" id="languageBtn">English</button>
+      <button type="button" onclick="logout()">تسجيل الخروج</button>
+    </div>
+  </header>
 
-    const translations = {
-      ar: {
-        email:"البريد الإلكتروني", password:"كلمة المرور",
-        login:"تسجيل الدخول", logout:"تسجيل الخروج",
-        mainMenu:"القائمة الرئيسية", dashboard:"لوحة التحكم",
-        trips:"الرحلات", bookings:"الحجوزات", customers:"العملاء",
-        branches:"الفروع", finance:"المالية", reports:"التقارير",
-        welcome:"مرحباً بك في إدارة أركان العالم",
-        dashboardDesc:"نظرة عامة على نشاط المؤسسة",
-        refresh:"تحديث البيانات", tripsCount:"عدد الرحلات",
-        bookingsCount:"عدد الحجوزات", customersCount:"عدد العملاء",
-        branchesCount:"عدد الفروع", systemStatus:"حالة النظام",
-        manageTrips:"إدارة الرحلات",
-        manageTripsDesc:"إضافة الرحلات وتعديلها وإدارة حالتها",
-        addTrip:"+ إضافة رحلة", newTrip:"إضافة رحلة جديدة",
-        titleAr:"اسم الرحلة بالعربية *", titleEn:"اسم الرحلة بالإنجليزية",
-        tripType:"نوع الرحلة", status:"الحالة", destination:"الوجهة",
-        departureCity:"مدينة الانطلاق", departureAt:"موعد الانطلاق",
-        returnAt:"موعد العودة", capacity:"عدد المقاعد", branch:"الفرع",
-        priceQuad:"سعر الرباعي", priceTriple:"سعر الثلاثي",
-        priceDouble:"سعر الثنائي", currency:"العملة",
-        descriptionAr:"الوصف بالعربية", descriptionEn:"الوصف بالإنجليزية",
-        save:"حفظ الرحلة", cancel:"إلغاء", tripsList:"قائمة الرحلات",
-        tripName:"اسم الرحلة", actions:"الإجراءات",
-        edit:"تعديل", delete:"حذف", noTrips:"لا توجد رحلات حتى الآن",
-        comingSoon:"سيتم تفعيل أدوات إدارة هذا القسم في المرحلة القادمة.",
-        sectionReady:"القسم جاهز للتطوير والربط بقاعدة البيانات.",
-        confirmDelete:"هل أنت متأكد من حذف هذه الرحلة؟",
-        saved:"تم حفظ الرحلة بنجاح",
-        deleted:"تم حذف الرحلة بنجاح",
-        loading:"جاري التحميل...",
-        connectionError:"تعذر الاتصال بقاعدة البيانات. تحقق من تحميل config.js",
-        invalidRole:"هذا الحساب لا يملك صلاحية الدخول إلى لوحة الإدارة.",
-        loginFailed:"تعذر تسجيل الدخول. تحقق من البريد الإلكتروني وكلمة المرور.",
-        networkError:"حدث خطأ أثناء الاتصال بقاعدة البيانات.",
-        published:"منشورة", draft:"مسودة", full:"مكتملة",
-        cancelled:"ملغاة", completed:"منتهية",
-        umrah:"عمرة", tourism:"سياحة", flight:"طيران",
-        visa:"تأشيرة", other:"أخرى"
-      },
-      en: {
-        email:"Email address", password:"Password",
-        login:"Login", logout:"Logout",
-        mainMenu:"Main Menu", dashboard:"Dashboard",
-        trips:"Trips", bookings:"Bookings", customers:"Customers",
-        branches:"Branches", finance:"Finance", reports:"Reports",
-        welcome:"Welcome to Pillars of the World",
-        dashboardDesc:"Overview of organization activity",
-        refresh:"Refresh data", tripsCount:"Total Trips",
-        bookingsCount:"Total Bookings", customersCount:"Total Customers",
-        branchesCount:"Total Branches", systemStatus:"System Status",
-        manageTrips:"Manage Trips",
-        manageTripsDesc:"Add, edit and manage trip status",
-        addTrip:"+ Add Trip", newTrip:"Add New Trip",
-        titleAr:"Arabic Trip Name *", titleEn:"English Trip Name",
-        tripType:"Trip Type", status:"Status", destination:"Destination",
-        departureCity:"Departure City", departureAt:"Departure Date",
-        returnAt:"Return Date", capacity:"Capacity", branch:"Branch",
-        priceQuad:"Quad Price", priceTriple:"Triple Price",
-        priceDouble:"Double Price", currency:"Currency",
-        descriptionAr:"Arabic Description", descriptionEn:"English Description",
-        save:"Save Trip", cancel:"Cancel", tripsList:"Trips List",
-        tripName:"Trip Name", actions:"Actions",
-        edit:"Edit", delete:"Delete", noTrips:"No trips found",
-        comingSoon:"Management tools for this section will be activated in a later phase.",
-        sectionReady:"This section is ready for development and database integration.",
-        confirmDelete:"Are you sure you want to delete this trip?",
-        saved:"Trip saved successfully",
-        deleted:"Trip deleted successfully",
-        loading:"Loading...",
-        connectionError:"Database connection not found. Check config.js",
-        invalidRole:"This account does not have admin access.",
-        loginFailed:"Login failed. Check your email and password.",
-        networkError:"A database connection error occurred.",
-        published:"Published", draft:"Draft", full:"Full",
-        cancelled:"Cancelled", completed:"Completed",
-        umrah:"Umrah", tourism:"Tourism", flight:"Flight",
-        visa:"Visa", other:"Other"
-      }
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-title">القائمة الرئيسية</div>
+      <button class="nav-btn active" onclick="showSection('dashboard',this)">▦ لوحة التحكم</button>
+      <button class="nav-btn" onclick="showSection('trips',this)">✈ الرحلات</button>
+      <button class="nav-btn" onclick="showSection('bookings',this)">▤ الحجوزات</button>
+      <button class="nav-btn" onclick="showSection('customers',this)">♙ العملاء</button>
+      <button class="nav-btn" onclick="showSection('branches',this)">⌂ الفروع</button>
+      <button class="nav-btn" onclick="showSection('finance',this)">＄ المالية</button>
+      <button class="nav-btn" onclick="showSection('reports',this)">▥ التقارير</button>
+    </aside>
+
+    <main class="main-content">
+
+      <section id="dashboard" class="section active">
+        <div class="welcome">
+          <h2>مرحباً بك في إدارة أركان العالم</h2>
+          <p id="welcomeName">إدارة المؤسسة</p>
+        </div>
+        <div class="page-heading">
+          <div>
+            <h2>لوحة التحكم</h2>
+            <p>نظرة عامة على نشاط المؤسسة</p>
+          </div>
+          <button class="secondary-btn" onclick="loadDashboard()">تحديث البيانات</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">عدد الرحلات</div><div class="stat-number" id="tripsCount">—</div></div>
+          <div class="stat-card"><div class="stat-label">عدد الحجوزات</div><div class="stat-number" id="bookingsCount">—</div></div>
+          <div class="stat-card"><div class="stat-label">عدد العملاء</div><div class="stat-number" id="customersCount">—</div></div>
+          <div class="stat-card"><div class="stat-label">عدد الفروع</div><div class="stat-number" id="branchesCount">—</div></div>
+        </div>
+        <div class="panel">
+          <h3>حالة النظام</h3>
+          <p id="systemMessage" style="color:#666;font-size:14px">تم التحقق من صلاحية حساب الإدارة.</p>
+        </div>
+      </section>
+
+      <section id="trips" class="section">
+        <div class="page-heading">
+          <div><h2>إدارة الرحلات</h2><p>إضافة وتعديل وحذف الرحلات</p></div>
+          <button class="primary-btn" onclick="openTripForm()">+ إضافة رحلة</button>
+        </div>
+        <div class="panel hidden" id="tripFormPanel">
+          <h3 id="tripFormTitle">إضافة رحلة جديدة</h3>
+          <form id="tripForm">
+            <input type="hidden" id="tripId">
+            <div class="form-grid">
+              <div class="field"><label>اسم الرحلة بالعربية *</label><input id="titleAr" required></div>
+              <div class="field"><label>اسم الرحلة بالإنجليزية</label><input id="titleEn"></div>
+              <div class="field">
+                <label>نوع الرحلة *</label>
+                <select id="tripType" required>
+                  <option value="umrah">عمرة</option><option value="tourism">سياحة</option>
+                  <option value="flight">طيران</option><option value="visa">تأشيرة</option>
+                  <option value="other">أخرى</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>الحالة</label>
+                <select id="tripStatus">
+                  <option value="draft">مسودة</option><option value="published">منشورة</option>
+                  <option value="full">مكتملة</option><option value="cancelled">ملغاة</option>
+                  <option value="completed">منتهية</option>
+                </select>
+              </div>
+              <div class="field"><label>الوجهة</label><input id="destination"></div>
+              <div class="field"><label>مدينة الانطلاق</label><input id="departureCity"></div>
+              <div class="field"><label>موعد الانطلاق</label><input id="departureAt" type="datetime-local"></div>
+              <div class="field"><label>موعد العودة</label><input id="returnAt" type="datetime-local"></div>
+              <div class="field"><label>عدد المقاعد</label><input id="capacity" type="number" min="0"></div>
+              <div class="field"><label>الفرع</label><select id="branchId"><option value="">بدون تحديد</option></select></div>
+              <div class="field"><label>سعر الرباعي</label><input id="priceQuad" type="number" min="0" step="0.01"></div>
+              <div class="field"><label>سعر الثلاثي</label><input id="priceTriple" type="number" min="0" step="0.01"></div>
+              <div class="field"><label>سعر الثنائي</label><input id="priceDouble" type="number" min="0" step="0.01"></div>
+              <div class="field">
+                <label>العملة</label>
+                <select id="currency"><option value="USD">دولار USD</option><option value="TRY">ليرة تركية TRY</option><option value="SYP">ليرة سورية SYP</option></select>
+              </div>
+              <div class="field full"><label>الوصف بالعربية</label><textarea id="descriptionAr" rows="3"></textarea></div>
+              <div class="field full"><label>الوصف بالإنجليزية</label><textarea id="descriptionEn" rows="3"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button class="primary-btn" id="saveTripBtn" type="submit">حفظ الرحلة</button>
+              <button class="secondary-btn" type="button" onclick="closeTripForm()">إلغاء</button>
+            </div>
+            <div id="tripFormMessage"></div>
+          </form>
+        </div>
+        <div class="panel">
+          <h3>قائمة الرحلات</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>اسم الرحلة</th><th>النوع</th><th>الوجهة</th><th>الانطلاق</th><th>المقاعد</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+              <tbody id="tripsTableBody"><tr><td colspan="7" class="empty-state">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="bookings" class="section">
+        <div class="page-heading">
+          <div><h2>إدارة الحجوزات</h2><p>إنشاء الحجوزات وربطها بالرحلات والعملاء وإدارة المسافرين</p></div>
+          <button class="primary-btn" onclick="openBookingForm()">+ حجز جديد</button>
+        </div>
+
+        <div class="panel hidden" id="bookingFormPanel">
+          <h3 id="bookingFormTitle">إنشاء حجز جديد</h3>
+          <form id="bookingForm">
+            <input type="hidden" id="bookingId">
+            <div class="form-grid">
+              <div class="field">
+                <label>الرحلة *</label>
+                <select id="bookingTrip" required><option value="">اختر الرحلة</option></select>
+              </div>
+              <div class="field">
+                <label>العميل *</label>
+                <select id="bookingCustomer" required><option value="">اختر العميل</option></select>
+              </div>
+              <div class="field">
+                <label>نوع الغرفة</label>
+                <select id="roomType">
+                  <option value="">غير محدد</option><option value="quad">رباعي</option>
+                  <option value="triple">ثلاثي</option><option value="double">ثنائي</option>
+                  <option value="single">مفرد</option><option value="other">أخرى</option>
+                </select>
+              </div>
+              <div class="field"><label>عدد المسافرين *</label><input id="travelersCount" type="number" min="1" value="1" required></div>
+              <div class="field"><label>المبلغ الإجمالي *</label><input id="totalAmount" type="number" min="0" step="0.01" value="0" required></div>
+              <div class="field"><label>المبلغ المدفوع</label><input id="paidAmount" type="number" min="0" step="0.01" value="0"></div>
+              <div class="field">
+                <label>العملة</label>
+                <select id="bookingCurrency"><option value="USD">USD - دولار</option><option value="TRY">TRY - ليرة تركية</option><option value="SYP">SYP - ليرة سورية</option></select>
+              </div>
+              <div class="field">
+                <label>حالة الحجز</label>
+                <select id="bookingStatus">
+                  <option value="new">جديد</option><option value="contacted">تم التواصل</option>
+                  <option value="confirmed">مؤكد</option><option value="deposit_paid">دُفع العربون</option>
+                  <option value="fully_paid">مدفوع بالكامل</option><option value="cancelled">ملغى</option>
+                  <option value="completed">مكتمل</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>الفرع</label>
+                <select id="bookingBranch"><option value="">بدون تحديد</option></select>
+              </div>
+              <div class="field full"><label>ملاحظات الحجز</label><textarea id="bookingNotes" rows="3"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button class="primary-btn" id="saveBookingBtn" type="submit">حفظ الحجز</button>
+              <button class="secondary-btn" type="button" onclick="closeBookingForm()">إلغاء</button>
+            </div>
+            <div id="bookingFormMessage"></div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="section-tools">
+            <input id="bookingSearch" placeholder="بحث برقم الحجز أو العميل..." oninput="renderBookings()">
+            <select id="bookingFilter" onchange="renderBookings()">
+              <option value="">كل الحالات</option>
+              <option value="new">جديد</option><option value="contacted">تم التواصل</option>
+              <option value="confirmed">مؤكد</option><option value="deposit_paid">دُفع العربون</option>
+              <option value="fully_paid">مدفوع بالكامل</option><option value="cancelled">ملغى</option>
+              <option value="completed">مكتمل</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>رقم الحجز</th><th>العميل</th><th>الرحلة</th><th>المسافرون</th><th>الإجمالي</th><th>المدفوع</th><th>المتبقي</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+              <tbody id="bookingsTableBody"><tr><td colspan="9" class="empty-state">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="customers" class="section">
+        <div class="page-heading">
+          <div><h2>إدارة العملاء</h2><p>إضافة العملاء وتعديل بياناتهم</p></div>
+          <button class="primary-btn" onclick="openCustomerForm()">+ عميل جديد</button>
+        </div>
+        <div class="panel hidden" id="customerFormPanel">
+          <h3 id="customerFormTitle">إضافة عميل</h3>
+          <form id="customerForm">
+            <input type="hidden" id="customerId">
+            <div class="form-grid">
+              <div class="field"><label>الاسم الكامل *</label><input id="customerName" required></div>
+              <div class="field"><label>رقم الهاتف *</label><input id="customerPhone" required></div>
+              <div class="field"><label>البريد الإلكتروني</label><input id="customerEmail" type="email"></div>
+              <div class="field"><label>المدينة</label><input id="customerCity"></div>
+              <div class="field full"><label>ملاحظات</label><textarea id="customerNotes" rows="3"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button class="primary-btn" id="saveCustomerBtn" type="submit">حفظ العميل</button>
+              <button class="secondary-btn" type="button" onclick="closeCustomerForm()">إلغاء</button>
+            </div>
+            <div id="customerFormMessage"></div>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="section-tools"><input id="customerSearch" placeholder="بحث بالاسم أو الهاتف..." oninput="renderCustomers()"></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>المدينة</th><th>الإجراءات</th></tr></thead>
+              <tbody id="customersTableBody"><tr><td colspan="5" class="empty-state">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="branches" class="section">
+        <div class="page-heading"><div><h2>الفروع</h2><p>الفروع المسجلة في النظام</p></div></div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table><thead><tr><th>اسم الفرع</th><th>المدينة</th><th>الحالة</th></tr></thead>
+              <tbody id="branchesTableBody"><tr><td colspan="3" class="empty-state">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="finance" class="section">
+        <div class="page-heading">
+          <div><h2>المالية والدفعات</h2><p>تسجيل الدفعات وعرض حركة المقبوضات</p></div>
+          <button class="primary-btn" onclick="openPaymentForm()">+ تسجيل دفعة</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">إجمالي المقبوضات</div><div class="stat-number" id="financeTotal">—</div></div>
+          <div class="stat-card"><div class="stat-label">عدد الدفعات</div><div class="stat-number" id="paymentsCount">—</div></div>
+        </div>
+        <div class="panel hidden" id="paymentFormPanel">
+          <h3>تسجيل دفعة جديدة</h3>
+          <form id="paymentForm">
+            <div class="form-grid">
+              <div class="field"><label>الحجز *</label><select id="paymentBooking" required><option value="">اختر الحجز</option></select></div>
+              <div class="field"><label>المبلغ *</label><input id="paymentAmount" type="number" min="0.01" step="0.01" required></div>
+              <div class="field">
+                <label>طريقة الدفع</label>
+                <select id="paymentMethod">
+                  <option value="cash">نقدي</option><option value="bank_transfer">حوالة بنكية</option>
+                  <option value="card">بطاقة</option><option value="other">أخرى</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>نوع الدفعة</label>
+                <select id="paymentType">
+                  <option value="deposit">عربون</option><option value="balance">تكملة</option>
+                  <option value="refund">استرداد</option><option value="other">أخرى</option>
+                </select>
+              </div>
+              <div class="field"><label>رقم المرجع</label><input id="paymentReference"></div>
+              <div class="field"><label>ملاحظات</label><input id="paymentNotes"></div>
+            </div>
+            <div class="form-actions">
+              <button class="primary-btn" id="savePaymentBtn" type="submit">حفظ الدفعة</button>
+              <button class="secondary-btn" type="button" onclick="closePaymentForm()">إلغاء</button>
+            </div>
+            <div id="paymentFormMessage"></div>
+          </form>
+        </div>
+        <div class="panel">
+          <h3>سجل الدفعات</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>التاريخ</th><th>رقم الحجز</th><th>العميل</th><th>المبلغ</th><th>الطريقة</th><th>النوع</th><th>المرجع</th></tr></thead>
+              <tbody id="paymentsTableBody"><tr><td colspan="7" class="empty-state">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="reports" class="section">
+        <div class="page-heading"><div><h2>التقارير</h2><p>ملخص بيانات المؤسسة</p></div><button class="secondary-btn" onclick="loadReports()">تحديث التقارير</button></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">إجمالي الحجوزات</div><div class="stat-number" id="reportBookings">—</div></div>
+          <div class="stat-card"><div class="stat-label">الرحلات المنشورة</div><div class="stat-number" id="reportTrips">—</div></div>
+          <div class="stat-card"><div class="stat-label">العملاء</div><div class="stat-number" id="reportCustomers">—</div></div>
+          <div class="stat-card"><div class="stat-label">إجمالي الدفعات</div><div class="stat-number" id="reportPayments">—</div></div>
+        </div>
+        <div class="panel"><h3>ملخص الحجوزات حسب الحالة</h3><div id="reportStatus" class="empty-state">جاري التحميل...</div></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+let db=null;
+let currentUser=null;
+let currentProfile=null;
+let currentLanguage="ar";
+
+let tripsCache=[];
+let branchesCache=[];
+let customersCache=[];
+let bookingsCache=[];
+let paymentsCache=[];
+
+const statusNames={
+  new:"جديد",contacted:"تم التواصل",confirmed:"مؤكد",
+  deposit_paid:"دُفع العربون",fully_paid:"مدفوع بالكامل",
+  cancelled:"ملغى",completed:"مكتمل"
+};
+const tripStatusNames={
+  draft:"مسودة",published:"منشورة",full:"مكتملة",
+  cancelled:"ملغاة",completed:"منتهية"
+};
+const tripTypeNames={
+  umrah:"عمرة",tourism:"سياحة",flight:"طيران",visa:"تأشيرة",other:"أخرى"
+};
+
+function initDatabase(){
+  if(window.arkanSupabase){
+    db=window.arkanSupabase;
+    return;
+  }
+  throw new Error("تعذر الاتصال بقاعدة البيانات. تحقق من config.js");
+}
+
+function showMessage(id,message,type="error"){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.className="message "+type;
+  el.textContent=message;
+}
+function clearMessage(id){
+  const el=document.getElementById(id);
+  if(el){el.className="";el.textContent="";}
+}
+function esc(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function money(value,currency="USD"){
+  const n=Number(value||0);
+  return n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" "+currency;
+}
+function formatDate(value){
+  if(!value)return "—";
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return "—";
+  return d.toLocaleString(currentLanguage==="ar"?"ar":"en",{dateStyle:"medium",timeStyle:"short"});
+}
+function toLocalDateTime(value){
+  if(!value)return "";
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return "";
+  return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+}
+function nullableNumber(value){
+  if(value===""||value===null||value===undefined)return null;
+  const n=Number(value);
+  return Number.isFinite(n)?n:null;
+}
+function nullableDate(value){
+  if(!value)return null;
+  const d=new Date(value);
+  return Number.isNaN(d.getTime())?null:d.toISOString();
+}
+
+async function verifyOwner(user){
+  const {data,error}=await db.from("profiles")
+    .select("full_name,email,role,is_active")
+    .eq("id",user.id).single();
+  if(error)throw error;
+
+  const role=String(data.role||"").toLowerCase();
+  if(!["owner","admin","مالك","مدير"].includes(role)||data.is_active!==true){
+    throw new Error("هذا الحساب لا يملك صلاحية الدخول إلى لوحة الإدارة.");
+  }
+  currentProfile=data;
+  return data;
+}
+
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("loginBtn");
+  btn.disabled=true;
+  btn.textContent="جاري تسجيل الدخول...";
+  clearMessage("loginMessage");
+  try{
+    initDatabase();
+    const {data,error}=await db.auth.signInWithPassword({
+      email:document.getElementById("email").value.trim(),
+      password:document.getElementById("password").value
+    });
+    if(error)throw error;
+    currentUser=data.user;
+    await verifyOwner(currentUser);
+    await enterAdmin();
+  }catch(error){
+    console.error(error);
+    showMessage("loginMessage",error.message||"تعذر تسجيل الدخول.");
+    if(db)await db.auth.signOut().catch(()=>{});
+  }finally{
+    btn.disabled=false;
+    btn.textContent="تسجيل الدخول";
+  }
+});
+
+async function enterAdmin(){
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("adminApp").classList.remove("hidden");
+  document.getElementById("welcomeName").textContent=
+    currentProfile?.full_name||currentProfile?.email||"إدارة المؤسسة";
+  await Promise.all([
+    loadBranches(),loadTrips(),loadCustomers(),loadBookings(),loadPayments()
+  ]);
+  await loadDashboard();
+}
+async function checkSession(){
+  try{
+    initDatabase();
+    const {data,error}=await db.auth.getSession();
+    if(error)throw error;
+    if(!data.session)return;
+    currentUser=data.session.user;
+    await verifyOwner(currentUser);
+    await enterAdmin();
+  }catch(error){
+    console.error("Session check:",error);
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("adminApp").classList.add("hidden");
+  }
+}
+async function logout(){
+  if(db)await db.auth.signOut();
+  currentUser=null;currentProfile=null;
+  document.getElementById("adminApp").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+  document.getElementById("password").value="";
+  clearMessage("loginMessage");
+}
+
+function showSection(id,button){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  if(button)button.classList.add("active");
+
+  if(id==="dashboard")loadDashboard();
+  if(id==="trips")loadTrips();
+  if(id==="bookings"){loadBookings();loadBookingOptions();}
+  if(id==="customers")loadCustomers();
+  if(id==="branches")loadBranches();
+  if(id==="finance"){loadPayments();loadPaymentOptions();}
+  if(id==="reports")loadReports();
+}
+
+async function countRows(table){
+  const {count,error}=await db.from(table).select("*",{count:"exact",head:true});
+  if(error){console.error(table,error);return "—";}
+  return count??0;
+}
+async function loadDashboard(){
+  if(!db)return;
+  const pairs=[
+    ["trips","tripsCount"],["bookings","bookingsCount"],
+    ["customers","customersCount"],["branches","branchesCount"]
+  ];
+  await Promise.all(pairs.map(async([table,id])=>{
+    document.getElementById(id).textContent=await countRows(table);
+  }));
+}
+
+/* BRANCHES */
+async function loadBranches(){
+  if(!db)return;
+  const {data,error}=await db.from("branches")
+    .select("id,name,city,is_active").order("name");
+  if(error){console.error(error);return;}
+  branchesCache=data||[];
+
+  const selects=["branchId","bookingBranch"];
+  selects.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const old=el.value;
+    el.innerHTML='<option value="">بدون تحديد</option>';
+    branchesCache.filter(b=>b.is_active!==false).forEach(b=>{
+      const o=document.createElement("option");
+      o.value=b.id;o.textContent=b.name+(b.city?" - "+b.city:"");
+      el.appendChild(o);
+    });
+    el.value=old;
+  });
+
+  const tbody=document.getElementById("branchesTableBody");
+  tbody.innerHTML=branchesCache.length?branchesCache.map(b=>`
+    <tr><td>${esc(b.name)}</td><td>${esc(b.city||"—")}</td>
+    <td>${b.is_active===false?"غير نشط":"نشط"}</td></tr>
+  `).join(""):'<tr><td colspan="3" class="empty-state">لا توجد فروع</td></tr>';
+}
+
+/* TRIPS */
+async function loadTrips(){
+  if(!db)return;
+  const tbody=document.getElementById("tripsTableBody");
+  tbody.innerHTML='<tr><td colspan="7" class="empty-state">جاري التحميل...</td></tr>';
+  try{
+    const {data,error}=await db.from("trips").select("*")
+      .order("created_at",{ascending:false});
+    if(error)throw error;
+    tripsCache=data||[];
+    renderTrips();
+  }catch(error){
+    console.error(error);
+    tbody.innerHTML=`<tr><td colspan="7" class="empty-state">${esc(error.message)}</td></tr>`;
+  }
+}
+function renderTrips(){
+  const tbody=document.getElementById("tripsTableBody");
+  if(!tripsCache.length){
+    tbody.innerHTML='<tr><td colspan="7" class="empty-state">لا توجد رحلات حتى الآن</td></tr>';
+    return;
+  }
+  tbody.innerHTML=tripsCache.map(trip=>`
+    <tr>
+      <td>${esc(currentLanguage==="en"?(trip.title_en||trip.title_ar):trip.title_ar)}</td>
+      <td>${esc(tripTypeNames[trip.trip_type]||trip.trip_type)}</td>
+      <td>${esc(trip.destination||"—")}</td>
+      <td>${esc(formatDate(trip.departure_at))}</td>
+      <td>${esc(trip.capacity??"—")}</td>
+      <td><span class="status status-${esc(trip.status)}">${esc(tripStatusNames[trip.status]||trip.status)}</span></td>
+      <td><div class="inline-actions">
+        <button class="secondary-btn" onclick="editTrip('${trip.id}')">تعديل</button>
+        <button class="danger-btn" onclick="deleteTrip('${trip.id}')">حذف</button>
+      </div></td>
+    </tr>
+  `).join("");
+}
+function openTripForm(){
+  document.getElementById("tripForm").reset();
+  document.getElementById("tripId").value="";
+  document.getElementById("tripFormTitle").textContent="إضافة رحلة جديدة";
+  document.getElementById("tripFormPanel").classList.remove("hidden");
+  clearMessage("tripFormMessage");
+  document.getElementById("tripFormPanel").scrollIntoView({behavior:"smooth"});
+}
+function closeTripForm(){
+  document.getElementById("tripFormPanel").classList.add("hidden");
+  document.getElementById("tripForm").reset();
+  document.getElementById("tripId").value="";
+  clearMessage("tripFormMessage");
+}
+function editTrip(id){
+  const x=tripsCache.find(t=>t.id===id);
+  if(!x)return;
+  const values={
+    tripId:x.id,titleAr:x.title_ar,titleEn:x.title_en,tripType:x.trip_type,
+    tripStatus:x.status,destination:x.destination,departureCity:x.departure_city,
+    departureAt:toLocalDateTime(x.departure_at),returnAt:toLocalDateTime(x.return_at),
+    capacity:x.capacity,branchId:x.branch_id,priceQuad:x.price_quad,
+    priceTriple:x.price_triple,priceDouble:x.price_double,currency:x.currency,
+    descriptionAr:x.description_ar,descriptionEn:x.description_en
+  };
+  Object.entries(values).forEach(([id,value])=>{
+    const el=document.getElementById(id);if(el)el.value=value??"";
+  });
+  document.getElementById("tripFormTitle").textContent="تعديل الرحلة";
+  document.getElementById("tripFormPanel").classList.remove("hidden");
+  document.getElementById("tripFormPanel").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("tripForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("saveTripBtn");
+  const id=document.getElementById("tripId").value;
+  const title=document.getElementById("titleAr").value.trim();
+  if(!title){showMessage("tripFormMessage","أدخل اسم الرحلة.");return;}
+  const payload={
+    title_ar:title,
+    title_en:document.getElementById("titleEn").value.trim()||null,
+    trip_type:document.getElementById("tripType").value,
+    status:document.getElementById("tripStatus").value,
+    destination:document.getElementById("destination").value.trim()||null,
+    departure_city:document.getElementById("departureCity").value.trim()||null,
+    departure_at:nullableDate(document.getElementById("departureAt").value),
+    return_at:nullableDate(document.getElementById("returnAt").value),
+    capacity:nullableNumber(document.getElementById("capacity").value),
+    branch_id:document.getElementById("branchId").value||null,
+    price_quad:nullableNumber(document.getElementById("priceQuad").value),
+    price_triple:nullableNumber(document.getElementById("priceTriple").value),
+    price_double:nullableNumber(document.getElementById("priceDouble").value),
+    currency:document.getElementById("currency").value,
+    description_ar:document.getElementById("descriptionAr").value.trim()||null,
+    description_en:document.getElementById("descriptionEn").value.trim()||null,
+    updated_at:new Date().toISOString()
+  };
+  if(!id)payload.created_by=currentUser.id;
+  btn.disabled=true;btn.textContent="جاري الحفظ...";
+  try{
+    const result=id
+      ?await db.from("trips").update(payload).eq("id",id)
+      :await db.from("trips").insert(payload);
+    if(result.error)throw result.error;
+    showMessage("tripFormMessage","تم حفظ الرحلة بنجاح","success");
+    await loadTrips();await loadDashboard();
+    setTimeout(closeTripForm,650);
+  }catch(error){showMessage("tripFormMessage",error.message);}
+  finally{btn.disabled=false;btn.textContent="حفظ الرحلة";}
+});
+async function deleteTrip(id){
+  if(!confirm("هل أنت متأكد من حذف الرحلة؟"))return;
+  try{
+    const {error}=await db.from("trips").delete().eq("id",id);
+    if(error)throw error;
+    await loadTrips();await loadDashboard();
+    alert("تم حذف الرحلة");
+  }catch(error){alert(error.message);}
+}
+
+/* CUSTOMERS */
+async function loadCustomers(){
+  if(!db)return;
+  const {data,error}=await db.from("customers")
+    .select("*").order("created_at",{ascending:false});
+  if(error){console.error(error);return;}
+  customersCache=data||[];
+  renderCustomers();
+  fillCustomerOptions();
+}
+function renderCustomers(){
+  const tbody=document.getElementById("customersTableBody");
+  const q=(document.getElementById("customerSearch")?.value||"").trim().toLowerCase();
+  const list=customersCache.filter(c=>
+    !q||String(c.full_name||"").toLowerCase().includes(q)||
+    String(c.phone||"").toLowerCase().includes(q)
+  );
+  tbody.innerHTML=list.length?list.map(c=>`
+    <tr>
+      <td>${esc(c.full_name)}</td><td>${esc(c.phone)}</td>
+      <td>${esc(c.email||"—")}</td><td>${esc(c.city||"—")}</td>
+      <td><div class="inline-actions">
+        <button class="secondary-btn" onclick="editCustomer('${c.id}')">تعديل</button>
+        <button class="danger-btn" onclick="deleteCustomer('${c.id}')">حذف</button>
+      </div></td>
+    </tr>
+  `).join(""):'<tr><td colspan="5" class="empty-state">لا يوجد عملاء</td></tr>';
+}
+function fillCustomerOptions(){
+  const el=document.getElementById("bookingCustomer");
+  const old=el.value;
+  el.innerHTML='<option value="">اختر العميل</option>';
+  customersCache.forEach(c=>{
+    const o=document.createElement("option");
+    o.value=c.id;o.textContent=c.full_name+" - "+c.phone;
+    el.appendChild(o);
+  });
+  el.value=old;
+}
+function openCustomerForm(){
+  document.getElementById("customerForm").reset();
+  document.getElementById("customerId").value="";
+  document.getElementById("customerFormTitle").textContent="إضافة عميل";
+  document.getElementById("customerFormPanel").classList.remove("hidden");
+  clearMessage("customerFormMessage");
+}
+function closeCustomerForm(){
+  document.getElementById("customerFormPanel").classList.add("hidden");
+  document.getElementById("customerForm").reset();
+  document.getElementById("customerId").value="";
+}
+function editCustomer(id){
+  const c=customersCache.find(x=>x.id===id);if(!c)return;
+  document.getElementById("customerId").value=c.id;
+  document.getElementById("customerName").value=c.full_name||"";
+  document.getElementById("customerPhone").value=c.phone||"";
+  document.getElementById("customerEmail").value=c.email||"";
+  document.getElementById("customerCity").value=c.city||"";
+  document.getElementById("customerNotes").value=c.notes||"";
+  document.getElementById("customerFormTitle").textContent="تعديل بيانات العميل";
+  document.getElementById("customerFormPanel").classList.remove("hidden");
+}
+document.getElementById("customerForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("saveCustomerBtn");
+  const id=document.getElementById("customerId").value;
+  const payload={
+    full_name:document.getElementById("customerName").value.trim(),
+    phone:document.getElementById("customerPhone").value.trim(),
+    email:document.getElementById("customerEmail").value.trim()||null,
+    city:document.getElementById("customerCity").value.trim()||null,
+    notes:document.getElementById("customerNotes").value.trim()||null
+  };
+  if(!payload.full_name||!payload.phone){showMessage("customerFormMessage","الاسم والهاتف مطلوبان.");return;}
+  btn.disabled=true;
+  try{
+    const result=id
+      ?await db.from("customers").update(payload).eq("id",id)
+      :await db.from("customers").insert(payload);
+    if(result.error)throw result.error;
+    showMessage("customerFormMessage","تم حفظ بيانات العميل بنجاح","success");
+    await loadCustomers();await loadDashboard();
+    setTimeout(closeCustomerForm,600);
+  }catch(error){showMessage("customerFormMessage",error.message);}
+  finally{btn.disabled=false;}
+});
+async function deleteCustomer(id){
+  if(!confirm("حذف العميل؟ لا يمكن الحذف إذا كان مرتبطاً بحجز."))return;
+  try{
+    const {error}=await db.from("customers").delete().eq("id",id);
+    if(error)throw error;
+    await loadCustomers();await loadDashboard();
+    alert("تم حذف العميل");
+  }catch(error){alert(error.message);}
+}
+
+/* BOOKINGS */
+async function loadBookingOptions(){
+  await Promise.all([loadTrips(),loadCustomers()]);
+  const tripSelect=document.getElementById("bookingTrip");
+  const oldTrip=tripSelect.value;
+  tripSelect.innerHTML='<option value="">اختر الرحلة</option>';
+  tripsCache.forEach(t=>{
+    const o=document.createElement("option");
+    o.value=t.id;o.textContent=t.title_ar+" ("+(tripStatusNames[t.status]||t.status)+")";
+    tripSelect.appendChild(o);
+  });
+  tripSelect.value=oldTrip;
+  fillCustomerOptions();
+  const branch=document.getElementById("bookingBranch");
+  const oldBranch=branch.value;
+  branch.innerHTML='<option value="">بدون تحديد</option>';
+  branchesCache.filter(b=>b.is_active!==false).forEach(b=>{
+    const o=document.createElement("option");
+    o.value=b.id;o.textContent=b.name+(b.city?" - "+b.city:"");
+    branch.appendChild(o);
+  });
+  branch.value=oldBranch;
+}
+async function loadBookings(){
+  if(!db)return;
+  const tbody=document.getElementById("bookingsTableBody");
+  tbody.innerHTML='<tr><td colspan="9" class="empty-state">جاري التحميل...</td></tr>';
+  try{
+    const {data,error}=await db.from("bookings")
+      .select("*, customers(full_name,phone), trips(title_ar,title_en,departure_at)")
+      .order("created_at",{ascending:false});
+    if(error)throw error;
+    bookingsCache=data||[];
+    renderBookings();
+  }catch(error){
+    console.error(error);
+    tbody.innerHTML=`<tr><td colspan="9" class="empty-state">${esc(error.message)}</td></tr>`;
+  }
+}
+function renderBookings(){
+  const tbody=document.getElementById("bookingsTableBody");
+  const q=(document.getElementById("bookingSearch")?.value||"").trim().toLowerCase();
+  const filter=document.getElementById("bookingFilter")?.value||"";
+  const list=bookingsCache.filter(b=>{
+    const text=(b.booking_code+" "+(b.customers?.full_name||"")).toLowerCase();
+    return (!q||text.includes(q))&&(!filter||b.status===filter);
+  });
+  tbody.innerHTML=list.length?list.map(b=>{
+    const remaining=Math.max(0,Number(b.total_amount||0)-Number(b.paid_amount||0));
+    return `<tr>
+      <td>${esc(b.booking_code)}</td>
+      <td>${esc(b.customers?.full_name||"—")}</td>
+      <td>${esc(b.trips?.title_ar||"—")}</td>
+      <td>${esc(b.travelers_count)}</td>
+      <td>${esc(money(b.total_amount,b.currency))}</td>
+      <td>${esc(money(b.paid_amount,b.currency))}</td>
+      <td>${esc(money(remaining,b.currency))}</td>
+      <td><span class="status status-${esc(b.status)}">${esc(statusNames[b.status]||b.status)}</span></td>
+      <td><div class="inline-actions">
+        <button class="secondary-btn" onclick="editBooking('${b.id}')">تعديل</button>
+        <button class="secondary-btn" onclick="manageTravelers('${b.id}')">المسافرون</button>
+        <button class="secondary-btn" onclick="openPaymentForBooking('${b.id}')">دفعة</button>
+        <button class="danger-btn" onclick="deleteBooking('${b.id}')">حذف</button>
+      </div></td>
+    </tr>`;
+  }).join(""):'<tr><td colspan="9" class="empty-state">لا توجد حجوزات مطابقة</td></tr>';
+}
+function openBookingForm(){
+  document.getElementById("bookingForm").reset();
+  document.getElementById("bookingId").value="";
+  document.getElementById("travelersCount").value=1;
+  document.getElementById("totalAmount").value=0;
+  document.getElementById("paidAmount").value=0;
+  document.getElementById("bookingFormTitle").textContent="إنشاء حجز جديد";
+  document.getElementById("bookingFormPanel").classList.remove("hidden");
+  clearMessage("bookingFormMessage");
+  loadBookingOptions();
+  document.getElementById("bookingFormPanel").scrollIntoView({behavior:"smooth"});
+}
+function closeBookingForm(){
+  document.getElementById("bookingFormPanel").classList.add("hidden");
+  document.getElementById("bookingForm").reset();
+  document.getElementById("bookingId").value="";
+}
+function editBooking(id){
+  const b=bookingsCache.find(x=>x.id===id);if(!b)return;
+  document.getElementById("bookingId").value=b.id;
+  document.getElementById("bookingTrip").value=b.trip_id;
+  document.getElementById("bookingCustomer").value=b.customer_id;
+  document.getElementById("roomType").value=b.room_type||"";
+  document.getElementById("travelersCount").value=b.travelers_count;
+  document.getElementById("totalAmount").value=b.total_amount;
+  document.getElementById("paidAmount").value=b.paid_amount;
+  document.getElementById("bookingCurrency").value=b.currency||"USD";
+  document.getElementById("bookingStatus").value=b.status;
+  document.getElementById("bookingBranch").value=b.branch_id||"";
+  document.getElementById("bookingNotes").value=b.booking_notes||"";
+  document.getElementById("bookingFormTitle").textContent="تعديل الحجز";
+  document.getElementById("bookingFormPanel").classList.remove("hidden");
+  document.getElementById("bookingFormPanel").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("bookingForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("saveBookingBtn");
+  const id=document.getElementById("bookingId").value;
+  const total=Number(document.getElementById("totalAmount").value);
+  const paid=Number(document.getElementById("paidAmount").value||0);
+  const travelers=Number(document.getElementById("travelersCount").value);
+  if(paid>total){showMessage("bookingFormMessage","المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي.");return;}
+  if(total<0||paid<0||travelers<1){showMessage("bookingFormMessage","تحقق من المبالغ وعدد المسافرين.");return;}
+
+  const payload={
+    trip_id:document.getElementById("bookingTrip").value,
+    customer_id:document.getElementById("bookingCustomer").value,
+    room_type:document.getElementById("roomType").value||null,
+    travelers_count:travelers,
+    total_amount:total,
+    paid_amount:paid,
+    currency:document.getElementById("bookingCurrency").value,
+    status:document.getElementById("bookingStatus").value,
+    branch_id:document.getElementById("bookingBranch").value||null,
+    booking_notes:document.getElementById("bookingNotes").value.trim()||null,
+    updated_at:new Date().toISOString()
+  };
+  if(!payload.trip_id||!payload.customer_id){showMessage("bookingFormMessage","اختر الرحلة والعميل.");return;}
+  if(!id)payload.created_by=currentUser.id;
+
+  btn.disabled=true;btn.textContent="جاري الحفظ...";
+  try{
+    let result;
+    if(id){
+      result=await db.from("bookings").update(payload).eq("id",id);
+    }else{
+      result=await db.from("bookings").insert(payload);
+    }
+    if(result.error)throw result.error;
+    showMessage("bookingFormMessage","تم حفظ الحجز بنجاح","success");
+    await loadBookings();await loadDashboard();
+    setTimeout(closeBookingForm,700);
+  }catch(error){
+    console.error(error);
+    showMessage("bookingFormMessage",error.message);
+  }finally{btn.disabled=false;btn.textContent="حفظ الحجز";}
+});
+async function deleteBooking(id){
+  if(!confirm("هل تريد حذف الحجز؟ لا يمكن حذفه إذا كانت له دفعات مسجلة."))return;
+  try{
+    const {error}=await db.from("bookings").delete().eq("id",id);
+    if(error)throw error;
+    await loadBookings();await loadDashboard();
+    alert("تم حذف الحجز");
+  }catch(error){alert(error.message);}
+}
+
+/* TRAVELERS */
+async function manageTravelers(bookingId){
+  const booking=bookingsCache.find(b=>b.id===bookingId);
+  if(!booking)return;
+  const {data,error}=await db.from("travelers").select("*")
+    .eq("booking_id",bookingId).order("created_at");
+  if(error){alert(error.message);return;}
+
+  let message="المسافرون المسجلون:\n";
+  (data||[]).forEach((p,i)=>{
+    message+=(i+1)+". "+p.full_name+
+      (p.passport_number?" - جواز: "+p.passport_number:"")+"\n";
+  });
+  message+="\nلإضافة مسافر جديد اضغط موافق، وللإلغاء اضغط إلغاء.";
+  if(!confirm(message))return;
+
+  const fullName=prompt("اسم المسافر الكامل:");
+  if(!fullName||!fullName.trim())return;
+  const passport=prompt("رقم جواز السفر (اختياري):")||null;
+  const nationality=prompt("الجنسية (اختياري):")||null;
+  const payload={
+    booking_id:bookingId,
+    full_name:fullName.trim(),
+    passport_number:passport?.trim()||null,
+    nationality:nationality?.trim()||null
+  };
+  const {error:insertError}=await db.from("travelers").insert(payload);
+  if(insertError){alert(insertError.message);return;}
+  alert("تمت إضافة المسافر");
+}
+
+/* PAYMENTS */
+async function loadPaymentOptions(){
+  await loadBookings();
+  const el=document.getElementById("paymentBooking");
+  const old=el.value;
+  el.innerHTML='<option value="">اختر الحجز</option>';
+  bookingsCache.forEach(b=>{
+    const o=document.createElement("option");
+    o.value=b.id;
+    o.textContent=b.booking_code+" - "+(b.customers?.full_name||"عميل");
+    el.appendChild(o);
+  });
+  el.value=old;
+}
+async function loadPayments(){
+  if(!db)return;
+  const tbody=document.getElementById("paymentsTableBody");
+  try{
+    const {data,error}=await db.from("payments")
+      .select("*, bookings(booking_code,customer_id,customers(full_name))")
+      .order("received_at",{ascending:false});
+    if(error)throw error;
+    paymentsCache=data||[];
+    renderPayments();
+    const total=paymentsCache.reduce((sum,p)=>sum+Number(p.amount||0),0);
+    document.getElementById("financeTotal").textContent=money(total);
+    document.getElementById("paymentsCount").textContent=paymentsCache.length;
+  }catch(error){
+    console.error(error);
+    tbody.innerHTML=`<tr><td colspan="7" class="empty-state">${esc(error.message)}</td></tr>`;
+  }
+}
+function renderPayments(){
+  const tbody=document.getElementById("paymentsTableBody");
+  tbody.innerHTML=paymentsCache.length?paymentsCache.map(p=>`
+    <tr>
+      <td>${esc(formatDate(p.received_at))}</td>
+      <td>${esc(p.bookings?.booking_code||"—")}</td>
+      <td>${esc(p.bookings?.customers?.full_name||"—")}</td>
+      <td>${esc(money(p.amount,p.currency))}</td>
+      <td>${esc({cash:"نقدي",bank_transfer:"حوالة بنكية",card:"بطاقة",other:"أخرى"}[p.payment_method]||p.payment_method)}</td>
+      <td>${esc({deposit:"عربون",balance:"تكملة",refund:"استرداد",other:"أخرى"}[p.payment_type]||p.payment_type)}</td>
+      <td>${esc(p.reference_number||"—")}</td>
+    </tr>
+  `).join(""):'<tr><td colspan="7" class="empty-state">لا توجد دفعات مسجلة</td></tr>';
+}
+function openPaymentForm(){
+  document.getElementById("paymentForm").reset();
+  document.getElementById("paymentFormPanel").classList.remove("hidden");
+  clearMessage("paymentFormMessage");
+  loadPaymentOptions();
+  document.getElementById("paymentFormPanel").scrollIntoView({behavior:"smooth"});
+}
+function openPaymentForBooking(id){
+  openPaymentForm();
+  document.getElementById("paymentBooking").value=id;
+}
+function closePaymentForm(){
+  document.getElementById("paymentFormPanel").classList.add("hidden");
+  document.getElementById("paymentForm").reset();
+}
+document.getElementById("paymentForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("savePaymentBtn");
+  const bookingId=document.getElementById("paymentBooking").value;
+  const amount=Number(document.getElementById("paymentAmount").value);
+  const booking=bookingsCache.find(b=>b.id===bookingId);
+  if(!booking){showMessage("paymentFormMessage","اختر حجزاً صحيحاً.");return;}
+  if(!Number.isFinite(amount)||amount<=0){showMessage("paymentFormMessage","أدخل مبلغاً صحيحاً.");return;}
+
+  const isRefund=document.getElementById("paymentType").value==="refund";
+  const newPaid=Number(booking.paid_amount||0)+(isRefund?-amount:amount);
+  if(newPaid<0){showMessage("paymentFormMessage","قيمة الاسترداد أكبر من المبلغ المدفوع.");return;}
+  if(newPaid>Number(booking.total_amount||0)&&!isRefund){
+    showMessage("paymentFormMessage","المبلغ يتجاوز المبلغ المتبقي للحجز.");return;
+  }
+
+  btn.disabled=true;
+  try{
+    const payload={
+      booking_id:bookingId,
+      amount,
+      currency:booking.currency||"USD",
+      payment_method:document.getElementById("paymentMethod").value,
+      payment_type:document.getElementById("paymentType").value,
+      reference_number:document.getElementById("paymentReference").value.trim()||null,
+      notes:document.getElementById("paymentNotes").value.trim()||null,
+      received_by:currentUser.id
     };
-
-    function t(key) {
-      return translations[currentLanguage][key] || key;
-    }
-
-    // الاتصال بالعميل الذي أنشأه config.js
-    function initDatabase() {
-      if (window.arkanSupabase) {
-        db = window.arkanSupabase;
-        return;
-      }
-
-      throw new Error(t("connectionError"));
-    }
-
-    function showMessage(elementId, message, type) {
-      const el = document.getElementById(elementId);
-      if (!el) return;
-      el.className = "message " + (type || "error");
-      el.textContent = message;
-    }
-
-    function clearMessage(elementId) {
-      const el = document.getElementById(elementId);
-      if (el) {
-        el.className = "";
-        el.textContent = "";
-      }
-    }
-
-    async function verifyOwner(user) {
-      const { data, error } = await db
-        .from("profiles")
-        .select("full_name, email, role, is_active")
-        .eq("id", user.id)
-        .single();
-
-      if (error) throw error;
-
-      const role = String(data.role || "").toLowerCase();
-      const allowedRoles = ["owner", "admin", "مالك", "مدير"];
-
-      if (!allowedRoles.includes(role) || data.is_active !== true) {
-        throw new Error(t("invalidRole"));
-      }
-
-      currentProfile = data;
-      return data;
-    }
-
-    document.getElementById("loginForm").addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const button = document.getElementById("loginBtn");
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-
-      clearMessage("loginMessage");
-      button.disabled = true;
-      button.textContent = t("loading");
-
-      try {
-        initDatabase();
-
-        const { data, error } = await db.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (error) throw error;
-
-        currentUser = data.user;
-        await verifyOwner(currentUser);
-
-        await enterAdmin();
-      } catch (error) {
-        console.error("Login error:", error);
-        showMessage(
-          "loginMessage",
-          error.message === t("invalidRole")
-            ? t("invalidRole")
-            : (error.message || t("loginFailed")),
-          "error"
-        );
-
-        if (db) {
-          await db.auth.signOut().catch(() => {});
-        }
-      } finally {
-        button.disabled = false;
-        button.textContent = t("login");
-      }
-    });
-
-    async function enterAdmin() {
-      document.getElementById("loginPage").classList.add("hidden");
-      document.getElementById("adminApp").classList.remove("hidden");
-
-      document.getElementById("welcomeName").textContent =
-        currentProfile.full_name || currentProfile.email || "إدارة المؤسسة";
-
-      await loadDashboard();
-      await loadBranches();
-      await loadTrips();
-    }
-
-    async function checkSession() {
-      try {
-        initDatabase();
-
-        const { data, error } = await db.auth.getSession();
-        if (error) throw error;
-
-        const session = data.session;
-        if (!session) return;
-
-        currentUser = session.user;
-        await verifyOwner(currentUser);
-        await enterAdmin();
-
-      } catch (error) {
-        console.error("Session check:", error);
-        document.getElementById("loginPage").classList.remove("hidden");
-        document.getElementById("adminApp").classList.add("hidden");
-      }
-    }
-
-    async function logout() {
-      if (db) {
-        await db.auth.signOut();
-      }
-
-      currentUser = null;
-      currentProfile = null;
-
-      document.getElementById("adminApp").classList.add("hidden");
-      document.getElementById("loginPage").classList.remove("hidden");
-      document.getElementById("password").value = "";
-      clearMessage("loginMessage");
-    }
-
-    function showSection(sectionId, button) {
-      document.querySelectorAll(".section").forEach(section => {
-        section.classList.remove("active");
-      });
-
-      document.querySelectorAll(".nav-btn").forEach(nav => {
-        nav.classList.remove("active");
-      });
-
-      document.getElementById(sectionId).classList.add("active");
-      if (button) button.classList.add("active");
-
-      if (sectionId === "trips") loadTrips();
-      if (sectionId === "dashboard") loadDashboard();
-    }
-
-    async function getCount(tableName) {
-      const { count, error } = await db
-        .from(tableName)
-        .select("*", { count: "exact", head: true });
-
-      if (error) {
-        console.error("Count error:", tableName, error);
-        return "—";
-      }
-
-      return count ?? 0;
-    }
-
-    async function loadDashboard() {
-      if (!db) return;
-
-      const tables = [
-        ["trips", "tripsCount"],
-        ["bookings", "bookingsCount"],
-        ["customers", "customersCount"],
-        ["branches", "branchesCount"]
-      ];
-
-      await Promise.all(tables.map(async ([table, elementId]) => {
-        document.getElementById(elementId).textContent = await getCount(table);
-      }));
-    }
-
-    async function loadBranches() {
-      if (!db) return;
-
-      const { data, error } = await db
-        .from("branches")
-        .select("id, name, city, is_active")
-        .order("name");
-
-      if (error) {
-        console.error("Branches error:", error);
-        return;
-      }
-
-      branchesCache = data || [];
-
-      const select = document.getElementById("branchId");
-      const currentValue = select.value;
-
-      select.innerHTML = '<option value="">بدون تحديد</option>';
-
-      branchesCache.filter(branch => branch.is_active !== false).forEach(branch => {
-        const option = document.createElement("option");
-        option.value = branch.id;
-        option.textContent = branch.name + (branch.city ? " - " + branch.city : "");
-        select.appendChild(option);
-      });
-
-      select.value = currentValue;
-    }
-
-    function formatDate(value) {
-      if (!value) return "—";
-
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return "—";
-
-      return date.toLocaleString(
-        currentLanguage === "ar" ? "ar" : "en",
-        { dateStyle: "medium", timeStyle: "short" }
-      );
-    }
-
-    function toLocalDateTime(value) {
-      if (!value) return "";
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return "";
-
-      const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-      return local.toISOString().slice(0, 16);
-    }
-
-    function statusLabel(status) {
-      return t(status || "draft");
-    }
-
-    function typeLabel(type) {
-      return t(type || "other");
-    }
-
-    async function loadTrips() {
-      if (!db) return;
-
-      const tbody = document.getElementById("tripsTableBody");
-      tbody.innerHTML = `<tr><td colspan="7" class="empty-state">${t("loading")}</td></tr>`;
-
-      try {
-        const { data, error } = await db
-          .from("trips")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-        if (error) throw error;
-
-        tripsCache = data || [];
-        renderTrips();
-
-      } catch (error) {
-        console.error("Load trips error:", error);
-        tbody.innerHTML =
-          `<tr><td colspan="7" class="empty-state">${escapeHTML(error.message || t("networkError"))}</td></tr>`;
-      }
-    }
-
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[character]);
-    }
-
-    function renderTrips() {
-      const tbody = document.getElementById("tripsTableBody");
-
-      if (!tripsCache.length) {
-        tbody.innerHTML =
-          `<tr><td colspan="7" class="empty-state">${t("noTrips")}</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = tripsCache.map(trip => {
-        const title = currentLanguage === "en"
-          ? (trip.title_en || trip.title_ar)
-          : trip.title_ar;
-
-        const status = trip.status || "draft";
-
-        return `
-          <tr>
-            <td>${escapeHTML(title)}</td>
-            <td>${escapeHTML(typeLabel(trip.trip_type))}</td>
-            <td>${escapeHTML(trip.destination || "—")}</td>
-            <td>${escapeHTML(formatDate(trip.departure_at))}</td>
-            <td>${escapeHTML(trip.capacity ?? "—")}</td>
-            <td>
-              <span class="status status-${escapeHTML(status)}">
-                ${escapeHTML(statusLabel(status))}
-              </span>
-            </td>
-            <td>
-              <button class="secondary-btn" onclick="editTrip('${trip.id}')">${t("edit")}</button>
-              <button class="danger-btn" onclick="deleteTrip('${trip.id}')">${t("delete")}</button>
-            </td>
-          </tr>
-        `;
-      }).join("");
-    }
-
-    function openTripForm() {
-      document.getElementById("tripForm").reset();
-      document.getElementById("tripId").value = "";
-      document.getElementById("tripFormTitle").textContent = t("newTrip");
-      document.getElementById("tripFormPanel").classList.remove("hidden");
-      clearMessage("tripFormMessage");
-
-      document.getElementById("tripFormPanel").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-    function closeTripForm() {
-      document.getElementById("tripFormPanel").classList.add("hidden");
-      document.getElementById("tripForm").reset();
-      document.getElementById("tripId").value = "";
-      clearMessage("tripFormMessage");
-    }
-
-    function editTrip(id) {
-      const trip = tripsCache.find(item => item.id === id);
-      if (!trip) return;
-
-      document.getElementById("tripId").value = trip.id;
-      document.getElementById("titleAr").value = trip.title_ar || "";
-      document.getElementById("titleEn").value = trip.title_en || "";
-      document.getElementById("tripType").value = trip.trip_type || "umrah";
-      document.getElementById("tripStatus").value = trip.status || "draft";
-      document.getElementById("destination").value = trip.destination || "";
-      document.getElementById("departureCity").value = trip.departure_city || "";
-      document.getElementById("departureAt").value = toLocalDateTime(trip.departure_at);
-      document.getElementById("returnAt").value = toLocalDateTime(trip.return_at);
-      document.getElementById("capacity").value = trip.capacity ?? "";
-      document.getElementById("branchId").value = trip.branch_id || "";
-      document.getElementById("priceQuad").value = trip.price_quad ?? "";
-      document.getElementById("priceTriple").value = trip.price_triple ?? "";
-      document.getElementById("priceDouble").value = trip.price_double ?? "";
-      document.getElementById("currency").value = trip.currency || "USD";
-      document.getElementById("descriptionAr").value = trip.description_ar || "";
-      document.getElementById("descriptionEn").value = trip.description_en || "";
-
-      document.getElementById("tripFormTitle").textContent =
-        currentLanguage === "ar" ? "تعديل الرحلة" : "Edit Trip";
-
-      document.getElementById("tripFormPanel").classList.remove("hidden");
-      clearMessage("tripFormMessage");
-
-      document.getElementById("tripFormPanel").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-    function nullableNumber(value) {
-      if (value === "" || value === null || value === undefined) return null;
-      const number = Number(value);
-      return Number.isFinite(number) ? number : null;
-    }
-
-    function nullableDate(value) {
-      if (!value) return null;
-      const date = new Date(value);
-      return Number.isNaN(date.getTime()) ? null : date.toISOString();
-    }
-
-    document.getElementById("tripForm").addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const saveButton = document.getElementById("saveTripBtn");
-      const id = document.getElementById("tripId").value;
-
-      const titleAr = document.getElementById("titleAr").value.trim();
-      if (!titleAr) {
-        showMessage("tripFormMessage", t("titleAr"), "error");
-        return;
-      }
-
-      const payload = {
-        title_ar: titleAr,
-        title_en: document.getElementById("titleEn").value.trim() || null,
-        trip_type: document.getElementById("tripType").value,
-        status: document.getElementById("tripStatus").value,
-        destination: document.getElementById("destination").value.trim() || null,
-        departure_city: document.getElementById("departureCity").value.trim() || null,
-        departure_at: nullableDate(document.getElementById("departureAt").value),
-        return_at: nullableDate(document.getElementById("returnAt").value),
-        capacity: nullableNumber(document.getElementById("capacity").value),
-        branch_id: document.getElementById("branchId").value || null,
-        price_quad: nullableNumber(document.getElementById("priceQuad").value),
-        price_triple: nullableNumber(document.getElementById("priceTriple").value),
-        price_double: nullableNumber(document.getElementById("priceDouble").value),
-        currency: document.getElementById("currency").value,
-        description_ar: document.getElementById("descriptionAr").value.trim() || null,
-        description_en: document.getElementById("descriptionEn").value.trim() || null,
-        updated_at: new Date().toISOString()
-      };
-
-      if (!id) {
-        payload.created_by = currentUser.id;
-      }
-
-      saveButton.disabled = true;
-      saveButton.textContent = t("loading");
-      clearMessage("tripFormMessage");
-
-      try {
-        let result;
-
-        if (id) {
-          result = await db
-            .from("trips")
-            .update(payload)
-            .eq("id", id);
-        } else {
-          result = await db
-            .from("trips")
-            .insert(payload);
-        }
-
-        if (result.error) throw result.error;
-
-        showMessage("tripFormMessage", t("saved"), "success");
-
-        await loadTrips();
-        await loadDashboard();
-
-        setTimeout(() => {
-          closeTripForm();
-        }, 700);
-
-      } catch (error) {
-        console.error("Save trip error:", error);
-        showMessage(
-          "tripFormMessage",
-          error.message || t("networkError"),
-          "error"
-        );
-      } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = t("save");
-      }
-    });
-
-    async function deleteTrip(id) {
-      if (!confirm(t("confirmDelete"))) return;
-
-      try {
-        const { error } = await db
-          .from("trips")
-          .delete()
-          .eq("id", id);
-
-        if (error) throw error;
-
-        await loadTrips();
-        await loadDashboard();
-
-        alert(t("deleted"));
-
-      } catch (error) {
-        console.error("Delete trip error:", error);
-        alert(error.message || t("networkError"));
-      }
-    }
-
-    function toggleLanguage() {
-      currentLanguage = currentLanguage === "ar" ? "en" : "ar";
-
-      document.documentElement.lang = currentLanguage;
-      document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
-
-      document.body.classList.toggle("language-en", currentLanguage === "en");
-
-      document.getElementById("languageBtn").textContent =
-        currentLanguage === "ar" ? "English" : "العربية";
-
-      document.querySelectorAll("[data-i18n]").forEach(element => {
-        const key = element.getAttribute("data-i18n");
-        if (translations[currentLanguage][key]) {
-          element.textContent = translations[currentLanguage][key];
-        }
-      });
-
-      renderTrips();
-    }
-
-    // بدء تشغيل الصفحة والتحقق من الجلسة
-    checkSession();
-  </script>
+    const {error:paymentError}=await db.from("payments").insert(payload);
+    if(paymentError)throw paymentError;
+
+    let newStatus=booking.status;
+    if(newPaid>=Number(booking.total_amount)&&newPaid>0)newStatus="fully_paid";
+    else if(newPaid>0)newStatus="deposit_paid";
+
+    const {error:updateError}=await db.from("bookings").update({
+      paid_amount:newPaid,status:newStatus,updated_at:new Date().toISOString()
+    }).eq("id",bookingId);
+    if(updateError)throw updateError;
+
+    showMessage("paymentFormMessage","تم تسجيل الدفعة بنجاح","success");
+    await loadBookings();await loadPayments();await loadDashboard();
+    setTimeout(closePaymentForm,700);
+  }catch(error){
+    console.error(error);
+    showMessage("paymentFormMessage",error.message);
+  }finally{btn.disabled=false;}
+});
+
+/* REPORTS */
+async function loadReports(){
+  if(!db)return;
+  const [b,t,c,p]=await Promise.all([
+    countRows("bookings"),countRows("trips"),
+    countRows("customers"),countRows("payments")
+  ]);
+  document.getElementById("reportBookings").textContent=b;
+  document.getElementById("reportTrips").textContent=t;
+  document.getElementById("reportCustomers").textContent=c;
+  document.getElementById("reportPayments").textContent=p;
+
+  const counts={};
+  bookingsCache.forEach(x=>counts[x.status]=(counts[x.status]||0)+1);
+  const entries=Object.entries(counts);
+  document.getElementById("reportStatus").innerHTML=entries.length
+    ?entries.map(([status,count])=>`<p>${esc(statusNames[status]||status)}: <strong>${count}</strong></p>`).join("")
+    :"لا توجد حجوزات حتى الآن";
+}
+
+/* LANGUAGE */
+function toggleLanguage(){
+  currentLanguage=currentLanguage==="ar"?"en":"ar";
+  document.documentElement.lang=currentLanguage;
+  document.documentElement.dir=currentLanguage==="ar"?"rtl":"ltr";
+  document.getElementById("languageBtn").textContent=
+    currentLanguage==="ar"?"English":"العربية";
+  document.body.classList.toggle("language-en",currentLanguage==="en");
+  alert(currentLanguage==="en"
+    ?"Some management labels and data are currently displayed in Arabic."
+    :"تمت العودة إلى العربية.");
+  renderTrips();renderBookings();renderCustomers();renderPayments();
+}
+
+checkSession();
+</script>
 
 </body>
 </html>

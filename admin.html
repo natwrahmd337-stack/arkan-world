@@ -1278,8 +1278,9 @@ function toggleLanguage(){
     :"تمت العودة إلى العربية.");
   renderTrips();renderBookings();renderCustomers();renderPayments();
 }
+
 /* ==========================================
-   A5 PAYMENT RECEIPT PRINTING
+   A5 PAYMENT RECEIPT PRINTING + PDF DOWNLOAD
    PILLARS OF THE WORLD
 ========================================== */
 
@@ -1287,8 +1288,13 @@ function toggleLanguage(){
 
   const style = document.createElement("style");
   style.textContent = `
-    .receipt-print-btn{
-      background:#428177;
+    .receipt-actions{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    .receipt-print-btn,
+    .receipt-pdf-btn{
       color:#fff;
       border:0;
       border-radius:7px;
@@ -1297,19 +1303,21 @@ function toggleLanguage(){
       font-weight:700;
       cursor:pointer;
     }
+    .receipt-print-btn{background:#428177}
     .receipt-print-btn:hover{background:#32645c}
+    .receipt-pdf-btn{background:#6b1f2a}
+    .receipt-pdf-btn:hover{background:#501720}
   `;
   document.head.appendChild(style);
 
   const header = document.querySelector("#finance .panel:last-child thead tr");
+
   if(header && !header.querySelector(".receipt-action-heading")){
     const th=document.createElement("th");
     th.className="receipt-action-heading";
     th.textContent="السند";
     header.appendChild(th);
   }
-
-  const originalRenderPayments = renderPayments;
 
   renderPayments = function(){
     const tbody=document.getElementById("paymentsTableBody");
@@ -1329,17 +1337,34 @@ function toggleLanguage(){
         <td>${esc({deposit:"عربون",balance:"تكملة",refund:"استرداد",other:"أخرى"}[p.payment_type]||p.payment_type)}</td>
         <td>${esc(p.reference_number||"—")}</td>
         <td>
-          <button class="receipt-print-btn" onclick="printPaymentReceipt('${p.id}')">
-            طباعة السند
-          </button>
+          <div class="receipt-actions">
+            <button class="receipt-print-btn"
+              onclick="printPaymentReceipt('${p.id}')">
+              طباعة السند
+            </button>
+
+            <button class="receipt-pdf-btn"
+              onclick="downloadPaymentReceipt('${p.id}')">
+              تحميل PDF
+            </button>
+          </div>
         </td>
       </tr>
     `).join("");
   };
 
   window.printPaymentReceipt = function(paymentId){
+    createPaymentReceipt(paymentId,false);
+  };
+
+  window.downloadPaymentReceipt = function(paymentId){
+    createPaymentReceipt(paymentId,true);
+  };
+
+  function createPaymentReceipt(paymentId,downloadPDF){
 
     const payment=paymentsCache.find(p=>p.id===paymentId);
+
     if(!payment){
       alert("لم يتم العثور على الدفعة.");
       return;
@@ -1355,6 +1380,7 @@ function toggleLanguage(){
       "—";
 
     const customerPhone=customer?.phone||"—";
+
     const bookingCode=
       booking?.booking_code ||
       payment.bookings?.booking_code ||
@@ -1389,7 +1415,7 @@ function toggleLanguage(){
     const printWindow=window.open("","_blank","width=850,height=900");
 
     if(!printWindow){
-      alert("يرجى السماح بالنوافذ المنبثقة لهذا الموقع حتى تتمكن من طباعة السند.");
+      alert("يرجى السماح بالنوافذ المنبثقة لهذا الموقع ثم إعادة المحاولة.");
       return;
     }
 
@@ -1401,32 +1427,46 @@ function toggleLanguage(){
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>سند قبض ${esc(receiptNumber)}</title>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+
 <style>
 *{box-sizing:border-box}
-body{
+
+html,body{
   margin:0;
-  padding:12mm;
+  padding:0;
   font-family:Arial,Tahoma,sans-serif;
   color:#222;
   background:#fff;
 }
+
+body{
+  padding:0;
+}
+
 .receipt{
-  width:100%;
-  min-height:185mm;
+  width:148mm;
+  min-height:210mm;
   border:2px solid #428177;
   padding:9mm;
   position:relative;
+  margin:0 auto;
+  background:#fff;
+  overflow:hidden;
 }
+
 .top-border{
   height:7px;
   background:#428177;
   margin:-9mm -9mm 8mm;
 }
+
 .brand{
   text-align:center;
   padding-bottom:6mm;
   border-bottom:1px solid #ddd;
 }
+
 .brand-name{
   font-size:22px;
   font-weight:800;
@@ -1434,38 +1474,45 @@ body{
   letter-spacing:1px;
   direction:ltr;
 }
+
 .brand-slogan{
   color:#6b1f2a;
   font-size:13px;
   margin-top:5px;
 }
+
 .brand-desc{
   font-size:12px;
   color:#666;
   margin-top:6px;
 }
+
 .heading{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin:8mm 0;
 }
+
 .heading h1{
   margin:0;
   color:#6b1f2a;
   font-size:25px;
 }
+
 .receipt-number{
   font-size:12px;
   color:#555;
   direction:ltr;
   text-align:left;
 }
+
 .date{
   font-size:12px;
   margin-bottom:7mm;
   color:#555;
 }
+
 .section-title{
   color:#428177;
   font-size:14px;
@@ -1474,19 +1521,24 @@ body{
   padding-bottom:7px;
   margin:6mm 0 4mm;
 }
+
 .info-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px 20px;
 }
+
 .info-item{
   font-size:13px;
   line-height:1.8;
+  overflow-wrap:anywhere;
 }
+
 .info-item strong{
   color:#555;
   margin-left:4px;
 }
+
 .amount-box{
   border:1px solid #428177;
   background:#f3f8f6;
@@ -1494,42 +1546,53 @@ body{
   text-align:center;
   margin:8mm 0;
 }
+
 .amount-label{
   color:#555;
   font-size:13px;
 }
+
 .amount{
   color:#428177;
   font-size:27px;
   font-weight:800;
   margin-top:7px;
 }
+
 .financial-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
   margin-top:5mm;
 }
+
 .financial-item{
   border:1px solid #ddd;
   padding:10px 5px;
   text-align:center;
   border-radius:5px;
+  min-width:0;
 }
+
 .financial-item span{
   display:block;
   color:#666;
   font-size:11px;
   margin-bottom:7px;
 }
+
 .financial-item strong{
   font-size:13px;
+  overflow-wrap:anywhere;
 }
+
 .notes{
   margin-top:7mm;
   font-size:12px;
   line-height:1.8;
+  overflow-wrap:anywhere;
 }
+
 .signatures{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -1537,12 +1600,14 @@ body{
   margin-top:15mm;
   text-align:center;
 }
+
 .signature{
   border-top:1px solid #aaa;
   padding-top:8px;
   font-size:12px;
   color:#555;
 }
+
 .footer{
   border-top:1px solid #ddd;
   margin-top:12mm;
@@ -1552,21 +1617,30 @@ body{
   font-size:12px;
   font-weight:bold;
 }
+
 .footer small{
   display:block;
   color:#777;
   font-weight:normal;
   margin-top:5px;
 }
+
 @page{
   size:A5 portrait;
   margin:0;
 }
+
 @media print{
-  body{padding:0}
+  html,body{
+    width:148mm;
+    margin:0;
+    padding:0;
+  }
+
   .receipt{
     width:148mm;
     min-height:210mm;
+    margin:0;
     border:2px solid #428177;
     padding:9mm;
   }
@@ -1575,6 +1649,7 @@ body{
 </head>
 
 <body>
+
 <div class="receipt">
 
   <div class="top-border"></div>
@@ -1669,9 +1744,60 @@ body{
 </div>
 
 <script>
-window.onload=function(){
-  window.focus();
-  setTimeout(function(){window.print();},500);
+window.onload=async function(){
+
+  const downloadPDF=${downloadPDF ? "true" : "false"};
+
+  if(downloadPDF){
+
+    if(typeof window.html2pdf==="undefined"){
+      alert("تعذر تحميل أداة إنشاء PDF. تحقق من اتصال الإنترنت وأعد المحاولة.");
+      return;
+    }
+
+    const element=document.querySelector(".receipt");
+
+    const options={
+      margin:0,
+      filename:"${receiptNumber}.pdf",
+      image:{
+        type:"jpeg",
+        quality:0.98
+      },
+      html2canvas:{
+        scale:2,
+        useCORS:true,
+        backgroundColor:"#ffffff",
+        logging:false
+      },
+      jsPDF:{
+        unit:"mm",
+        format:"a5",
+        orientation:"portrait"
+      },
+      pagebreak:{
+        mode:["avoid-all","css","legacy"]
+      }
+    };
+
+    try{
+      await window.html2pdf()
+        .set(options)
+        .from(element)
+        .save();
+    }catch(error){
+      console.error("PDF error:",error);
+      alert("حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى.");
+    }
+
+  }else{
+
+    window.focus();
+    setTimeout(function(){
+      window.print();
+    },500);
+
+  }
 };
 <\/script>
 
@@ -1681,11 +1807,14 @@ window.onload=function(){
     printWindow.document.open();
     printWindow.document.write(receiptHTML);
     printWindow.document.close();
-  };
+  }
 
-  console.log("A5 receipt printing installed.");
+  console.log("A5 receipt printing and PDF download installed.");
+
 })();
+
 checkSession();
+
 </script>
 
 </body>

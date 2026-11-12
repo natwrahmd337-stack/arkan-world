@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -55,6 +56,11 @@ button {
   font-size:15px;
 }
 .primary {background:var(--teal);color:white}
+.secondary {
+  background:#e8efed;
+  color:var(--teal);
+  margin-top:12px;
+}
 .logout {background:var(--burgundy);color:white}
 .grid {
   display:grid;
@@ -67,7 +73,11 @@ button {
   border-radius:10px;
 }
 .hidden {display:none}
-#message {margin-top:15px;color:var(--burgundy)}
+.message {
+  margin-top:15px;
+  color:var(--burgundy);
+  line-height:1.8;
+}
 </style>
 </head>
 
@@ -91,7 +101,31 @@ button {
     <input id="password" type="password" placeholder="أدخل كلمة المرور">
 
     <button class="primary" onclick="login()">دخول إلى البوابة</button>
-    <div id="message"></div>
+    <br>
+    <button class="secondary" onclick="requestPasswordReset()">
+      نسيت كلمة المرور؟
+    </button>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <div class="card hidden" id="recoveryBox">
+    <h3>إعادة تعيين كلمة المرور</h3>
+    <p>أدخل كلمة المرور الجديدة لحسابك.</p>
+
+    <label>كلمة المرور الجديدة</label>
+    <input id="newPassword" type="password"
+      placeholder="12 محرفاً على الأقل">
+
+    <label>تأكيد كلمة المرور</label>
+    <input id="confirmPassword" type="password"
+      placeholder="أعد كتابة كلمة المرور">
+
+    <button class="primary" onclick="saveNewPassword()">
+      حفظ كلمة المرور الجديدة
+    </button>
+
+    <div id="recoveryMessage" class="message"></div>
   </div>
 
   <div class="card hidden" id="employeeBox">
@@ -128,8 +162,32 @@ const roleSections = {
   booking_agent:["الحجوزات","العملاء","المسافرون"]
 };
 
+let recoveryMode = false;
+
 function showMessage(text) {
   document.getElementById("message").textContent = text;
+}
+
+function showRecoveryForm() {
+  recoveryMode = true;
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("employeeBox").classList.add("hidden");
+  document.getElementById("recoveryBox").classList.remove("hidden");
+}
+
+function showRecoveryMessage(text) {
+  document.getElementById("recoveryMessage").textContent = text;
+}
+
+function isRecoveryLink() {
+  const hash = new URLSearchParams(
+    window.location.hash.substring(1)
+  );
+
+  const params = new URLSearchParams(window.location.search);
+
+  return hash.get("type") === "recovery" ||
+         params.get("type") === "recovery";
 }
 
 async function login() {
@@ -159,6 +217,84 @@ async function login() {
   await loadEmployee();
 }
 
+async function requestPasswordReset() {
+  if (!db) {
+    showMessage("تعذر الاتصال بقاعدة البيانات.");
+    return;
+  }
+
+  const email = document.getElementById("email").value.trim();
+
+  if (!email) {
+    showMessage("أدخل بريدك الإلكتروني أولاً.");
+    return;
+  }
+
+  const redirectTo =
+    window.location.origin + window.location.pathname;
+
+  const {error} = await db.auth.resetPasswordForEmail(email, {
+    redirectTo
+  });
+
+  if (error) {
+    showMessage("تعذر إرسال الرسالة: " + error.message);
+    return;
+  }
+
+  showMessage("تم إرسال رسالة استعادة كلمة المرور إلى بريدك الإلكتروني.");
+}
+
+async function saveNewPassword() {
+  if (!db) {
+    showRecoveryMessage("تعذر الاتصال بقاعدة البيانات.");
+    return;
+  }
+
+  const password =
+    document.getElementById("newPassword").value;
+
+  const confirm =
+    document.getElementById("confirmPassword").value;
+
+  if (password.length < 12) {
+    showRecoveryMessage("كلمة المرور يجب أن تكون 12 محرفاً على الأقل.");
+    return;
+  }
+
+  if (password !== confirm) {
+    showRecoveryMessage("كلمتا المرور غير متطابقتين.");
+    return;
+  }
+
+  const {data:{session}} = await db.auth.getSession();
+
+  if (!session) {
+    showRecoveryMessage(
+      "رابط الاستعادة غير صالح أو انتهت صلاحيته. اطلب رابطاً جديداً."
+    );
+    return;
+  }
+
+  const {error} = await db.auth.updateUser({
+    password: password
+  });
+
+  if (error) {
+    showRecoveryMessage("تعذر تحديث كلمة المرور: " + error.message);
+    return;
+  }
+
+  await db.auth.signOut();
+
+  recoveryMode = false;
+
+  document.getElementById("recoveryBox").classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
+
+  showMessage("تم تغيير كلمة المرور بنجاح. يمكنك تسجيل الدخول الآن.");
+}
+
 async function loadEmployee() {
   const {data:{user}} = await db.auth.getUser();
 
@@ -177,6 +313,7 @@ async function loadEmployee() {
   }
 
   document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("recoveryBox").classList.add("hidden");
   document.getElementById("employeeBox").classList.remove("hidden");
 
   document.getElementById("employeeName").textContent =
@@ -210,9 +347,22 @@ async function checkSession() {
     return;
   }
 
+  if (isRecoveryLink()) {
+    showRecoveryForm();
+    return;
+  }
+
   const {data:{session}} = await db.auth.getSession();
 
   if (session) await loadEmployee();
+}
+
+if (db) {
+  db.auth.onAuthStateChange((event) => {
+    if (event === "PASSWORD_RECOVERY") {
+      showRecoveryForm();
+    }
+  });
 }
 
 checkSession();
@@ -220,5 +370,6 @@ checkSession();
 
 </body>
 </html>
+
 
 

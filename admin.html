@@ -131,7 +131,7 @@
 
       if (error) throw error;
 
-     if (String(data.role).trim() !== 'مالك') {
+     throw new Error('القيمة التي قرأها الموقع للدور هي: ' + JSON.stringify(data.role));
         await db.auth.signOut();
         throw new Error('هذا الحساب لا يملك صلاحية الدخول إلى لوحة المالك.');
       }

@@ -910,10 +910,13 @@
   </nav>
 
 
+
 <script>
   const db = window.arkanSupabase;
+  const BOOKING_FUNCTION = "create-public-booking";
 
   let allTrips = [];
+  let selectedTrip = null;
 
   const tripTypeNames = {
     umrah: "العمرة",
@@ -923,31 +926,9 @@
     other: "خدمات أخرى"
   };
 
-  function showLoginMessage() {
-    alert("سيتم تفعيل حساب المسافر وتسجيل الدخول في المرحلة القادمة.");
-  }
-
-  function selectCategory(type) {
-    const field = document.getElementById("tripType");
-    if (field) field.value = type;
-    renderTrips();
-    document.getElementById("trips").scrollIntoView({
-      behavior: "smooth"
-    });
-  }
-
-  function searchTrips() {
-    renderTrips();
-    document.getElementById("trips").scrollIntoView({
-      behavior: "smooth"
-    });
-  }
-
   function formatDate(value) {
     if (!value) return "يحدد لاحقاً";
-
     const date = new Date(value);
-
     if (Number.isNaN(date.getTime())) return "يحدد لاحقاً";
 
     return new Intl.DateTimeFormat("ar", {
@@ -955,6 +936,33 @@
       month: "long",
       day: "numeric"
     }).format(date);
+  }
+
+  function money(value, currency = "USD") {
+    return Number(value).toLocaleString("en-US") + " " + currency;
+  }
+
+  function showLoginMessage() {
+    alert("سيتم تفعيل حساب المسافر وتسجيل الدخول في المرحلة القادمة.");
+  }
+
+  function selectCategory(type) {
+    const field = document.getElementById("tripType");
+    if (field) field.value = type;
+
+    renderTrips();
+
+    document.getElementById("trips")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  function searchTrips() {
+    renderTrips();
+
+    document.getElementById("trips")?.scrollIntoView({
+      behavior: "smooth"
+    });
   }
 
   function createTripCard(trip) {
@@ -969,7 +977,8 @@
     type.textContent = tripTypeNames[trip.trip_type] || "رحلة";
 
     const destination = document.createElement("p");
-    destination.textContent = "الوجهة: " + (trip.destination || "حسب البرنامج");
+    destination.textContent =
+      "الوجهة: " + (trip.destination || "حسب البرنامج");
 
     const departure = document.createElement("p");
     departure.textContent = "الانطلاق: " + formatDate(trip.departure_at);
@@ -990,13 +999,26 @@
       if (price === null || price === undefined) return;
 
       const item = document.createElement("div");
-      item.textContent = label + ": " + Number(price).toLocaleString("en-US") + " " + currency;
+      item.textContent = label + ": " + money(price, currency);
       prices.appendChild(item);
     });
 
     const description = document.createElement("p");
     description.className = "trip-description";
     description.textContent = trip.description_ar || "";
+
+    const bookButton = document.createElement("button");
+    bookButton.type = "button";
+    bookButton.textContent = "احجز الآن";
+    bookButton.className = "book-trip-button";
+    bookButton.style.cssText =
+      "width:100%;padding:13px;margin-top:18px;border:0;" +
+      "border-radius:10px;background:#428177;color:white;" +
+      "font-size:16px;font-weight:bold;cursor:pointer;";
+
+    bookButton.addEventListener("click", () => {
+      openBookingForm(trip);
+    });
 
     card.append(
       type,
@@ -1005,7 +1027,8 @@
       departure,
       returnDate,
       description,
-      prices
+      prices,
+      bookButton
     );
 
     return card;
@@ -1021,7 +1044,8 @@
     const selectedType = typeField ? typeField.value : "";
 
     const filtered = allTrips.filter(trip => {
-      return !selectedType || selectedType === "all" ||
+      return !selectedType ||
+        selectedType === "all" ||
         trip.trip_type === selectedType;
     });
 
@@ -1044,6 +1068,264 @@
     });
   }
 
+  function openBookingForm(trip) {
+    selectedTrip = trip;
+
+    document.getElementById("bookingModal")?.remove();
+
+    const currency = trip.currency || "USD";
+
+    const modal = document.createElement("div");
+    modal.id = "bookingModal";
+
+    modal.style.cssText =
+      "position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.65);" +
+      "display:flex;align-items:center;justify-content:center;" +
+      "padding:15px;overflow-y:auto;";
+
+    modal.innerHTML = `
+      <div style="
+        background:#fff;color:#222;width:100%;max-width:520px;
+        max-height:95vh;overflow-y:auto;border-radius:16px;
+        padding:22px;direction:rtl;text-align:right;
+        font-family:inherit;position:relative;
+      ">
+        <button id="closeBooking" type="button" style="
+          position:absolute;left:15px;top:12px;border:0;
+          background:#eee;border-radius:50%;width:34px;height:34px;
+          font-size:20px;cursor:pointer;
+        ">×</button>
+
+        <div style="color:#428177;font-weight:bold;margin-bottom:8px">
+          أركان العالم للسياحة والسفر
+        </div>
+
+        <h2 style="margin:8px 0 5px">طلب حجز رحلة</h2>
+
+        <p style="color:#666;margin-bottom:18px" id="bookingTripTitle"></p>
+
+        <form id="publicBookingForm">
+
+          <label>الاسم الكامل *</label>
+          <input name="full_name" required minlength="3" maxlength="150"
+            placeholder="أدخل الاسم الكامل"
+            style="width:100%;padding:12px;margin:7px 0 14px;
+            border:1px solid #ddd;border-radius:8px;box-sizing:border-box">
+
+          <label>رقم الهاتف *</label>
+          <input name="phone" required minlength="7" maxlength="25"
+            placeholder="رقم الهاتف مع رمز الدولة"
+            style="width:100%;padding:12px;margin:7px 0 14px;
+            border:1px solid #ddd;border-radius:8px;box-sizing:border-box">
+
+          <label>البريد الإلكتروني</label>
+          <input name="email" type="email" maxlength="150"
+            placeholder="اختياري"
+            style="width:100%;padding:12px;margin:7px 0 14px;
+            border:1px solid #ddd;border-radius:8px;box-sizing:border-box">
+
+          <label>المدينة</label>
+          <input name="city" maxlength="100"
+            placeholder="المدينة"
+            style="width:100%;padding:12px;margin:7px 0 14px;
+            border:1px solid #ddd;border-radius:8px;box-sizing:border-box">
+
+          <label>نوع الغرفة *</label>
+          <select name="room_type" id="bookingRoomType" required
+            style="width:100%;padding:12px;margin:7px 0 14px;
+            border:1px solid #ddd;border-radius:8px;background:white">
+          </select>
+
+          <label>عدد المسافرين *</label>
+          <input name="travelers_count" id="bookingCount"
+            type="number" min="1" max="20" value="1" required
+            style="width:100%;padding:12px;margin:7px 0 14px;
+            border:1px solid #ddd;border-radius:8px;box-sizing:border-box">
+
+          <div style="
+            background:#f3f7f6;padding:14px;border-radius:10px;
+            margin:8px 0 15px
+          ">
+            <div style="color:#555">السعر للشخص الواحد:</div>
+            <strong id="bookingUnitPrice"></strong>
+
+            <div style="margin-top:10px;color:#555">الإجمالي:</div>
+            <strong id="bookingTotal" style="
+              color:#428177;font-size:23px
+            "></strong>
+          </div>
+
+          <label>ملاحظات إضافية</label>
+          <textarea name="booking_notes" maxlength="1000"
+            placeholder="أي معلومات إضافية (اختياري)"
+            style="width:100%;min-height:75px;padding:12px;
+            margin:7px 0 14px;border:1px solid #ddd;
+            border-radius:8px;box-sizing:border-box"></textarea>
+
+          <input name="website" type="text" tabindex="-1"
+            autocomplete="off" aria-hidden="true"
+            style="position:absolute;left:-9999px">
+
+          <div id="bookingMessage" role="status"
+            style="margin:10px 0;color:#6b1f2a"></div>
+
+          <button id="submitBooking" type="submit" style="
+            width:100%;padding:14px;border:0;border-radius:10px;
+            background:#428177;color:white;font-size:17px;
+            font-weight:bold;cursor:pointer;
+          ">إرسال طلب الحجز</button>
+
+          <p style="font-size:12px;color:#777;text-align:center">
+            سيتم التواصل معك لتأكيد تفاصيل الحجز.
+          </p>
+        </form>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document.getElementById("bookingTripTitle").textContent =
+      trip.title_ar || "رحلة أركان العالم";
+
+    const roomSelect = document.getElementById("bookingRoomType");
+
+    const roomOptions = [
+      ["quad", "رباعي", trip.price_quad],
+      ["triple", "ثلاثي", trip.price_triple],
+      ["double", "ثنائي", trip.price_double]
+    ];
+
+    roomOptions.forEach(([value, label, price]) => {
+      if (price === null || price === undefined || Number(price) <= 0) {
+        return;
+      }
+
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label + " — " + money(price, currency);
+      roomSelect.appendChild(option);
+    });
+
+    if (!roomSelect.options.length) {
+      document.getElementById("bookingMessage").textContent =
+        "لا توجد أسعار متاحة للحجز في هذه الرحلة حالياً.";
+      document.getElementById("submitBooking").disabled = true;
+    }
+
+    function updateBookingTotal() {
+      const selected = roomOptions.find(
+        item => item[0] === roomSelect.value
+      );
+
+      const price = selected ? Number(selected[2]) : 0;
+      const count = Number(
+        document.getElementById("bookingCount").value
+      );
+
+      document.getElementById("bookingUnitPrice").textContent =
+        money(price, currency);
+
+      document.getElementById("bookingTotal").textContent =
+        money(price * (Number.isInteger(count) && count > 0 ? count : 0),
+          currency);
+    }
+
+    roomSelect.addEventListener("change", updateBookingTotal);
+
+    document.getElementById("bookingCount").addEventListener(
+      "input",
+      updateBookingTotal
+    );
+
+    updateBookingTotal();
+
+    document.getElementById("closeBooking").addEventListener(
+      "click",
+      () => modal.remove()
+    );
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) modal.remove();
+    });
+
+    document.getElementById("publicBookingForm").addEventListener(
+      "submit",
+      submitPublicBooking
+    );
+  }
+
+  async function submitPublicBooking(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const button = document.getElementById("submitBooking");
+    const message = document.getElementById("bookingMessage");
+
+    if (!selectedTrip || !db) {
+      message.textContent = "تعذر الاتصال بالنظام. يرجى المحاولة لاحقاً.";
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    const payload = {
+      full_name: String(formData.get("full_name") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      city: String(formData.get("city") || "").trim(),
+      trip_id: selectedTrip.id,
+      room_type: String(formData.get("room_type") || ""),
+      travelers_count: Number(formData.get("travelers_count")),
+      booking_notes: String(formData.get("booking_notes") || "").trim(),
+      website: String(formData.get("website") || "")
+    };
+
+    button.disabled = true;
+    button.textContent = "جارٍ إرسال الطلب...";
+    message.textContent = "";
+
+    try {
+      const { data, error } = await db.functions.invoke(
+        BOOKING_FUNCTION,
+        { body: payload }
+      );
+
+      if (error) throw error;
+
+      if (!data || data.success !== true) {
+        throw new Error(
+          data?.message || "لم يتم قبول طلب الحجز."
+        );
+      }
+
+      message.style.color = "#26734d";
+      message.innerHTML =
+        "تم استلام طلبك بنجاح.<br>" +
+        "رقم الحجز: <strong></strong><br>" +
+        "الإجمالي: <strong></strong>";
+
+      const strong = message.querySelectorAll("strong");
+      strong[0].textContent = data.booking_code || "قيد المعالجة";
+      strong[1].textContent = money(
+        data.total_amount,
+        data.currency || "USD"
+      );
+
+      button.textContent = "تم إرسال الطلب";
+      form.reset();
+
+    } catch (error) {
+      console.error("Booking submission error:", error);
+
+      message.style.color = "#a32626";
+      message.textContent =
+        error.message || "تعذر إرسال طلب الحجز. حاول مجدداً.";
+
+      button.disabled = false;
+      button.textContent = "إعادة إرسال طلب الحجز";
+    }
+  }
+
   async function loadTrips() {
     const state = document.getElementById("tripsState");
 
@@ -1060,7 +1342,6 @@
       if (error) throw error;
 
       allTrips = data || [];
-
       renderTrips();
 
     } catch (error) {
@@ -1082,6 +1363,3 @@
 </body>
 </html>
 
-
-</body>
-</html>

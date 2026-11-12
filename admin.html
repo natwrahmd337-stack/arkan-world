@@ -131,7 +131,7 @@
 
       if (error) throw error;
 
-      if (data.role !== 'مالك') {
+     if (String(data.role).trim() !== 'مالك') {
         await db.auth.signOut();
         throw new Error('هذا الحساب لا يملك صلاحية الدخول إلى لوحة المالك.');
       }

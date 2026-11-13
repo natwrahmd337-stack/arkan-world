@@ -187,7 +187,99 @@ th { background: var(--ivory); }
         </table>
       </div>
     </div>
+    <div class="panel">
+      <h3>إسناد مهمة جديدة</h3>
+      <p class="muted">توزيع المهام على الموظفين ومتابعة تنفيذها.</p>
 
+      <div class="grid">
+
+        <div class="field">
+          <label for="taskTitle">عنوان المهمة</label>
+          <input id="taskTitle" placeholder="مثلاً: متابعة حجوزات العمرة">
+        </div>
+
+        <div class="field">
+          <label for="taskBranch">الفرع</label>
+          <select id="taskBranch">
+            <option value="">اختر الفرع</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskEmployee">الموظف المكلّف</label>
+          <select id="taskEmployee">
+            <option value="">اختر الموظف</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskPriority">الأولوية</label>
+          <select id="taskPriority">
+            <option value="normal">عادية</option>
+            <option value="medium">متوسطة</option>
+            <option value="urgent">عاجلة</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskDue">موعد التسليم</label>
+          <input id="taskDue" type="datetime-local">
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label for="taskDescription">تفاصيل المهمة</label>
+        <textarea id="taskDescription"
+          style="width:100%;min-height:100px;padding:12px;border:1px solid #ddd;border-radius:8px;margin-top:7px"
+          placeholder="اكتب تفاصيل وتعليمات المهمة..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="taskManagerNotes">ملاحظات الإدارة الداخلية</label>
+        <textarea id="taskManagerNotes"
+          style="width:100%;min-height:80px;padding:12px;border:1px solid #ddd;border-radius:8px;margin-top:7px"
+          placeholder="ملاحظات لا تظهر للموظف..."></textarea>
+      </div>
+
+      <button id="createTaskButton" class="primary"
+        type="button" onclick="createEmployeeTask()">
+        إسناد المهمة
+      </button>
+
+      <div id="taskMessage"></div>
+    </div>
+
+    <div class="panel">
+      <h3>المهام المسندة</h3>
+
+      <button class="secondary" type="button"
+        onclick="loadEmployeeTasks()">
+        تحديث المهام
+      </button>
+
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead>
+            <tr>
+              <th>المهمة</th>
+              <th>الموظف</th>
+              <th>الفرع</th>
+              <th>الأولوية</th>
+              <th>الحالة</th>
+              <th>الإنجاز</th>
+              <th>موعد التسليم</th>
+            </tr>
+          </thead>
+
+          <tbody id="employeeTasksList">
+            <tr>
+              <td colspan="7">لم يتم تحميل المهام بعد.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 

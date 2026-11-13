@@ -727,7 +727,8 @@ async function loadEmployees() {
     tbody.appendChild(tr);
   });
 }
-
+document.getElementById("taskBranch")
+  .addEventListener("change", loadTaskEmployees);
 checkAccess();
 
 </script>

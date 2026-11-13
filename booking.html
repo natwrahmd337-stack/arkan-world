@@ -1785,6 +1785,15 @@ async function loadSiteHero(){
   }
 }
   /* ARKAN TRAVEL GALLERY */
+  function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
 async function loadTravelGallery(){
   const gallery=document.getElementById("travelGallery");
   if(!gallery || !db)return;

@@ -486,7 +486,67 @@ async function loadBranches() {
     branchSelect.disabled = true;
   }
 }
+async function loadTaskEmployees() {
 
+  const branchId =
+    document.getElementById("taskBranch").value;
+
+  const employeeSelect =
+    document.getElementById("taskEmployee");
+
+  employeeSelect.innerHTML =
+    '<option value="">جارٍ تحميل الموظفين...</option>';
+
+  if (!branchId) {
+    employeeSelect.innerHTML =
+      '<option value="">اختر الفرع أولاً</option>';
+    return;
+  }
+
+  const { data, error } = await db
+    .from("profiles")
+    .select("id, full_name, role, branch_id, is_active")
+    .eq("branch_id", branchId)
+    .eq("is_active", true)
+    .in("role", [
+      "branch_manager",
+      "accountant",
+      "booking_agent"
+    ])
+    .order("full_name");
+
+  if (error) {
+    employeeSelect.innerHTML =
+      '<option value="">تعذر تحميل الموظفين</option>';
+
+    document.getElementById("taskMessage").textContent =
+      "تعذر تحميل الموظفين: " + error.message;
+
+    return;
+  }
+
+  employeeSelect.innerHTML =
+    '<option value="">اختر الموظف</option>';
+
+  if (!data || data.length === 0) {
+    employeeSelect.innerHTML =
+      '<option value="">لا يوجد موظفون نشطون في هذا الفرع</option>';
+    return;
+  }
+
+  data.forEach(employee => {
+
+    const option = document.createElement("option");
+
+    option.value = employee.id;
+
+    option.textContent =
+      employee.full_name + " — " +
+      roleName(employee.role);
+
+    employeeSelect.appendChild(option);
+  });
+}
 async function addEmployee() {
 
   const button = document.getElementById("addButton");

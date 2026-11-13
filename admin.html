@@ -1581,6 +1581,74 @@ document.getElementById("paymentForm").addEventListener("submit",async e=>{
   }finally{btn.disabled=false;}
 });
 
+/* SAVE TRIP EXPENSE */
+document.getElementById("tripExpenseForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  const btn=document.getElementById("saveTripExpenseBtn");
+  const tripId=document.getElementById("currentTripFinanceId").value;
+  const amount=Number(document.getElementById("expenseAmount").value);
+
+  if(!tripId){
+    showMessage("tripExpenseMessage","لم يتم تحديد الرحلة.");
+    return;
+  }
+
+  if(!Number.isFinite(amount)||amount<=0){
+    showMessage("tripExpenseMessage","أدخل مبلغاً صحيحاً.");
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent="جاري التسجيل...";
+
+  try{
+    const {data:trip,error:tripError}=await db
+      .from("trips")
+      .select("id,branch_id")
+      .eq("id",tripId)
+      .single();
+
+    if(tripError)throw tripError;
+
+    if(!trip.branch_id){
+      throw new Error("هذه الرحلة غير مرتبطة بفرع. حدّد الفرع من تعديل الرحلة أولاً.");
+    }
+
+    const payload={
+      trip_id:tripId,
+      branch_id:trip.branch_id,
+      expense_title:document.getElementById("expenseTitle").value.trim(),
+      expense_category:document.getElementById("expenseCategory").value,
+      amount,
+      currency:document.getElementById("expenseCurrency").value,
+      expense_date:document.getElementById("expenseDate").value,
+      paid_to:document.getElementById("expensePaidTo").value.trim()||null,
+      reference_number:document.getElementById("expenseReference").value.trim()||null,
+      notes:document.getElementById("expenseNotes").value.trim()||null,
+      created_by:currentUser.id,
+      updated_at:new Date().toISOString()
+    };
+
+    const {error}=await db.from("trip_expenses").insert(payload);
+
+    if(error)throw error;
+
+    showMessage("tripExpenseMessage","تم تسجيل المصروف بنجاح","success");
+
+    document.getElementById("tripExpenseForm").reset();
+
+    await loadTripFinance();
+
+  }catch(error){
+    console.error("Save trip expense error:",error);
+    showMessage("tripExpenseMessage",error.message);
+  }finally{
+    btn.disabled=false;
+    btn.textContent="تسجيل المصروف";
+  }
+});
+
 
 /* SHAM CASH PAYMENT SUBMISSIONS */
 async function loadPublicPaymentSubmissions(){

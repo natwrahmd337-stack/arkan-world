@@ -547,6 +547,107 @@ async function loadTaskEmployees() {
     employeeSelect.appendChild(option);
   });
 }
+  async function createEmployeeTask() {
+
+  const button = document.getElementById("createTaskButton");
+  const message = document.getElementById("taskMessage");
+
+  const title =
+    document.getElementById("taskTitle").value.trim();
+
+  const branchId =
+    document.getElementById("taskBranch").value;
+
+  const assignedTo =
+    document.getElementById("taskEmployee").value;
+
+  const priority =
+    document.getElementById("taskPriority").value;
+
+  const dueValue =
+    document.getElementById("taskDue").value;
+
+  const description =
+    document.getElementById("taskDescription").value.trim();
+
+  const managerNotes =
+    document.getElementById("taskManagerNotes").value.trim();
+
+  if (!title || !branchId || !assignedTo) {
+    message.textContent =
+      "يرجى إدخال عنوان المهمة واختيار الفرع والموظف.";
+    message.className = "error";
+    return;
+  }
+
+  if (
+    currentProfile.role === "admin" &&
+    branchId !== currentProfile.branch_id
+  ) {
+    message.textContent =
+      "لا يمكنك إسناد مهمة خارج فرعك.";
+    message.className = "error";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ إسناد المهمة...";
+  message.textContent = "جارٍ حفظ المهمة...";
+  message.className = "";
+
+  try {
+
+    const { data, error } = await db.rpc(
+      "create_employee_task",
+      {
+        p_title: title,
+        p_description: description || null,
+        p_assigned_to: assignedTo,
+        p_assigned_branch_id: branchId,
+        p_priority: priority,
+        p_due_at: dueValue
+          ? new Date(dueValue).toISOString()
+          : null,
+        p_manager_notes: managerNotes || null
+      }
+    );
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data || data.success !== true) {
+      throw new Error(
+        data?.error || "لم يتم إنشاء المهمة."
+      );
+    }
+
+    message.textContent =
+      "تم إسناد المهمة بنجاح.";
+    message.className = "success";
+
+    document.getElementById("taskTitle").value = "";
+    document.getElementById("taskDescription").value = "";
+    document.getElementById("taskManagerNotes").value = "";
+    document.getElementById("taskDue").value = "";
+    document.getElementById("taskPriority").value = "normal";
+    document.getElementById("taskEmployee").value = "";
+
+    await loadEmployeeTasks();
+
+  } catch (error) {
+
+    message.textContent =
+      "تعذر إسناد المهمة: " + error.message;
+    message.className = "error";
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "إسناد المهمة";
+
+  }
+}
 async function addEmployee() {
 
   const button = document.getElementById("addButton");

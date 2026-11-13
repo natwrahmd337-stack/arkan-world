@@ -370,6 +370,73 @@ async function checkAccess() {
 async function loadBranches() {
 
   const branchSelect = document.getElementById("branch");
+  const taskBranchSelect = document.getElementById("taskBranch");
+
+  branchSelect.innerHTML =
+    '<option value="">جارٍ تحميل الفروع...</option>';
+
+  taskBranchSelect.innerHTML =
+    '<option value="">جارٍ تحميل الفروع...</option>';
+
+  const { data, error } = await db
+    .from("branches")
+    .select("id, name, is_active")
+    .eq("is_active", true)
+    .order("name");
+
+  if (error) {
+    branchSelect.innerHTML =
+      '<option value="">تعذر تحميل الفروع</option>';
+
+    taskBranchSelect.innerHTML =
+      '<option value="">تعذر تحميل الفروع</option>';
+
+    showMessage(
+      "تعذر تحميل الفروع: " + error.message,
+      "error"
+    );
+    return;
+  }
+
+  branchesMap = {};
+
+  branchSelect.innerHTML =
+    '<option value="">اختر الفرع</option>';
+
+  taskBranchSelect.innerHTML =
+    '<option value="">اختر الفرع</option>';
+
+  (data || []).forEach(branch => {
+
+    branchesMap[branch.id] =
+      branch.name || branch.id;
+
+    const option1 = document.createElement("option");
+    option1.value = branch.id;
+    option1.textContent = branch.name || branch.id;
+
+    const option2 = document.createElement("option");
+    option2.value = branch.id;
+    option2.textContent = branch.name || branch.id;
+
+    branchSelect.appendChild(option1);
+    taskBranchSelect.appendChild(option2);
+  });
+
+  // حصر المدير العادي بفرعه
+  if (
+    currentProfile.role === "admin" &&
+    currentProfile.branch_id
+  ) {
+    branchSelect.value = currentProfile.branch_id;
+    branchSelect.disabled = true;
+
+    taskBranchSelect.value = currentProfile.branch_id;
+    taskBranchSelect.disabled = true;
+  }
+}
+
+  const branchSelect = document.getElementById("branch");
 
   branchSelect.innerHTML =
     '<option value="">جارٍ تحميل الفروع...</option>';

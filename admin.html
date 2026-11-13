@@ -967,6 +967,81 @@ async function openTripFinance(tripId){
   await loadTripFinance();
 }
 
+/* EXPORT TRIP FINANCE TO EXCEL */
+function exportTripFinanceExcel(){
+  if(typeof XLSX==="undefined"){
+    alert("مكتبة Excel لم يتم تحميلها. حدّث الصفحة وحاول مجدداً.");
+    return;
+  }
+
+  const tripId=document.getElementById("currentTripFinanceId").value;
+  if(!tripId){
+    alert("لم يتم تحديد الرحلة.");
+    return;
+  }
+
+  const tripName=document.getElementById("tripFinanceTitle").textContent;
+  const reportDate=new Date().toLocaleDateString("en-GB");
+
+  function readTableRows(bodyId){
+    const body=document.getElementById(bodyId);
+    if(!body)return [];
+
+    return Array.from(body.querySelectorAll("tr"))
+      .filter(tr=>!tr.querySelector(".empty-state"))
+      .map(tr=>Array.from(tr.querySelectorAll("td"))
+        .map(td=>td.innerText.trim()))
+      .filter(row=>row.length);
+  }
+
+  const summary=[
+    ["التقرير المالي للرحلة"],
+    ["اسم الرحلة",tripName],
+    ["تاريخ إعداد التقرير",reportDate],
+    [],
+    ["المؤشر المالي","القيمة"],
+    ["إجمالي المقبوضات",document.getElementById("tripFinanceIncome").innerText],
+    ["إجمالي المصروفات",document.getElementById("tripFinanceExpenses").innerText],
+    ["الصافي النقدي",document.getElementById("tripFinanceNet").innerText],
+    ["المبالغ المتبقية",document.getElementById("tripFinanceDue").innerText],
+    [],
+    ["ملاحظة","الصافي النقدي = المقبوضات بعد الاستردادات - المصروفات. ولا يمثل بالضرورة الربح المحاسبي النهائي."]
+  ];
+
+  const income=[
+    ["التاريخ","رقم الحجز","اسم المسافر","المبلغ","طريقة الدفع","نوع الدفعة"],
+    ...readTableRows("tripIncomeBody")
+  ];
+
+  const expenses=[
+    ["التاريخ","المصروف","التصنيف","المبلغ","الجهة المستفيدة","المرجع"],
+    ...readTableRows("tripExpensesBody")
+  ];
+
+  const workbook=XLSX.utils.book_new();
+
+  function addSheet(name,data){
+    const sheet=XLSX.utils.aoa_to_sheet(data);
+    sheet["!cols"]=data[0]?.map(()=>({wch:24}))||[];
+    sheet["!views"]=[{rightToLeft:true}];
+    XLSX.utils.book_append_sheet(workbook,sheet,name);
+  }
+
+  addSheet("الملخص المالي",summary);
+  addSheet("المقبوضات",income);
+  addSheet("المصروفات",expenses);
+
+  const safeName=tripName
+    .replace(/^الملف المالي:\s*/,"")
+    .replace(/[\\/:*?"<>|]/g,"-")
+    .trim();
+
+  XLSX.writeFile(
+    workbook,
+    "التقرير المالي - "+safeName+".xlsx"
+  );
+}
+
 async function loadTripFinance(){
   if(!db)return;
 

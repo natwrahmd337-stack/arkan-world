@@ -867,8 +867,9 @@ function showSection(id,button){
   if(id==="customers")loadCustomers();
   if(id==="branches")loadBranches();
   if(id==="finance"){loadPayments();loadPaymentOptions();}
-  if(id==="payments-review")loadPublicPaymentSubmissions();
-  if(id==="reports")loadReports();
+if(id==="payments-review")loadPublicPaymentSubmissions();
+if(id==="reports")loadReports();
+if(id==="site-media")loadSiteMedia();
 }
 
 async function countRows(table){

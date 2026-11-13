@@ -363,8 +363,9 @@ async function checkAccess() {
   document.getElementById("employeeArea")
     .classList.remove("hidden");
 
-  await loadBranches();
+   await loadBranches();
   await loadEmployees();
+  await loadEmployeeTasks();
 }
 
 async function loadBranches() {

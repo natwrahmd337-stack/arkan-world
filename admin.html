@@ -348,9 +348,15 @@
       <h2>الملف المالي للرحلة</h2>
       <p id="tripFinanceTitle">التفاصيل المالية للرحلة</p>
     </div>
-    <button class="secondary-btn" onclick="showSection('trips')">
-      العودة إلى الرحلات
-    </button>
+       <div class="form-actions">
+      <button class="primary-btn" type="button" onclick="exportTripFinanceExcel()">
+        <span>📊</span> تصدير التقرير Excel
+      </button>
+
+      <button class="secondary-btn" type="button" onclick="showSection('trips')">
+        العودة إلى الرحلات
+      </button>
+    </div>
   </div>
 
   <input type="hidden" id="currentTripFinanceId">

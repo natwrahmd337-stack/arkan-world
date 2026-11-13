@@ -2473,6 +2473,190 @@ window.onload=async function(){
 
 })();
 
+/* ================================
+   ARKAN WEBSITE MEDIA MANAGEMENT
+================================ */
+
+async function loadSiteMedia(){
+  const container=document.getElementById("siteMediaList");
+  if(!container || !db)return;
+
+  container.innerHTML="جاري تحميل الصور...";
+
+  try{
+    const {data,error}=await db
+      .from("site_media")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    if(!data || data.length===0){
+      container.innerHTML='<div class="empty-state">لا توجد صور مرفوعة حالياً.</div>';
+      return;
+    }
+
+    container.innerHTML=data.map(item=>`
+      <div style="border:1px solid #ddd;border-radius:12px;padding:12px;margin:12px 0;display:flex;gap:15px;align-items:center;flex-wrap:wrap">
+        <img src="${esc(item.image_url)}" alt=""
+          style="width:130px;height:90px;object-fit:cover;border-radius:8px">
+
+        <div style="flex:1;min-width:150px">
+          <strong>${esc(item.title_ar||"صورة بدون عنوان")}</strong>
+          <div>${item.media_type==="hero"?"صورة الغلاف":"صورة المعرض"}</div>
+          <div>${item.is_active?"نشطة":"غير نشطة"}</div>
+        </div>
+
+        <button type="button" class="secondary-btn"
+          onclick="deleteSiteMedia('${item.id}','${esc(item.storage_path)}')">
+          حذف الصورة
+        </button>
+      </div>
+    `).join("");
+
+  }catch(error){
+    console.error("Load site media:",error);
+    container.innerHTML='<div class="empty-state">تعذر تحميل الصور: '+esc(error.message)+'</div>';
+  }
+}
+
+async function uploadSiteImage(file,type,title,description=""){
+  if(!file)throw new Error("اختر صورة أولاً.");
+
+  if(!file.type.startsWith("image/")){
+    throw new Error("الملف المحدد ليس صورة.");
+  }
+
+  if(file.size>5*1024*1024){
+    throw new Error("حجم الصورة يجب ألا يتجاوز 5 ميغابايت.");
+  }
+
+  const extension=(file.name.split(".").pop()||"jpg")
+    .toLowerCase().replace(/[^a-z0-9]/g,"");
+
+  const path=type+"/"+Date.now()+"-"+crypto.randomUUID()+"."+extension;
+
+  const {error:uploadError}=await db.storage
+    .from("site-media")
+    .upload(path,file,{
+      contentType:file.type,
+      upsert:false
+    });
+
+  if(uploadError)throw uploadError;
+
+  const {data:urlData}=db.storage
+    .from("site-media")
+    .getPublicUrl(path);
+
+  if(type==="hero"){
+    const {error:disableError}=await db
+      .from("site_media")
+      .update({is_active:false})
+      .eq("media_type","hero")
+      .eq("is_active",true);
+
+    if(disableError){
+      await db.storage.from("site-media").remove([path]);
+      throw disableError;
+    }
+  }
+
+  const {error:insertError}=await db
+    .from("site_media")
+    .insert({
+      media_type:type,
+      title_ar:title||null,
+      description_ar:description||null,
+      image_url:urlData.publicUrl,
+      storage_path:path,
+      is_active:true
+    });
+
+  if(insertError){
+    await db.storage.from("site-media").remove([path]);
+    throw insertError;
+  }
+
+  return true;
+}
+
+/* Upload hero */
+document.getElementById("heroMediaForm")
+  ?.addEventListener("submit",async e=>{
+    e.preventDefault();
+
+    const file=document.getElementById("heroImageFile").files[0];
+    const title=document.getElementById("heroImageTitle").value.trim();
+
+    const btn=e.currentTarget.querySelector('button[type="submit"]');
+    btn.disabled=true;
+
+    try{
+      await uploadSiteImage(file,"hero",title);
+      showMessage("heroMediaMessage","تم رفع وتفعيل صورة الغلاف بنجاح.","success");
+      e.currentTarget.reset();
+      await loadSiteMedia();
+    }catch(error){
+      console.error(error);
+      showMessage("heroMediaMessage",error.message||"تعذر رفع الصورة.");
+    }finally{
+      btn.disabled=false;
+    }
+  });
+
+/* Upload gallery image */
+document.getElementById("galleryMediaForm")
+  ?.addEventListener("submit",async e=>{
+    e.preventDefault();
+
+    const file=document.getElementById("galleryImageFile").files[0];
+    const title=document.getElementById("galleryImageTitle").value.trim();
+    const description=document.getElementById("galleryImageDescription").value.trim();
+
+    const btn=e.currentTarget.querySelector('button[type="submit"]');
+    btn.disabled=true;
+
+    try{
+      await uploadSiteImage(file,"gallery",title,description);
+      showMessage("galleryMediaMessage","تم رفع الصورة إلى المعرض بنجاح.","success");
+      e.currentTarget.reset();
+      await loadSiteMedia();
+    }catch(error){
+      console.error(error);
+      showMessage("galleryMediaMessage",error.message||"تعذر رفع الصورة.");
+    }finally{
+      btn.disabled=false;
+    }
+  });
+
+/* Delete image */
+async function deleteSiteMedia(id,path){
+  if(!confirm("هل أنت متأكد من حذف هذه الصورة؟"))return;
+
+  try{
+    const {error:storageError}=await db.storage
+      .from("site-media")
+      .remove([path]);
+
+    if(storageError)throw storageError;
+
+    const {error:deleteError}=await db
+      .from("site_media")
+      .delete()
+      .eq("id",id);
+
+    if(deleteError)throw deleteError;
+
+    alert("تم حذف الصورة بنجاح.");
+    await loadSiteMedia();
+
+  }catch(error){
+    console.error(error);
+    alert("تعذر حذف الصورة: "+error.message);
+  }
+}
+
 checkSession();
 
 </script>

@@ -947,6 +947,169 @@ function renderTrips(){
     </tr>
   `).join("");
 }
+  
+/* TRIP FINANCE */
+async function openTripFinance(tripId){
+  const trip=tripsCache.find(t=>t.id===tripId);
+  if(!trip)return;
+
+  document.getElementById("currentTripFinanceId").value=tripId;
+  document.getElementById("tripFinanceTitle").textContent=
+    "الملف المالي: "+(trip.title_ar||trip.title_en||"");
+
+  showSection("trip-finance");
+  await loadTripFinance();
+}
+
+async function loadTripFinance(){
+  if(!db)return;
+
+  const tripId=document.getElementById("currentTripFinanceId").value;
+  if(!tripId)return;
+
+  const expensesBody=document.getElementById("tripExpensesBody");
+  const incomeBody=document.getElementById("tripIncomeBody");
+
+  try{
+    const {data:trip,error:tripError}=await db
+      .from("trips")
+      .select("id,branch_id,currency")
+      .eq("id",tripId)
+      .single();
+
+    if(tripError)throw tripError;
+
+    const {data:expenses,error:expensesError}=await db
+      .from("trip_expenses")
+      .select("*")
+      .eq("trip_id",tripId)
+      .order("expense_date",{ascending:false});
+
+    if(expensesError)throw expensesError;
+
+    const {data:payments,error:paymentsError}=await db
+      .from("payments")
+      .select(`
+        id,amount,currency,payment_type,payment_method,
+        received_at,reference_number,
+        bookings(
+          booking_code,trip_id,total_amount,paid_amount,currency,
+          customers(full_name)
+        )
+      `)
+      .order("received_at",{ascending:false});
+
+    if(paymentsError)throw paymentsError;
+
+    const {data:bookings,error:bookingsError}=await db
+      .from("bookings")
+      .select("total_amount,paid_amount,currency,status")
+      .eq("trip_id",tripId);
+
+    if(bookingsError)throw bookingsError;
+
+    const tripPayments=(payments||[]).filter(
+      p=>p.bookings?.trip_id===tripId
+    );
+
+    const incomeByCurrency={};
+    const expenseByCurrency={};
+    const dueByCurrency={};
+
+    tripPayments.forEach(p=>{
+      const currency=p.currency||p.bookings?.currency||"USD";
+      const amount=Number(p.amount||0);
+      const signedAmount=p.payment_type==="refund"?-amount:amount;
+      incomeByCurrency[currency]=(incomeByCurrency[currency]||0)+signedAmount;
+    });
+
+    (expenses||[]).forEach(e=>{
+      const currency=e.currency||"USD";
+      expenseByCurrency[currency]=(expenseByCurrency[currency]||0)+Number(e.amount||0);
+    });
+
+    (bookings||[]).filter(b=>b.status!=="cancelled").forEach(b=>{
+      const currency=b.currency||"USD";
+      const due=Math.max(0,Number(b.total_amount||0)-Number(b.paid_amount||0));
+      dueByCurrency[currency]=(dueByCurrency[currency]||0)+due;
+    });
+
+    function financeText(values){
+      const entries=Object.entries(values);
+      return entries.length
+        ?entries.map(([currency,value])=>money(value,currency)).join(" | ")
+        :"0";
+    }
+
+    const netByCurrency={};
+    const currencies=new Set([
+      ...Object.keys(incomeByCurrency),
+      ...Object.keys(expenseByCurrency)
+    ]);
+
+    currencies.forEach(currency=>{
+      netByCurrency[currency]=
+        (incomeByCurrency[currency]||0)-
+        (expenseByCurrency[currency]||0);
+    });
+
+    document.getElementById("tripFinanceIncome").textContent=
+      financeText(incomeByCurrency);
+
+    document.getElementById("tripFinanceExpenses").textContent=
+      financeText(expenseByCurrency);
+
+    document.getElementById("tripFinanceNet").textContent=
+      financeText(netByCurrency);
+
+    document.getElementById("tripFinanceDue").textContent=
+      financeText(dueByCurrency);
+
+    const categoryNames={
+      transport:"النقل والمواصلات",
+      hotel:"الفنادق والإقامة",
+      meals:"الوجبات والإطعام",
+      visas:"التأشيرات والإجراءات",
+      staff:"أجور الموظفين",
+      marketing:"التسويق والإعلان",
+      other:"أخرى"
+    };
+
+    expensesBody.innerHTML=(expenses||[]).length
+      ?expenses.map(e=>`
+        <tr>
+          <td>${esc(formatDate(e.expense_date))}</td>
+          <td>${esc(e.expense_title)}</td>
+          <td>${esc(categoryNames[e.expense_category]||e.expense_category)}</td>
+          <td>${esc(money(e.amount,e.currency))}</td>
+          <td>${esc(e.paid_to||"—")}</td>
+          <td>${esc(e.reference_number||"—")}</td>
+        </tr>
+      `).join("")
+      :'<tr><td colspan="6" class="empty-state">لا توجد مصروفات مسجلة</td></tr>';
+
+    incomeBody.innerHTML=tripPayments.length
+      ?tripPayments.map(p=>`
+        <tr>
+          <td>${esc(formatDate(p.received_at))}</td>
+          <td>${esc(p.bookings?.booking_code||"—")}</td>
+          <td>${esc(p.bookings?.customers?.full_name||"—")}</td>
+          <td>${esc(money(p.amount,p.currency||p.bookings?.currency))}</td>
+          <td>${esc({cash:"نقدي",bank_transfer:"حوالة بنكية",card:"بطاقة",other:"أخرى"}[p.payment_method]||p.payment_method)}</td>
+          <td>${esc({deposit:"عربون",balance:"تكملة",refund:"استرداد",other:"أخرى"}[p.payment_type]||p.payment_type)}</td>
+        </tr>
+      `).join("")
+      :'<tr><td colspan="6" class="empty-state">لا توجد مقبوضات مسجلة</td></tr>';
+
+  }catch(error){
+    console.error("Trip finance error:",error);
+    expensesBody.innerHTML=
+      `<tr><td colspan="6" class="empty-state">${esc(error.message)}</td></tr>`;
+    incomeBody.innerHTML=
+      `<tr><td colspan="6" class="empty-state">${esc(error.message)}</td></tr>`;
+  }
+}
+
 function openTripForm(){
   document.getElementById("tripForm").reset();
   document.getElementById("tripId").value="";

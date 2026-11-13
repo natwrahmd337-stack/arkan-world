@@ -1393,7 +1393,7 @@ async function reviewPublicPayment(submissionId,action){
   try{
     const {error}=await db.rpc("review_public_payment",{
       p_submission_id:submissionId,
-      p_action:action,
+   p_action:action==="approve"?"approved":"rejected",
       p_review_notes:reviewNotes
     });
 

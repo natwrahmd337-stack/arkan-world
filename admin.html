@@ -1275,6 +1275,7 @@ document.getElementById("paymentForm").addEventListener("submit",async e=>{
   }finally{btn.disabled=false;}
 });
 
+
 /* SHAM CASH PAYMENT SUBMISSIONS */
 async function loadPublicPaymentSubmissions(){
   if(!db)return;
@@ -1328,15 +1329,32 @@ async function loadPublicPaymentSubmissions(){
         rejected:"مرفوض"
       };
 
+      let actions="-";
+
+      if(p.status==="pending"){
+        actions=`
+          <div class="inline-actions">
+            <button class="primary-btn"
+              onclick="reviewPublicPayment('${p.id}','approve')">
+              قبول
+            </button>
+            <button class="danger-btn"
+              onclick="reviewPublicPayment('${p.id}','reject')">
+              رفض
+            </button>
+          </div>
+        `;
+      }
+
       return `
         <tr>
           <td>${esc(booking.booking_code||"-")}</td>
-          <td>${money(Number(p.amount))} ${esc(p.currency||"")}</td>
+          <td>${money(Number(p.amount),p.currency||"USD")}</td>
           <td>${esc(p.reference_number||"-")}</td>
           <td>${new Date(p.submitted_at).toLocaleString("ar")}</td>
           <td>${receiptLink}</td>
           <td>${statusNames[p.status]||esc(p.status)}</td>
-          <td>${esc(customer.full_name||"-")}</td>
+          <td>${actions}</td>
         </tr>
       `;
     }));
@@ -1349,6 +1367,53 @@ async function loadPublicPaymentSubmissions(){
       `<tr><td colspan="7" class="empty-state">${esc(error.message)}</td></tr>`;
   }
 }
+
+/* REVIEW SHAM CASH PAYMENT */
+async function reviewPublicPayment(submissionId,action){
+  if(!db)return;
+
+  const actionName=action==="approve"?"قبول":"رفض";
+
+  if(action!=="approve" && action!=="reject")return;
+
+  if(!confirm(`هل أنت متأكد من ${actionName} طلب الدفع؟`))return;
+
+  let reviewNotes=null;
+
+  if(action==="reject"){
+    reviewNotes=prompt("اكتب سبب رفض الإيصال:");
+    if(reviewNotes===null)return;
+
+    if(!reviewNotes.trim()){
+      alert("يجب كتابة سبب الرفض.");
+      return;
+    }
+  }
+
+  try{
+    const {error}=await db.rpc("review_public_payment",{
+      p_submission_id:submissionId,
+      p_action:action,
+      p_review_notes:reviewNotes
+    });
+
+    if(error)throw error;
+
+    alert(action==="approve"
+      ?"تم قبول الدفعة وتحديث رصيد الحجز بنجاح."
+      :"تم رفض طلب الدفع.");
+
+    await loadPublicPaymentSubmissions();
+    await loadPayments();
+    await loadBookings();
+    await loadDashboard();
+
+  }catch(error){
+    console.error("Review payment error:",error);
+    alert("تعذر تنفيذ المراجعة: "+error.message);
+  }
+}
+
 
 /* REPORTS */
 async function loadReports(){

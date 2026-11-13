@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#428177">
 <title>إدارة الموظفين | أركان العالم</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -10,96 +12,99 @@
 
 <style>
 :root {
-  --teal: #428177;
-  --burgundy: #6b1f2a;
-  --ivory: #edebe0;
-  --dark: #252b2a;
+  --teal:#428177;
+  --burgundy:#6b1f2a;
+  --ivory:#edebe0;
+  --dark:#252b2a;
 }
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f5f2;
-  color: var(--dark);
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f5f2;
+  color:var(--dark);
 }
 header {
-  background: var(--teal);
-  color: white;
-  padding: 22px;
+  background:var(--teal);
+  color:white;
+  padding:22px;
 }
-header h2 { margin: 0 0 8px; }
-header p { margin: 0; opacity: .9; }
+header h2 { margin:0 0 8px; }
+header p { margin:0; opacity:.9; }
 .container {
-  max-width: 1100px;
-  margin: 30px auto;
-  padding: 0 18px;
+  max-width:1100px;
+  margin:30px auto;
+  padding:0 18px;
 }
 .panel {
-  background: white;
-  border-radius: 14px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 15px #0000000b;
+  background:white;
+  border-radius:14px;
+  padding:24px;
+  margin-bottom:20px;
+  box-shadow:0 3px 15px #0000000b;
 }
-h3 { margin-top: 0; }
+h3 { margin-top:0; }
 button {
-  border: 0;
-  border-radius: 8px;
-  padding: 12px 20px;
-  cursor: pointer;
-  font-size: 15px;
+  border:0;
+  border-radius:8px;
+  padding:12px 20px;
+  cursor:pointer;
+  font-size:15px;
 }
 button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
+  opacity:.6;
+  cursor:not-allowed;
 }
 .primary {
-  background: var(--teal);
-  color: white;
+  background:var(--teal);
+  color:white;
 }
 .secondary {
-  background: var(--ivory);
-  color: var(--dark);
+  background:var(--ivory);
+  color:var(--dark);
 }
-input, select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-top: 7px;
-  font-size: 15px;
-  background: white;
+input,select,textarea {
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin-top:7px;
+  font-size:15px;
+  background:white;
+  font-family:inherit;
 }
-.field { margin-bottom: 16px; }
-label { font-weight: bold; }
+textarea { resize:vertical; }
+.field { margin-bottom:16px; }
+label { font-weight:bold; }
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-  gap: 16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
 }
-.table-wrap { overflow-x: auto; }
+.table-wrap { overflow-x:auto; }
 table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 650px;
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
 }
-th, td {
-  padding: 13px;
-  border-bottom: 1px solid #eee;
-  text-align: right;
+th,td {
+  padding:13px;
+  border-bottom:1px solid #eee;
+  text-align:right;
 }
-th { background: var(--ivory); }
-#message {
-  margin-top: 15px;
-  font-weight: bold;
-  line-height: 1.8;
+th { background:var(--ivory); }
+#message,#taskMessage {
+  margin-top:15px;
+  font-weight:bold;
+  line-height:1.8;
+  overflow-wrap:anywhere;
 }
-.hidden { display: none; }
-.success { color: #247747; }
-.error { color: var(--burgundy); }
-.muted { color: #777; }
-.status-active { color: #247747; font-weight: bold; }
-.status-inactive { color: var(--burgundy); font-weight: bold; }
+.hidden { display:none; }
+.success { color:#247747; }
+.error { color:var(--burgundy); }
+.muted { color:#777; }
+.status-active { color:#247747; font-weight:bold; }
+.status-inactive { color:var(--burgundy); font-weight:bold; }
 </style>
 </head>
 
@@ -141,7 +146,7 @@ th { background: var(--ivory); }
           <select id="role">
             <option value="branch_manager">مدير فرع</option>
             <option value="accountant">محاسب</option>
-            <option value="booking_agent">موظف حجوزات</option>
+            <option value="booking_agent" selected>موظف حجوزات</option>
             <option value="admin" id="adminOption">مدير النظام</option>
           </select>
         </div>
@@ -178,15 +183,13 @@ th { background: var(--ivory); }
               <th>الحالة</th>
             </tr>
           </thead>
-
           <tbody id="employeesList">
-            <tr>
-              <td colspan="5">جارٍ تحميل الموظفين...</td>
-            </tr>
+            <tr><td colspan="5">جارٍ تحميل الموظفين...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
+
     <div class="panel">
       <h3>إسناد مهمة جديدة</h3>
       <p class="muted">توزيع المهام على الموظفين ومتابعة تنفيذها.</p>
@@ -230,15 +233,13 @@ th { background: var(--ivory); }
 
       <div class="field">
         <label for="taskDescription">تفاصيل المهمة</label>
-        <textarea id="taskDescription"
-          style="width:100%;min-height:100px;padding:12px;border:1px solid #ddd;border-radius:8px;margin-top:7px"
+        <textarea id="taskDescription" style="min-height:100px"
           placeholder="اكتب تفاصيل وتعليمات المهمة..."></textarea>
       </div>
 
       <div class="field">
         <label for="taskManagerNotes">ملاحظات الإدارة الداخلية</label>
-        <textarea id="taskManagerNotes"
-          style="width:100%;min-height:80px;padding:12px;border:1px solid #ddd;border-radius:8px;margin-top:7px"
+        <textarea id="taskManagerNotes" style="min-height:80px"
           placeholder="ملاحظات لا تظهر للموظف..."></textarea>
       </div>
 
@@ -253,8 +254,7 @@ th { background: var(--ivory); }
     <div class="panel">
       <h3>المهام المسندة</h3>
 
-      <button class="secondary" type="button"
-        onclick="loadEmployeeTasks()">
+      <button class="secondary" type="button" onclick="loadEmployeeTasks()">
         تحديث المهام
       </button>
 
@@ -271,19 +271,18 @@ th { background: var(--ivory); }
               <th>موعد التسليم</th>
             </tr>
           </thead>
-
           <tbody id="employeeTasksList">
-            <tr>
-              <td colspan="7">لم يتم تحميل المهام بعد.</td>
-            </tr>
+            <tr><td colspan="7">لم يتم تحميل المهام بعد.</td></tr>
           </tbody>
         </table>
       </div>
     </div>
+
   </div>
 </div>
 
 <script>
+"use strict";
 
 const db = window.arkanSupabase;
 
@@ -311,62 +310,77 @@ function roleName(role) {
   return names[role] || role || "غير محدد";
 }
 
-async function checkAccess() {
+function showTaskMessage(message, type = "") {
+  const box = document.getElementById("taskMessage");
+  box.textContent = message;
+  box.className = type;
+}
 
+/* التحقق من صلاحية الدخول */
+async function checkAccess() {
   const userInfo = document.getElementById("userInfo");
 
-  if (!db) {
-    userInfo.textContent = "تعذر الاتصال بقاعدة البيانات. تحقق من config.js";
-    return;
-  }
+  try {
+    if (!db) {
+      userInfo.textContent =
+        "تعذر الاتصال بقاعدة البيانات. تحقق من config.js";
+      return;
+    }
 
-  const { data: sessionData, error: sessionError } =
-    await db.auth.getSession();
+    const { data: sessionData, error: sessionError } =
+      await db.auth.getSession();
 
-  const session = sessionData?.session;
+    const session = sessionData?.session;
 
-  if (sessionError || !session) {
+    if (sessionError || !session) {
+      userInfo.textContent =
+        "يرجى تسجيل الدخول أولاً من لوحة الإدارة.";
+      return;
+    }
+
+    const { data: profile, error } = await db
+      .from("profiles")
+      .select("id, full_name, role, branch_id, is_active")
+      .eq("id", session.user.id)
+      .single();
+
+    if (error || !profile || !profile.is_active) {
+      userInfo.textContent =
+        "تعذر التحقق من صلاحية الحساب أو أن الحساب غير مفعل.";
+      return;
+    }
+
+    if (!["owner", "admin"].includes(profile.role)) {
+      userInfo.textContent =
+        "ليس لديك صلاحية إدارة الموظفين.";
+      return;
+    }
+
+    currentProfile = profile;
+
     userInfo.textContent =
-      "يرجى تسجيل الدخول أولاً من لوحة الإدارة.";
-    return;
-  }
+      "مرحباً " + (profile.full_name || "بك") +
+      " — " + roleName(profile.role);
 
-  const { data: profile, error } = await db
-    .from("profiles")
-    .select("id, full_name, role, branch_id, is_active")
-    .eq("id", session.user.id)
-    .single();
+    if (profile.role !== "owner") {
+      document.getElementById("adminOption").hidden = true;
+    }
 
-  if (error || !profile || !profile.is_active) {
+    document.getElementById("employeeArea")
+      .classList.remove("hidden");
+
+    await loadBranches();
+    await loadEmployees();
+    await loadEmployeeTasks();
+
+  } catch (error) {
     userInfo.textContent =
-      "تعذر التحقق من صلاحية الحساب أو أن الحساب غير مفعل.";
-    return;
+      "حدث خطأ أثناء التحقق: " + error.message;
   }
+}
 
-  if (!["owner", "admin"].includes(profile.role)) {
-    userInfo.textContent =
-      "ليس لديك صلاحية إدارة الموظفين.";
-    return;
-  }
-
-  currentProfile = profile;
-
-  userInfo.textContent =
-    "مرحباً " + (profile.full_name || "بك") +
-    " — " + roleName(profile.role);
-
-  // المدير العادي لا يستطيع إنشاء مدير نظام
-  if (profile.role !== "owner") {
-    document.getElementById("adminOption").hidden = true;
-  }
-
-  document.getElementById("employeeArea")
-    .classList.remove("hidden");
-
-   await loadBranches();
-  await loadEmployees();
-  await loadEmployeeTasks();
-  async function loadBranches() {
+/* تحميل الفروع */
+async function loadBranches() {
   const branchSelect = document.getElementById("branch");
   const taskBranchSelect = document.getElementById("taskBranch");
 
@@ -383,8 +397,11 @@ async function checkAccess() {
 
   branchesMap = {};
 
-  branchSelect.innerHTML = '<option value="">اختر الفرع</option>';
-  taskBranchSelect.innerHTML = '<option value="">اختر الفرع</option>';
+  branchSelect.innerHTML =
+    '<option value="">اختر الفرع</option>';
+
+  taskBranchSelect.innerHTML =
+    '<option value="">اختر الفرع</option>';
 
   (data || []).forEach(branch => {
     branchesMap[branch.id] = branch.name || branch.id;
@@ -400,16 +417,16 @@ async function checkAccess() {
   if (currentProfile.role === "admin" && currentProfile.branch_id) {
     branchSelect.value = currentProfile.branch_id;
     taskBranchSelect.value = currentProfile.branch_id;
+
     branchSelect.disabled = true;
     taskBranchSelect.disabled = true;
   }
 
   await loadTaskEmployees();
 }
-}
 
+/* تحميل موظفي الفرع */
 async function loadTaskEmployees() {
-
   const branchId =
     document.getElementById("taskBranch").value;
 
@@ -441,9 +458,10 @@ async function loadTaskEmployees() {
     employeeSelect.innerHTML =
       '<option value="">تعذر تحميل الموظفين</option>';
 
-    document.getElementById("taskMessage").textContent =
-      "تعذر تحميل الموظفين: " + error.message;
-
+    showTaskMessage(
+      "تعذر تحميل الموظفين: " + error.message,
+      "error"
+    );
     return;
   }
 
@@ -457,20 +475,18 @@ async function loadTaskEmployees() {
   }
 
   data.forEach(employee => {
-
     const option = document.createElement("option");
-
     option.value = employee.id;
-
     option.textContent =
-      employee.full_name + " — " +
-      roleName(employee.role);
+      (employee.full_name || "بدون اسم") +
+      " — " + roleName(employee.role);
 
     employeeSelect.appendChild(option);
   });
 }
-  async function loadEmployeeTasks() {
 
+/* تحميل المهام */
+async function loadEmployeeTasks() {
   const tbody = document.getElementById("employeeTasksList");
 
   tbody.innerHTML =
@@ -482,10 +498,13 @@ async function loadTaskEmployees() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    tbody.innerHTML =
-      '<tr><td colspan="7">تعذر تحميل المهام: ' +
-      error.message +
-      '</td></tr>';
+    tbody.innerHTML = "";
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.textContent = "تعذر تحميل المهام: " + error.message;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
     return;
   }
 
@@ -499,7 +518,7 @@ async function loadTaskEmployees() {
     ...new Set(tasks.map(task => task.assigned_to).filter(Boolean))
   ];
 
-  let employeesMap = {};
+  const employeesMap = {};
 
   if (employeeIds.length > 0) {
     const { data: employees, error: employeesError } = await db
@@ -508,10 +527,14 @@ async function loadTaskEmployees() {
       .in("id", employeeIds);
 
     if (employeesError) {
-      tbody.innerHTML =
-        '<tr><td colspan="7">تعذر تحميل أسماء الموظفين: ' +
-        employeesError.message +
-        '</td></tr>';
+      tbody.innerHTML = "";
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 7;
+      td.textContent =
+        "تعذر تحميل أسماء الموظفين: " + employeesError.message;
+      tr.appendChild(td);
+      tbody.appendChild(tr);
       return;
     }
 
@@ -538,7 +561,6 @@ async function loadTaskEmployees() {
   tbody.innerHTML = "";
 
   tasks.forEach(task => {
-
     const tr = document.createElement("tr");
 
     const dueDate = task.due_at
@@ -564,10 +586,10 @@ async function loadTaskEmployees() {
     tbody.appendChild(tr);
   });
 }
-  async function createEmployeeTask() {
 
+/* إنشاء مهمة */
+async function createEmployeeTask() {
   const button = document.getElementById("createTaskButton");
-  const message = document.getElementById("taskMessage");
 
   const title =
     document.getElementById("taskTitle").value.trim();
@@ -591,9 +613,10 @@ async function loadTaskEmployees() {
     document.getElementById("taskManagerNotes").value.trim();
 
   if (!title || !branchId || !assignedTo) {
-    message.textContent =
-      "يرجى إدخال عنوان المهمة واختيار الفرع والموظف.";
-    message.className = "error";
+    showTaskMessage(
+      "يرجى إدخال عنوان المهمة واختيار الفرع والموظف.",
+      "error"
+    );
     return;
   }
 
@@ -601,19 +624,18 @@ async function loadTaskEmployees() {
     currentProfile.role === "admin" &&
     branchId !== currentProfile.branch_id
   ) {
-    message.textContent =
-      "لا يمكنك إسناد مهمة خارج فرعك.";
-    message.className = "error";
+    showTaskMessage(
+      "لا يمكنك إسناد مهمة خارج فرعك.",
+      "error"
+    );
     return;
   }
 
   button.disabled = true;
   button.textContent = "جارٍ إسناد المهمة...";
-  message.textContent = "جارٍ حفظ المهمة...";
-  message.className = "";
+  showTaskMessage("جارٍ حفظ المهمة...");
 
   try {
-
     const { data, error } = await db.rpc(
       "create_employee_task",
       {
@@ -629,19 +651,13 @@ async function loadTaskEmployees() {
       }
     );
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     if (!data || data.success !== true) {
-      throw new Error(
-        data?.error || "لم يتم إنشاء المهمة."
-      );
+      throw new Error(data?.error || "لم يتم إنشاء المهمة.");
     }
 
-    message.textContent =
-      "تم إسناد المهمة بنجاح.";
-    message.className = "success";
+    showTaskMessage("تم إسناد المهمة بنجاح.", "success");
 
     document.getElementById("taskTitle").value = "";
     document.getElementById("taskDescription").value = "";
@@ -653,27 +669,40 @@ async function loadTaskEmployees() {
     await loadEmployeeTasks();
 
   } catch (error) {
-
-    message.textContent =
-      "تعذر إسناد المهمة: " + error.message;
-    message.className = "error";
-
+    showTaskMessage(
+      "تعذر إسناد المهمة: " + (error.message || "خطأ غير معروف"),
+      "error"
+    );
   } finally {
-
     button.disabled = false;
     button.textContent = "إسناد المهمة";
-
   }
 }
-async function addEmployee() {
 
+/* قراءة استجابة الدالة حتى لو لم تكن JSON */
+async function readFunctionResponse(response) {
+  const rawText = await response.text();
+
+  if (!rawText) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(rawText);
+  } catch {
+    return { error: rawText };
+  }
+}
+
+/* إضافة موظف وإرسال الدعوة */
+async function addEmployee() {
   const button = document.getElementById("addButton");
 
   const fullName =
     document.getElementById("fullName").value.trim();
 
   const email =
-    document.getElementById("email").value.trim();
+    document.getElementById("email").value.trim().toLowerCase();
 
   const role =
     document.getElementById("role").value;
@@ -689,11 +718,10 @@ async function addEmployee() {
     return;
   }
 
-  if (!email.includes("@")) {
-    showMessage(
-      "يرجى إدخال بريد إلكتروني صحيح.",
-      "error"
-    );
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailPattern.test(email)) {
+    showMessage("يرجى إدخال بريد إلكتروني صحيح.", "error");
     return;
   }
 
@@ -708,14 +736,12 @@ async function addEmployee() {
     return;
   }
 
-  const { data: sessionData, error: sessionError } =
-    await db.auth.getSession();
-
-  const session = sessionData?.session;
-
-  if (sessionError || !session) {
+  if (
+    currentProfile.role === "admin" &&
+    branchId !== currentProfile.branch_id
+  ) {
     showMessage(
-      "انتهت جلسة الدخول. سجل الدخول مجدداً.",
+      "يمكنك إضافة موظفين لفرعك فقط.",
       "error"
     );
     return;
@@ -723,32 +749,52 @@ async function addEmployee() {
 
   button.disabled = true;
   button.textContent = "جارٍ إرسال الدعوة...";
-
   showMessage("جارٍ إنشاء حساب الموظف وإرسال الدعوة...");
 
   try {
+    const { data: sessionData, error: sessionError } =
+      await db.auth.getSession();
+
+    const session = sessionData?.session;
+
+    if (sessionError || !session) {
+      throw new Error(
+        "انتهت جلسة الدخول. سجل الدخول مجدداً."
+      );
+    }
 
     const response = await fetch(FUNCTION_URL, {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + session.access_token
       },
-
       body: JSON.stringify({
         full_name: fullName,
-        email: email,
-        role: role,
+        email,
+        role,
         branch_id: branchId
       })
     });
 
-    const result = await response.json();
+    const result = await readFunctionResponse(response);
 
     if (!response.ok) {
+      const details = result.details
+        ? "\nالتفاصيل: " + result.details
+        : "";
+
       throw new Error(
-        result.error || "تعذر إنشاء حساب الموظف."
+        (result.error || result.message ||
+        "تعذر إرسال الدعوة.") +
+        " (HTTP " + response.status + ")" +
+        details
+      );
+    }
+
+    if (result.success !== true) {
+      throw new Error(
+        result.error || "لم يتم تأكيد إنشاء حساب الموظف."
       );
     }
 
@@ -760,29 +806,24 @@ async function addEmployee() {
 
     document.getElementById("fullName").value = "";
     document.getElementById("email").value = "";
-
-    document.getElementById("role").value =
-      "booking_agent";
+    document.getElementById("role").value = "booking_agent";
 
     await loadEmployees();
 
   } catch (error) {
-
     showMessage(
-      "حدث خطأ: " + error.message,
+      "تعذر إتمام العملية: " +
+      (error.message || "حدث خطأ غير معروف"),
       "error"
     );
-
   } finally {
-
     button.disabled = false;
     button.textContent = "إرسال دعوة الموظف";
-
   }
 }
 
+/* تحميل قائمة الموظفين */
 async function loadEmployees() {
-
   const tbody = document.getElementById("employeesList");
 
   tbody.innerHTML =
@@ -794,27 +835,25 @@ async function loadEmployees() {
     .order("created_at", { ascending: false });
 
   if (error) {
-
-    tbody.innerHTML =
-      '<tr><td colspan="5">تعذر تحميل الموظفين: ' +
-      error.message +
-      '</td></tr>';
-
+    tbody.innerHTML = "";
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 5;
+    td.textContent = "تعذر تحميل الموظفين: " + error.message;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
     return;
   }
 
   if (!data || data.length === 0) {
-
     tbody.innerHTML =
       '<tr><td colspan="5">لا يوجد موظفون حالياً.</td></tr>';
-
     return;
   }
 
   tbody.innerHTML = "";
 
   data.forEach(employee => {
-
     const tr = document.createElement("tr");
 
     const values = [
@@ -836,22 +875,20 @@ async function loadEmployees() {
       employee.is_active ? "نشط" : "غير نشط";
 
     statusCell.className =
-      employee.is_active
-        ? "status-active"
-        : "status-inactive";
+      employee.is_active ? "status-active" : "status-inactive";
 
     tr.appendChild(statusCell);
-
     tbody.appendChild(tr);
   });
 }
+
+/* أحداث الصفحة */
 document.getElementById("taskBranch")
   .addEventListener("change", loadTaskEmployees);
+
 checkAccess();
 
 </script>
 
 </body>
 </html>
->
-

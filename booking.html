@@ -614,6 +614,68 @@
       }
       body { padding-bottom: 65px; }
     }
+    /* ARKAN TRAVEL GALLERY */
+.gallery-section{
+  padding:70px 0;
+  background:#edebe0;
+}
+
+.gallery-section .section-heading{
+  margin-bottom:28px;
+}
+
+.travel-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+
+.gallery-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.gallery-card img{
+  display:block;
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  transition:transform .35s ease;
+}
+
+.gallery-card:hover img{
+  transform:scale(1.05);
+}
+
+.gallery-card-title{
+  padding:13px 15px;
+  color:#315f58;
+  font-weight:700;
+}
+
+@media(max-width:700px){
+  .travel-gallery{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .gallery-card img{
+    height:155px;
+  }
+}
+
+@media(max-width:420px){
+  .travel-gallery{
+    grid-template-columns:1fr;
+  }
+
+  .gallery-card img{
+    height:220px;
+  }
+}
   </style>
 </head>
 

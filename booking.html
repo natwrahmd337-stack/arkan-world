@@ -1784,6 +1784,45 @@ async function loadSiteHero(){
     console.error("Hero image loading error:",error);
   }
 }
+  /* ARKAN TRAVEL GALLERY */
+async function loadTravelGallery(){
+  const gallery=document.getElementById("travelGallery");
+  if(!gallery || !db)return;
+
+  gallery.innerHTML="<p>جاري تحميل الصور...</p>";
+
+  try{
+    const {data,error}=await db
+      .from("site_media")
+      .select("id,title_ar,image_url,sort_order")
+      .eq("media_type","gallery")
+      .eq("is_active",true)
+      .order("sort_order",{ascending:true})
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    if(!data || data.length===0){
+      gallery.innerHTML="<p>سيتم إضافة صور رحلاتنا قريباً.</p>";
+      return;
+    }
+
+    gallery.innerHTML=data.map(item=>`
+      <div class="gallery-card">
+        <img src="${esc(item.image_url)}"
+             alt="${esc(item.title_ar||"صورة من رحلات أركان")}"
+             loading="lazy">
+        ${item.title_ar
+          ? `<div class="gallery-card-title">${esc(item.title_ar)}</div>`
+          : ""}
+      </div>
+    `).join("");
+
+  }catch(error){
+    console.error("Travel gallery error:",error);
+    gallery.innerHTML="<p>تعذر تحميل صور المعرض حالياً.</p>";
+  }
+}
 loadSiteHero();
 loadTrips();
 </script>

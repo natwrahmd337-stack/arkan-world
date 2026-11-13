@@ -701,7 +701,40 @@
         </div>
         <div class="panel"><h3>ملخص الحجوزات حسب الحالة</h3><div id="reportStatus" class="empty-state">جاري التحميل...</div></div>
       </section>
+<section id="site-media" class="section">
+  <div class="page-heading">
+    <div>
+      <h2>إدارة صور الموقع</h2>
+      <p>تغيير صورة الغلاف وإضافة صور الرحلات والمعرض</p>
+    </div>
+  </div>
 
+  <div class="panel">
+    <h3>صورة الغلاف الرئيسية</h3>
+    <form id="heroMediaForm">
+      <input type="file" id="heroImageFile" accept="image/*" required>
+      <input type="text" id="heroImageTitle" placeholder="عنوان الغلاف (اختياري)">
+      <button type="submit" class="primary-btn">رفع وتفعيل صورة الغلاف</button>
+      <div id="heroMediaMessage"></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h3>إضافة صورة إلى معرض الرحلات</h3>
+    <form id="galleryMediaForm">
+      <input type="file" id="galleryImageFile" accept="image/*" required>
+      <input type="text" id="galleryImageTitle" placeholder="عنوان الصورة">
+      <textarea id="galleryImageDescription" placeholder="وصف الصورة (اختياري)"></textarea>
+      <button type="submit" class="primary-btn">رفع الصورة إلى المعرض</button>
+      <div id="galleryMediaMessage"></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h3>الصور المرفوعة</h3>
+    <div id="siteMediaList">جاري تحميل الصور...</div>
+  </div>
+</section>
     </main>
   </div>
 </div>

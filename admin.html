@@ -797,10 +797,11 @@ function renderTrips(){
       <td>${esc(formatDate(trip.departure_at))}</td>
       <td>${esc(trip.capacity??"—")}</td>
       <td><span class="status status-${esc(trip.status)}">${esc(tripStatusNames[trip.status]||trip.status)}</span></td>
-      <td><div class="inline-actions">
-        <button class="secondary-btn" onclick="editTrip('${trip.id}')">تعديل</button>
-        <button class="danger-btn" onclick="deleteTrip('${trip.id}')">حذف</button>
-      </div></td>
+    <td><div class="inline-actions">
+  <button class="primary-btn" onclick="openTripFinance('${trip.id}')">الملف المالي</button>
+  <button class="secondary-btn" onclick="editTrip('${trip.id}')">تعديل</button>
+  <button class="danger-btn" onclick="deleteTrip('${trip.id}')">حذف</button>
+</div></td>
     </tr>
   `).join("");
 }

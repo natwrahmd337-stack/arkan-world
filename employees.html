@@ -366,6 +366,46 @@ async function checkAccess() {
    await loadBranches();
   await loadEmployees();
   await loadEmployeeTasks();
+  async function loadBranches() {
+  const branchSelect = document.getElementById("branch");
+  const taskBranchSelect = document.getElementById("taskBranch");
+
+  const { data, error } = await db
+    .from("branches")
+    .select("id, name, is_active")
+    .eq("is_active", true)
+    .order("name");
+
+  if (error) {
+    showMessage("تعذر تحميل الفروع: " + error.message, "error");
+    return;
+  }
+
+  branchesMap = {};
+
+  branchSelect.innerHTML = '<option value="">اختر الفرع</option>';
+  taskBranchSelect.innerHTML = '<option value="">اختر الفرع</option>';
+
+  (data || []).forEach(branch => {
+    branchesMap[branch.id] = branch.name || branch.id;
+
+    [branchSelect, taskBranchSelect].forEach(select => {
+      const option = document.createElement("option");
+      option.value = branch.id;
+      option.textContent = branch.name || branch.id;
+      select.appendChild(option);
+    });
+  });
+
+  if (currentProfile.role === "admin" && currentProfile.branch_id) {
+    branchSelect.value = currentProfile.branch_id;
+    taskBranchSelect.value = currentProfile.branch_id;
+    branchSelect.disabled = true;
+    taskBranchSelect.disabled = true;
+  }
+
+  await loadTaskEmployees();
+}
 }
 
 async function loadTaskEmployees() {

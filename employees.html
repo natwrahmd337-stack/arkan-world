@@ -547,6 +547,101 @@ async function loadTaskEmployees() {
     employeeSelect.appendChild(option);
   });
 }
+  async function loadEmployeeTasks() {
+
+  const tbody = document.getElementById("employeeTasksList");
+
+  tbody.innerHTML =
+    '<tr><td colspan="7">جارٍ تحميل المهام...</td></tr>';
+
+  const { data: tasks, error } = await db
+    .from("employee_tasks")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    tbody.innerHTML =
+      '<tr><td colspan="7">تعذر تحميل المهام: ' +
+      error.message +
+      '</td></tr>';
+    return;
+  }
+
+  if (!tasks || tasks.length === 0) {
+    tbody.innerHTML =
+      '<tr><td colspan="7">لا توجد مهام مسندة حالياً.</td></tr>';
+    return;
+  }
+
+  const employeeIds = [
+    ...new Set(tasks.map(task => task.assigned_to).filter(Boolean))
+  ];
+
+  let employeesMap = {};
+
+  if (employeeIds.length > 0) {
+    const { data: employees, error: employeesError } = await db
+      .from("profiles")
+      .select("id, full_name")
+      .in("id", employeeIds);
+
+    if (employeesError) {
+      tbody.innerHTML =
+        '<tr><td colspan="7">تعذر تحميل أسماء الموظفين: ' +
+        employeesError.message +
+        '</td></tr>';
+      return;
+    }
+
+    (employees || []).forEach(employee => {
+      employeesMap[employee.id] =
+        employee.full_name || "غير محدد";
+    });
+  }
+
+  const statusNames = {
+    new: "جديدة",
+    in_progress: "قيد التنفيذ",
+    pending_review: "بانتظار المراجعة",
+    completed: "مكتملة",
+    cancelled: "ملغاة"
+  };
+
+  const priorityNames = {
+    normal: "عادية",
+    medium: "متوسطة",
+    urgent: "عاجلة"
+  };
+
+  tbody.innerHTML = "";
+
+  tasks.forEach(task => {
+
+    const tr = document.createElement("tr");
+
+    const dueDate = task.due_at
+      ? new Date(task.due_at).toLocaleString("ar-SY")
+      : "غير محدد";
+
+    const values = [
+      task.title || "بدون عنوان",
+      employeesMap[task.assigned_to] || "غير محدد",
+      branchesMap[task.assigned_branch_id] || "غير محدد",
+      priorityNames[task.priority] || task.priority,
+      statusNames[task.status] || task.status,
+      (task.progress ?? 0) + "%",
+      dueDate
+    ];
+
+    values.forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
   async function createEmployeeTask() {
 
   const button = document.getElementById("createTaskButton");

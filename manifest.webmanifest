@@ -1,0 +1,15 @@
+
+{
+  "id": "./booking.html",
+  "name": "أركان العالم للسياحة والسفر",
+  "short_name": "أركان العالم",
+  "description": "تطبيق أركان العالم للسياحة والسفر والحج والعمرة",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./booking.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#edebe0",
+  "theme_color": "#428177"
+}

@@ -1860,6 +1860,50 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+  
+<script>
+let deferredInstallPrompt = null;
+
+const installBtn = document.getElementById("installAppBtn");
+
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+
+if (installBtn && !isStandalone) {
+
+  if (isIOS) {
+    installBtn.hidden = false;
+
+    installBtn.addEventListener("click", () => {
+      alert("لتثبيت تطبيق أركان على iPhone:\n\n1. افتح الموقع من متصفح Safari.\n2. اضغط زر المشاركة.\n3. اختر إضافة إلى الشاشة الرئيسية.\n4. اضغط إضافة.");
+    });
+  }
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    installBtn.hidden = false;
+  });
+
+  installBtn.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+
+    deferredInstallPrompt.prompt();
+
+    await deferredInstallPrompt.userChoice;
+
+    deferredInstallPrompt = null;
+    installBtn.hidden = true;
+  });
+
+  window.addEventListener("appinstalled", () => {
+    installBtn.hidden = true;
+  });
+}
+</script>
+
 </body>
 </html>
 

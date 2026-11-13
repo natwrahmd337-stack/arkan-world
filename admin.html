@@ -341,6 +341,148 @@
           </div>
         </div>
       </section>
+      
+<section id="trip-finance" class="section">
+  <div class="page-heading">
+    <div>
+      <h2>الملف المالي للرحلة</h2>
+      <p id="tripFinanceTitle">التفاصيل المالية للرحلة</p>
+    </div>
+    <button class="secondary-btn" onclick="showSection('trips')">
+      العودة إلى الرحلات
+    </button>
+  </div>
+
+  <input type="hidden" id="currentTripFinanceId">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>إجمالي المقبوضات</h3>
+      <strong id="tripFinanceIncome">0</strong>
+    </div>
+    <div class="stat-card">
+      <h3>إجمالي المصروفات</h3>
+      <strong id="tripFinanceExpenses">0</strong>
+    </div>
+    <div class="stat-card">
+      <h3>الصافي</h3>
+      <strong id="tripFinanceNet">0</strong>
+    </div>
+    <div class="stat-card">
+      <h3>المبالغ المتبقية على المسافرين</h3>
+      <strong id="tripFinanceDue">0</strong>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>تسجيل مصروف جديد</h3>
+    <form id="tripExpenseForm">
+      <div class="form-grid">
+        <div class="field">
+          <label>اسم المصروف *</label>
+          <input id="expenseTitle" required placeholder="مثلاً: أجور النقل">
+        </div>
+
+        <div class="field">
+          <label>نوع المصروف *</label>
+          <select id="expenseCategory" required>
+            <option value="transport">النقل والمواصلات</option>
+            <option value="hotel">الفنادق والإقامة</option>
+            <option value="meals">الوجبات والإطعام</option>
+            <option value="visas">التأشيرات والإجراءات</option>
+            <option value="staff">أجور الموظفين</option>
+            <option value="marketing">التسويق والإعلان</option>
+            <option value="other">مصروفات أخرى</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>المبلغ *</label>
+          <input id="expenseAmount" type="number" min="0.01" step="0.01" required>
+        </div>
+
+        <div class="field">
+          <label>العملة *</label>
+          <select id="expenseCurrency" required>
+            <option value="USD">دولار USD</option>
+            <option value="TRY">ليرة تركية TRY</option>
+            <option value="SYP">ليرة سورية SYP</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>تاريخ المصروف *</label>
+          <input id="expenseDate" type="date" required>
+        </div>
+
+        <div class="field">
+          <label>الجهة المستفيدة</label>
+          <input id="expensePaidTo" placeholder="اسم الشخص أو الجهة">
+        </div>
+
+        <div class="field">
+          <label>رقم الفاتورة أو المرجع</label>
+          <input id="expenseReference">
+        </div>
+
+        <div class="field full">
+          <label>ملاحظات</label>
+          <textarea id="expenseNotes" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="primary-btn" id="saveTripExpenseBtn" type="submit">
+          تسجيل المصروف
+        </button>
+      </div>
+      <div id="tripExpenseMessage"></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h3>سجل المصروفات</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>المصروف</th>
+            <th>التصنيف</th>
+            <th>المبلغ</th>
+            <th>الجهة المستفيدة</th>
+            <th>المرجع</th>
+          </tr>
+        </thead>
+        <tbody id="tripExpensesBody">
+          <tr><td colspan="6">جاري التحميل...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>سجل المقبوضات</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>رقم الحجز</th>
+            <th>اسم المسافر</th>
+            <th>المبلغ</th>
+            <th>طريقة الدفع</th>
+            <th>النوع</th>
+          </tr>
+        </thead>
+        <tbody id="tripIncomeBody">
+          <tr><td colspan="6">جاري التحميل...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section id="payments-review" class="section">
   <div class="page-heading">
     <div>

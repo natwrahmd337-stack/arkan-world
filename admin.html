@@ -241,20 +241,30 @@
     </div>
   </header>
 
-  <div class="app-layout">
-    <aside class="sidebar">
-      <div class="sidebar-title">القائمة الرئيسية</div>
-      <button class="nav-btn active" onclick="showSection('dashboard',this)">▦ لوحة التحكم</button>
-      <button class="nav-btn" onclick="showSection('trips',this)">✈ الرحلات</button>
-      <button class="nav-btn" onclick="showSection('bookings',this)">▤ الحجوزات</button>
-      <button class="nav-btn" onclick="showSection('customers',this)">♙ العملاء</button>
-      <button class="nav-btn" onclick="showSection('branches',this)">⌂ الفروع</button>
-<button class="nav-btn" onclick="showSection('finance',this)">＄ المالية</button>
-<button class="nav-btn" onclick="showSection('payments-review',this)">▣ مراجعة إيصالات شام كاش</button>
-      <button class="nav-btn" onclick="showSection('reports',this)">▥ التقارير</button>
-      <button class="nav-btn" onclick="showSection('site-media',this)">▧ إدارة صور الموقع</button>
-   <a class="nav-btn" href="employee-portal.html">♙ إدارة وبوابة الموظفين</a>
-    </aside>
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">القائمة الرئيسية</div>
+
+    <button class="nav-btn active" data-roles="owner,admin,branch_manager,accountant" onclick="showSection('dashboard',this)">▦ لوحة التحكم</button>
+
+    <button class="nav-btn" data-roles="owner,admin" onclick="showSection('trips',this)">✈ الرحلات</button>
+
+    <button class="nav-btn" data-roles="owner,admin,branch_manager,accountant,booking_agent" onclick="showSection('bookings',this)">▤ الحجوزات</button>
+
+    <button class="nav-btn" data-roles="owner,admin,branch_manager,accountant,booking_agent" onclick="showSection('customers',this)">♙ العملاء</button>
+
+    <button class="nav-btn" data-roles="owner,admin" onclick="showSection('branches',this)">⌂ الفروع</button>
+
+    <button class="nav-btn" data-roles="owner,admin,accountant" onclick="showSection('finance',this)">＄ المالية</button>
+
+    <button class="nav-btn" data-roles="owner,admin,accountant" onclick="showSection('payments-review',this)">▣ مراجعة إيصالات شام كاش</button>
+
+    <button class="nav-btn" data-roles="owner,admin,branch_manager,accountant" onclick="showSection('reports',this)">▥ التقارير</button>
+
+    <button class="nav-btn" data-roles="owner,admin" onclick="showSection('site-media',this)">▧ إدارة صور الموقع</button>
+
+    <a class="nav-btn" data-roles="owner,admin" href="employee-portal.html">♙ إدارة وبوابة الموظفين</a>
+  </aside>
 
     <main class="main-content">
 

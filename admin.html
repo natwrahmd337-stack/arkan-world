@@ -817,15 +817,27 @@ function nullableDate(value){
 
 async function verifyOwner(user){
   const {data,error}=await db.from("profiles")
-    .select("full_name,email,role,is_active")
-    .eq("id",user.id).single();
+    .select("full_name,email,role,branch_id,is_active")
+    .eq("id",user.id)
+    .single();
+
   if(error)throw error;
 
-  const role=String(data.role||"").toLowerCase();
-  if(!["owner","admin","مالك","مدير"].includes(role)||data.is_active!==true){
-    throw new Error("هذا الحساب لا يملك صلاحية الدخول إلى لوحة الإدارة.");
+  const allowedRoles = [
+    "owner",
+    "admin",
+    "branch_manager",
+    "accountant",
+    "booking_agent"
+  ];
+
+  const role = String(data.role || "").toLowerCase();
+
+  if(!allowedRoles.includes(role) || data.is_active !== true){
+    throw new Error("الحساب غير فعال أو لا يملك صلاحية الدخول.");
   }
-  currentProfile=data;
+
+  currentProfile = data;
   return data;
 }
 

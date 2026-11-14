@@ -1959,18 +1959,17 @@ async function loadSiteHero(){
     hero.style.position="relative";
     hero.style.overflow="hidden";
 
-    const slides=slider.children;
+const slides=slider.children;
 
-    if(slides.length>1){
-      let current=0;
+if(slides.length>1){
+  let current=0;
 
-      setInterval(()=>{
-        slides[current].style.opacity="0";
-        current=(current+1)%slides.length;
-        slides[current].style.opacity="1";
-      },5000);
-    }
-
+  setInterval(()=>{
+    slides[current].style.opacity="0";
+    current=(current+1)%slides.length;
+    slides[current].style.opacity="1";
+  },5000);
+}
   }catch(error){
     console.error("Hero image loading error:",error);
   }

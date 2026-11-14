@@ -779,12 +779,13 @@ if (password.length < 8 || password.length > 72) {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + session.access_token
       },
-      body: JSON.stringify({
-        full_name: fullName,
-        email,
-        role,
-        branch_id: branchId
-      })
+  body: JSON.stringify({
+  full_name: fullName,
+  email,
+  password,
+  role,
+  branch_id: branchId
+})
     });
 
     const result = await readFunctionResponse(response);

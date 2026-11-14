@@ -1908,24 +1908,69 @@ async function loadSiteHero(){
 
     const {data,error}=await db
       .from("site_media")
-      .select("image_url")
+      .select("image_url,title_ar")
       .eq("media_type","hero")
       .eq("is_active",true)
-      .limit(1)
-      .maybeSingle();
+      .order("sort_order",{ascending:true});
 
     if(error)throw error;
 
-    if(data?.image_url){
-      const hero=document.querySelector(".hero");
+    const hero=document.querySelector(".hero");
+    if(!hero || !data || data.length===0)return;
 
-      if(hero){
-        hero.style.background=`
-          linear-gradient(90deg,rgba(22,22,22,.78),rgba(22,22,22,.35)),
-          url("${data.image_url}") center/cover no-repeat
-        `;
-      }
+    const oldSlider=hero.querySelector(".hero-slides");
+    if(oldSlider)oldSlider.remove();
+
+    const slider=document.createElement("div");
+    slider.className="hero-slides";
+
+    Object.assign(slider.style,{
+      position:"absolute",
+      inset:"0",
+      zIndex:"0",
+      overflow:"hidden"
+    });
+
+    data.forEach((item,index)=>{
+      const slide=document.createElement("div");
+
+      Object.assign(slide.style,{
+        position:"absolute",
+        inset:"0",
+        backgroundImage:`
+          linear-gradient(
+            90deg,
+            rgba(22,22,22,.78),
+            rgba(22,22,22,.35)
+          ),
+          url("${item.image_url}")
+        `,
+        backgroundPosition:"center",
+        backgroundSize:"cover",
+        opacity:index===0?"1":"0",
+        transition:"opacity 1.2s ease"
+      });
+
+      slider.appendChild(slide);
+    });
+
+    hero.prepend(slider);
+
+    hero.style.position="relative";
+    hero.style.overflow="hidden";
+
+    const slides=slider.children;
+
+    if(slides.length>1){
+      let current=0;
+
+      setInterval(()=>{
+        slides[current].style.opacity="0";
+        current=(current+1)%slides.length;
+        slides[current].style.opacity="1";
+      },5000);
     }
+
   }catch(error){
     console.error("Hero image loading error:",error);
   }

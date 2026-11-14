@@ -887,20 +887,46 @@ async function enterAdmin(){
   ]);
   await loadDashboard();
 }
-async function checkSession(){
-  try{
-    initDatabase();
-    const {data,error}=await db.auth.getSession();
-    if(error)throw error;
-    if(!data.session)return;
-    currentUser=data.session.user;
-    await verifyOwner(currentUser);
-    await enterAdmin();
-  }catch(error){
-    console.error("Session check:",error);
-    document.getElementById("loginPage").classList.remove("hidden");
-    document.getElementById("adminApp").classList.add("hidden");
+async function enterAdmin(){
+
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("adminApp").classList.remove("hidden");
+
+  document.getElementById("welcomeName").textContent =
+    currentProfile?.full_name ||
+    currentProfile?.email ||
+    "إدارة المؤسسة";
+
+  const role = String(currentProfile?.role || "").toLowerCase();
+
+  // إظهار عناصر القائمة المسموحة فقط
+  document.querySelectorAll(".sidebar [data-roles]").forEach(item => {
+
+    const allowedRoles = item.dataset.roles
+      .split(",")
+      .map(r => r.trim());
+
+    item.style.display = allowedRoles.includes(role) ? "" : "none";
+
+  });
+
+  // اختيار أول قسم مسموح للموظف
+  const firstButton = Array.from(
+    document.querySelectorAll(".sidebar button[data-roles]")
+  ).find(button => button.style.display !== "none");
+
+  if(!firstButton){
+    throw new Error("لا توجد أقسام متاحة لهذا الحساب.");
   }
+
+  const match = firstButton.getAttribute("onclick")
+    .match(/showSection\('([^']+)'/);
+
+  if(!match){
+    throw new Error("تعذر تحديد القسم الأول.");
+  }
+
+  showSection(match[1], firstButton);
 }
 async function logout(){
   if(db)await db.auth.signOut();

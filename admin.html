@@ -2521,6 +2521,7 @@ async function loadSiteMedia(){
   }
 }
 
+
 async function uploadSiteImage(file,type,title,description=""){
   if(!file)throw new Error("اختر صورة أولاً.");
 
@@ -2550,18 +2551,19 @@ async function uploadSiteImage(file,type,title,description=""){
     .from("site-media")
     .getPublicUrl(path);
 
-  if(type==="hero"){
-    const {error:disableError}=await db
-      .from("site_media")
-      .update({is_active:false})
-      .eq("media_type","hero")
-      .eq("is_active",true);
+  const {data:lastMedia,error:orderError}=await db
+    .from("site_media")
+    .select("sort_order")
+    .eq("media_type",type)
+    .order("sort_order",{ascending:false})
+    .limit(1);
 
-    if(disableError){
-      await db.storage.from("site-media").remove([path]);
-      throw disableError;
-    }
+  if(orderError){
+    await db.storage.from("site-media").remove([path]);
+    throw orderError;
   }
+
+  const nextSortOrder=(lastMedia?.[0]?.sort_order ?? 0)+1;
 
   const {error:insertError}=await db
     .from("site_media")
@@ -2571,6 +2573,7 @@ async function uploadSiteImage(file,type,title,description=""){
       description_ar:description||null,
       image_url:urlData.publicUrl,
       storage_path:path,
+      sort_order:nextSortOrder,
       is_active:true
     });
 
@@ -2581,6 +2584,7 @@ async function uploadSiteImage(file,type,title,description=""){
 
   return true;
 }
+
 
 /* Upload hero */
 document.getElementById("heroMediaForm")

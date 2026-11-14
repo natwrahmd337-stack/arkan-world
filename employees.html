@@ -851,11 +851,11 @@ if (password.length < 8 || password.length > 72) {
     const passwordLabel = document.createElement("p");
     passwordLabel.textContent = "كلمة المرور المؤقتة:";
 
-    const password = document.createElement("input");
-    password.type = "text";
-    password.readOnly = true;
-    password.value = result.temporary_password;
-    password.style.cssText = `
+    const passwordInput = document.createElement("input");
+    passwordInput.type = "text";
+    passwordInput.readOnly = true;
+    passwordInput.value = result.temporary_password;
+    passwordInput.style.cssText = `
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
@@ -885,7 +885,7 @@ if (password.length < 8 || password.length > 72) {
         );
         copyButton.textContent = "تم النسخ";
       } catch {
-        password.select();
+      passwordInput.select();
         document.execCommand("copy");
         copyButton.textContent = "تم النسخ";
       }
@@ -905,7 +905,7 @@ if (password.length < 8 || password.length > 72) {
       name,
       mail,
       passwordLabel,
-      password,
+      passwordInput,,
       copyButton,
       warning
     );

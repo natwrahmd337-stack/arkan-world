@@ -2600,7 +2600,7 @@ document.getElementById("heroMediaForm")
     try{
       await uploadSiteImage(file,"hero",title);
       showMessage("heroMediaMessage","تم رفع وتفعيل صورة الغلاف بنجاح.","success");
-   e.currentTarget.reset();
+document.getElementById("heroMediaForm")?.reset();
       await loadSiteMedia();
     }catch(error){
       console.error(error);

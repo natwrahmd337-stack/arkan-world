@@ -138,7 +138,18 @@ th { background:var(--ivory); }
 
         <div class="field">
           <label for="email">البريد الإلكتروني</label>
-          <input id="email" type="email" placeholder="employee@example.com">
+       <input id="email" type="email" placeholder="employee@example.com">
+        </div>
+
+        <div class="field">
+          <label for="employeePassword">كلمة مرور الموظف</label>
+          <input
+            id="employeePassword"
+            type="password"
+            placeholder="أدخل كلمة مرور للموظف"
+            minlength="8"
+            autocomplete="new-password"
+          >
         </div>
 
         <div class="field">

@@ -1918,8 +1918,8 @@ async function loadSiteHero(){
     const hero=document.querySelector(".hero");
     if(!hero || !data || data.length===0)return;
 
-    const oldSlider=hero.querySelector(".hero-slides");
-    if(oldSlider)oldSlider.remove();
+    hero.querySelector(".hero-slides")?.remove();
+    hero.querySelector(".hero-dots")?.remove();
 
     const slider=document.createElement("div");
     slider.className="hero-slides";
@@ -1933,43 +1933,91 @@ async function loadSiteHero(){
 
     data.forEach((item,index)=>{
       const slide=document.createElement("div");
-
       Object.assign(slide.style,{
         position:"absolute",
         inset:"0",
-        backgroundImage:`
-          linear-gradient(
-            90deg,
-            rgba(22,22,22,.78),
-            rgba(22,22,22,.35)
-          ),
-          url("${item.image_url}")
-        `,
+        backgroundImage:`linear-gradient(90deg,rgba(22,22,22,.78),rgba(22,22,22,.35)),url("${item.image_url}")`,
         backgroundPosition:"center",
         backgroundSize:"cover",
         opacity:index===0?"1":"0",
         transition:"opacity 1.2s ease"
       });
-
       slider.appendChild(slide);
     });
 
     hero.prepend(slider);
-
     hero.style.position="relative";
     hero.style.overflow="hidden";
 
-const slides=slider.children;
+    const slides=slider.children;
 
-if(slides.length>1){
-  let current=0;
+    if(slides.length>1){
+      const dots=document.createElement("div");
+      dots.className="hero-dots";
 
-  setInterval(()=>{
-    slides[current].style.opacity="0";
-    current=(current+1)%slides.length;
-    slides[current].style.opacity="1";
-  },5000);
-}
+      Object.assign(dots.style,{
+        position:"absolute",
+        bottom:"22px",
+        left:"50%",
+        transform:"translateX(-50%)",
+        display:"flex",
+        gap:"10px",
+        zIndex:"999",
+        alignItems:"center"
+      });
+
+      let current=0;
+
+      function showSlide(index){
+        current=index;
+
+        Array.from(slides).forEach((slide,i)=>{
+          slide.style.opacity=i===current?"1":"0";
+        });
+
+        Array.from(dots.children).forEach((dot,i)=>{
+          dot.style.width=i===current?"26px":"9px";
+          dot.style.background=i===current?"#e2c58d":"#ffffff";
+        });
+      }
+
+      data.forEach((item,index)=>{
+        const dot=document.createElement("button");
+        dot.type="button";
+        dot.setAttribute("aria-label","الصورة "+(index+1));
+
+        Object.assign(dot.style,{
+          width:"9px",
+          height:"9px",
+          minWidth:"9px",
+          minHeight:"9px",
+          padding:"0",
+          border:"0",
+          borderRadius:"20px",
+          cursor:"pointer",
+          background:"#ffffff",
+          display:"block"
+        });
+
+        dot.addEventListener("click",()=>{
+          showSlide(index);
+          clearInterval(timer);
+          timer=setInterval(()=>{
+            showSlide((current+1)%slides.length);
+          },5000);
+        });
+
+        dots.appendChild(dot);
+      });
+
+      hero.appendChild(dots);
+      showSlide(0);
+
+      let timer=setInterval(()=>{
+        showSlide((current+1)%slides.length);
+      },5000);
+    }
+
   }catch(error){
     console.error("Hero image loading error:",error);
   }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -138,7 +137,7 @@ th { background:var(--ivory); }
 
         <div class="field">
           <label for="email">البريد الإلكتروني</label>
-       <input id="email" type="email" placeholder="employee@example.com">
+          <input id="email" type="email" placeholder="employee@example.com">
         </div>
 
         <div class="field">
@@ -172,7 +171,7 @@ th { background:var(--ivory); }
       </div>
 
       <button id="addButton" class="primary" type="button" onclick="addEmployee()">
-     إنشاء حساب الموظف
+        إنشاء حساب الموظف
       </button>
     </div>
 
@@ -294,8 +293,7 @@ th { background:var(--ivory); }
 
 <script>
 "use strict";
-
-const db = window.arkanSupabase;
+  const db = window.arkanSupabase;
 
 const FUNCTION_URL =
   "https://pwjntufyeydlbzolmgsi.supabase.co/functions/v1/manage-employees";
@@ -597,145 +595,61 @@ async function loadEmployeeTasks() {
     tbody.appendChild(tr);
   });
 }
-
-/* إنشاء مهمة */
-async function createEmployeeTask() {
-  const button = document.getElementById("createTaskButton");
-
-  const title =
-    document.getElementById("taskTitle").value.trim();
-
-  const branchId =
-    document.getElementById("taskBranch").value;
-
-  const assignedTo =
-    document.getElementById("taskEmployee").value;
-
-  const priority =
-    document.getElementById("taskPriority").value;
-
-  const dueValue =
-    document.getElementById("taskDue").value;
-
-  const description =
-    document.getElementById("taskDescription").value.trim();
-
-  const managerNotes =
-    document.getElementById("taskManagerNotes").value.trim();
-
-  if (!title || !branchId || !assignedTo) {
-    showTaskMessage(
-      "يرجى إدخال عنوان المهمة واختيار الفرع والموظف.",
-      "error"
-    );
-    return;
-  }
-
-  if (
-    currentProfile.role === "admin" &&
-    branchId !== currentProfile.branch_id
-  ) {
-    showTaskMessage(
-      "لا يمكنك إسناد مهمة خارج فرعك.",
-      "error"
-    );
-    return;
-  }
-
-  button.disabled = true;
-  button.textContent = "جارٍ إسناد المهمة...";
-  showTaskMessage("جارٍ حفظ المهمة...");
-
-  try {
-    const { data, error } = await db.rpc(
-      "create_employee_task",
-      {
-        p_title: title,
-        p_description: description || null,
-        p_assigned_to: assignedTo,
-        p_assigned_branch_id: branchId,
-        p_priority: priority,
-        p_due_at: dueValue
-          ? new Date(dueValue).toISOString()
-          : null,
-        p_manager_notes: managerNotes || null
-      }
-    );
-
-    if (error) throw error;
-
-    if (!data || data.success !== true) {
-      throw new Error(data?.error || "لم يتم إنشاء المهمة.");
-    }
-
-    showTaskMessage("تم إسناد المهمة بنجاح.", "success");
-
-    document.getElementById("taskTitle").value = "";
-    document.getElementById("taskDescription").value = "";
-    document.getElementById("taskManagerNotes").value = "";
-    document.getElementById("taskDue").value = "";
-    document.getElementById("taskPriority").value = "normal";
-    document.getElementById("taskEmployee").value = "";
-
-    await loadEmployeeTasks();
-
-  } catch (error) {
-    showTaskMessage(
-      "تعذر إسناد المهمة: " + (error.message || "خطأ غير معروف"),
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = "إسناد المهمة";
-  }
-}
-
-/* قراءة استجابة الدالة حتى لو لم تكن JSON */
+  /* قراءة استجابة وظيفة Supabase */
 async function readFunctionResponse(response) {
-  const rawText = await response.text();
+  const text = await response.text();
 
-  if (!rawText) {
-    return {};
-  }
+  let result;
 
   try {
-    return JSON.parse(rawText);
+    result = text ? JSON.parse(text) : {};
   } catch {
-    return { error: rawText };
+    result = { message: text };
   }
+
+  if (!response.ok) {
+    throw new Error(
+      result.message ||
+      result.error ||
+      "فشل تنفيذ العملية. رمز الخطأ: " + response.status
+    );
+  }
+
+  return result;
 }
 
-/* إضافة موظف وإرسال الدعوة */
-
+/* إنشاء حساب موظف */
 async function addEmployee() {
   const button = document.getElementById("addButton");
 
-const fullName =
-  document.getElementById("fullName").value.trim();
+  const fullName =
+    document.getElementById("fullName").value.trim();
 
-const email =
-  document.getElementById("email").value.trim().toLowerCase();
+  const email =
+    document.getElementById("email").value.trim().toLowerCase();
 
-const password =
-  document.getElementById("employeePassword").value;
+  const password =
+    document.getElementById("employeePassword").value;
 
-const role =
-  document.getElementById("role").value;
+  const role =
+    document.getElementById("role").value;
 
-const branchId =
-  document.getElementById("branch").value;
+  const branchId =
+    document.getElementById("branch").value;
 
-if (!fullName || !email || !password || !role || !branchId) {
-  showMessage("يرجى إدخال جميع البيانات، بما فيها كلمة المرور.", "error");
-  return;
-}
+  if (!fullName || !email || !password || !role || !branchId) {
+    showMessage("يرجى تعبئة جميع الحقول المطلوبة.", "error");
+    return;
+  }
 
-if (password.length < 8 || password.length > 72) {
-  showMessage("كلمة المرور يجب أن تكون بين 8 و72 حرفاً.", "error");
-  return;
-}
+  if (password.length < 8 || password.length > 72) {
+    showMessage(
+      "يجب أن تكون كلمة المرور بين 8 و72 محرفاً.",
+      "error"
+    );
+    return;
+  }
 
-  
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailPattern.test(email)) {
@@ -743,11 +657,11 @@ if (password.length < 8 || password.length > 72) {
     return;
   }
 
-  if (
-    currentProfile.role === "admin" &&
-    role === "admin"
-  ) {
-    showMessage("لا يمكنك إنشاء حساب مدير نظام.", "error");
+  if (role === "admin" && currentProfile.role !== "owner") {
+    showMessage(
+      "لا تملك صلاحية إنشاء مدير نظام.",
+      "error"
+    );
     return;
   }
 
@@ -755,173 +669,121 @@ if (password.length < 8 || password.length > 72) {
     currentProfile.role === "admin" &&
     branchId !== currentProfile.branch_id
   ) {
-    showMessage("يمكنك إضافة موظفين لفرعك فقط.", "error");
+    showMessage(
+      "يمكنك إضافة موظفين إلى فرعك فقط.",
+      "error"
+    );
     return;
   }
 
   button.disabled = true;
   button.textContent = "جارٍ إنشاء الحساب...";
-  showMessage("جارٍ إنشاء حساب الموظف...");
+  showMessage("");
 
   try {
     const { data: sessionData, error: sessionError } =
       await db.auth.getSession();
 
-    const session = sessionData?.session;
-
-    if (sessionError || !session) {
-      throw new Error("انتهت جلسة الدخول. سجل الدخول مجدداً.");
+    if (sessionError || !sessionData.session) {
+      throw new Error("انتهت جلسة الدخول. يرجى تسجيل الدخول مجدداً.");
     }
 
     const response = await fetch(FUNCTION_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + session.access_token
+        "Authorization":
+          "Bearer " + sessionData.session.access_token
       },
-  body: JSON.stringify({
-  full_name: fullName,
-  email,
-  password,
-  role,
-  branch_id: branchId
-})
+      body: JSON.stringify({
+        full_name: fullName,
+        email: email,
+        password: password,
+        role: role,
+        branch_id: branchId
+      })
     });
 
     const result = await readFunctionResponse(response);
-
-    if (!response.ok) {
-      const details = result.details
-        ? "\nالتفاصيل: " + result.details
-        : "";
-
-      throw new Error(
-        (result.error || "تعذر إنشاء الحساب.") +
-        " (HTTP " + response.status + ")" +
-        details
-      );
-    }
-
-    if (
-      result.success !== true ||
-      !result.temporary_password
-    ) {
-      throw new Error(
-        result.error || "لم يتم استلام بيانات الدخول."
-      );
-    }
-
-    document.getElementById("fullName").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("role").value = "booking_agent";
 
     showMessage(
       "تم إنشاء حساب الموظف بنجاح.",
       "success"
     );
 
-    const passwordBox = document.getElementById("employeeCredentials");
+    document.getElementById("fullName").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("employeePassword").value = "";
+    document.getElementById("role").value = "booking_agent";
 
-    if (passwordBox) {
-      passwordBox.remove();
+    const oldCredentials =
+      document.getElementById("employeeCredentials");
+
+    if (oldCredentials) {
+      oldCredentials.remove();
     }
 
     const credentials = document.createElement("div");
     credentials.id = "employeeCredentials";
-    credentials.style.cssText = `
-      margin-top: 18px;
-      padding: 18px;
-      background: #edebe0;
-      border: 1px solid #428177;
-      border-radius: 12px;
-      direction: rtl;
-      color: #263b38;
-    `;
+    credentials.className = "panel";
+    credentials.style.marginTop = "18px";
 
     const title = document.createElement("h3");
-    title.textContent = "بيانات دخول الموظف";
-    title.style.marginTop = "0";
+    title.textContent = "بيانات حساب الموظف الجديد";
 
     const name = document.createElement("p");
     name.textContent = "الاسم: " + fullName;
 
     const mail = document.createElement("p");
-    mail.textContent = "البريد: " + email;
+    mail.textContent = "البريد الإلكتروني: " + email;
 
-    const passwordLabel = document.createElement("p");
-    passwordLabel.textContent = "كلمة المرور المؤقتة:";
+    const passwordLabel = document.createElement("label");
+    passwordLabel.textContent = "كلمة المرور:";
 
     const passwordInput = document.createElement("input");
     passwordInput.type = "text";
     passwordInput.readOnly = true;
-    passwordInput.value = result.temporary_password;
-    passwordInput.style.cssText = `
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      direction: ltr;
-      font-size: 14px;
-      margin-bottom: 12px;
-    `;
+    passwordInput.value =
+      result.temporary_password || password;
 
     const copyButton = document.createElement("button");
     copyButton.type = "button";
+    copyButton.className = "secondary";
     copyButton.textContent = "نسخ كلمة المرور";
-    copyButton.style.cssText = `
-      padding: 10px 18px;
-      background: #428177;
-      color: white;
-      border: 0;
-      border-radius: 8px;
-      cursor: pointer;
-    `;
 
-    copyButton.onclick = async () => {
+    copyButton.addEventListener("click", async () => {
       try {
-        await navigator.clipboard.writeText(
-          result.temporary_password
-        );
+        await navigator.clipboard.writeText(passwordInput.value);
         copyButton.textContent = "تم النسخ";
       } catch {
-      passwordInput.select();
+        passwordInput.select();
         document.execCommand("copy");
         copyButton.textContent = "تم النسخ";
       }
-    };
+    });
 
     const warning = document.createElement("p");
+    warning.className = "muted";
     warning.textContent =
-      "احتفظ بهذه البيانات وسلّمها للموظف بشكل خاص. لن تظهر كلمة المرور مرة أخرى.";
-    warning.style.cssText = `
-      font-size: 13px;
-      color: #6b1f2a;
-      margin-bottom: 0;
-    `;
+      "احتفظ ببيانات الدخول وسلّمها للموظف بطريقة آمنة.";
 
     credentials.append(
       title,
       name,
       mail,
       passwordLabel,
-      passwordInput,,
+      passwordInput,
       copyButton,
       warning
     );
 
-    button.closest("form")?.appendChild(credentials);
-
-    if (!credentials.parentElement) {
-      button.parentElement.appendChild(credentials);
-    }
+    button.parentElement.appendChild(credentials);
 
     await loadEmployees();
 
   } catch (error) {
     showMessage(
-      "تعذر إتمام العملية: " +
-      (error.message || "حدث خطأ غير معروف"),
+      "تعذر إنشاء الحساب: " + error.message,
       "error"
     );
   } finally {
@@ -937,66 +799,178 @@ async function loadEmployees() {
   tbody.innerHTML =
     '<tr><td colspan="5">جارٍ تحميل الموظفين...</td></tr>';
 
-  const { data, error } = await db
-    .from("profiles")
-    .select("id, full_name, email, role, branch_id, is_active")
-    .order("created_at", { ascending: false });
+  try {
+    let query = db
+      .from("profiles")
+      .select("id, full_name, email, role, branch_id, is_active")
+      .order("created_at", { ascending: false });
 
-  if (error) {
+    if (
+      currentProfile.role === "admin" &&
+      currentProfile.branch_id
+    ) {
+      query = query.eq("branch_id", currentProfile.branch_id);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      throw error;
+    }
+
     tbody.innerHTML = "";
-    const tr = document.createElement("tr");
-    const td = document.createElement("td");
-    td.colSpan = 5;
-    td.textContent = "تعذر تحميل الموظفين: " + error.message;
-    tr.appendChild(td);
-    tbody.appendChild(tr);
-    return;
-  }
 
-  if (!data || data.length === 0) {
-    tbody.innerHTML =
-      '<tr><td colspan="5">لا يوجد موظفون حالياً.</td></tr>';
-    return;
-  }
+    if (!data || data.length === 0) {
+      tbody.innerHTML =
+        '<tr><td colspan="5">لا يوجد موظفون حالياً.</td></tr>';
+      return;
+    }
 
-  tbody.innerHTML = "";
+    data.forEach(employee => {
+      const tr = document.createElement("tr");
 
-  data.forEach(employee => {
-    const tr = document.createElement("tr");
+      const values = [
+        employee.full_name || "بدون اسم",
+        employee.email || "غير محدد",
+        roleName(employee.role),
+        branchesMap[employee.branch_id] || "غير محدد"
+      ];
 
-    const values = [
-      employee.full_name || "غير محدد",
-      employee.email || "غير محدد",
-      roleName(employee.role),
-      branchesMap[employee.branch_id] || "غير محدد"
-    ];
+      values.forEach(value => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      });
 
-    values.forEach(value => {
-      const td = document.createElement("td");
-      td.textContent = value;
-      tr.appendChild(td);
+      const statusCell = document.createElement("td");
+      statusCell.textContent =
+        employee.is_active ? "نشط" : "غير نشط";
+
+      statusCell.className =
+        employee.is_active
+          ? "status-active"
+          : "status-inactive";
+
+      tr.appendChild(statusCell);
+      tbody.appendChild(tr);
     });
 
-    const statusCell = document.createElement("td");
+  } catch (error) {
+    tbody.innerHTML = "";
 
-    statusCell.textContent =
-      employee.is_active ? "نشط" : "غير نشط";
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
 
-    statusCell.className =
-      employee.is_active ? "status-active" : "status-inactive";
+    td.colSpan = 5;
+    td.textContent =
+      "تعذر تحميل الموظفين: " + error.message;
 
-    tr.appendChild(statusCell);
+    tr.appendChild(td);
     tbody.appendChild(tr);
-  });
+  }
 }
 
-/* أحداث الصفحة */
+/* إنشاء مهمة لموظف */
+async function createEmployeeTask() {
+  const button = document.getElementById("createTaskButton");
+
+  const title =
+    document.getElementById("taskTitle").value.trim();
+
+  const branchId =
+    document.getElementById("taskBranch").value;
+
+  const employeeId =
+    document.getElementById("taskEmployee").value;
+
+  const priority =
+    document.getElementById("taskPriority").value;
+
+  const dueValue =
+    document.getElementById("taskDue").value;
+
+  const description =
+    document.getElementById("taskDescription").value.trim();
+
+  const managerNotes =
+    document.getElementById("taskManagerNotes").value.trim();
+
+  if (!title || !branchId || !employeeId) {
+    showTaskMessage(
+      "يرجى إدخال عنوان المهمة واختيار الفرع والموظف.",
+      "error"
+    );
+    return;
+  }
+
+  if (
+    currentProfile.role === "admin" &&
+    branchId !== currentProfile.branch_id
+  ) {
+    showTaskMessage(
+      "لا يمكنك إسناد مهمة إلى فرع آخر.",
+      "error"
+    );
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ إسناد المهمة...";
+  showTaskMessage("");
+
+  try {
+    const dueAt = dueValue
+      ? new Date(dueValue).toISOString()
+      : null;
+
+    const { data, error } = await db.rpc(
+      "create_employee_task",
+      {
+        p_title: title,
+        p_description: description || null,
+        p_assigned_to: employeeId,
+        p_assigned_branch_id: branchId,
+        p_priority: priority,
+        p_due_at: dueAt,
+        p_manager_notes: managerNotes || null
+      }
+    );
+
+    if (error) {
+      throw error;
+    }
+
+    showTaskMessage(
+      "تم إسناد المهمة بنجاح.",
+      "success"
+    );
+
+    document.getElementById("taskTitle").value = "";
+    document.getElementById("taskDescription").value = "";
+    document.getElementById("taskManagerNotes").value = "";
+    document.getElementById("taskDue").value = "";
+    document.getElementById("taskPriority").value = "normal";
+
+    await loadEmployeeTasks();
+
+  } catch (error) {
+    showTaskMessage(
+      "تعذر إسناد المهمة: " + error.message,
+      "error"
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "إسناد المهمة";
+  }
+}
+
+/* عند تغيير فرع المهام */
 document.getElementById("taskBranch")
   .addEventListener("change", loadTaskEmployees);
 
+/* تشغيل التحقق عند فتح الصفحة */
 checkAccess();
 
 </script>
-
 </body>
 </html>

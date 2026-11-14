@@ -912,9 +912,38 @@ async function logout(){
 }
 
 function showSection(id,button){
+
+  const role = String(currentProfile?.role || "").toLowerCase();
+
+  const sectionRoles = {
+    dashboard:["owner","admin","branch_manager","accountant"],
+    trips:["owner","admin"],
+    bookings:["owner","admin","branch_manager","accountant","booking_agent"],
+    customers:["owner","admin","branch_manager","accountant","booking_agent"],
+    branches:["owner","admin"],
+    finance:["owner","admin","accountant"],
+    "payments-review":["owner","admin","accountant"],
+    reports:["owner","admin","branch_manager","accountant"],
+    "site-media":["owner","admin"]
+  };
+
+  if(!sectionRoles[id] || !sectionRoles[id].includes(role)){
+    alert("عذراً، ليس لديك صلاحية الوصول إلى هذا القسم.");
+    return;
+  }
+
+  const target = document.getElementById(id);
+
+  if(!target){
+    alert("القسم المطلوب غير موجود.");
+    return;
+  }
+
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+
+  target.classList.add("active");
+
   if(button)button.classList.add("active");
 
   if(id==="dashboard")loadDashboard();
@@ -923,9 +952,9 @@ function showSection(id,button){
   if(id==="customers")loadCustomers();
   if(id==="branches")loadBranches();
   if(id==="finance"){loadPayments();loadPaymentOptions();}
-if(id==="payments-review")loadPublicPaymentSubmissions();
-if(id==="reports")loadReports();
-if(id==="site-media")loadSiteMedia();
+  if(id==="payments-review")loadPublicPaymentSubmissions();
+  if(id==="reports")loadReports();
+  if(id==="site-media")loadSiteMedia();
 }
 
 async function countRows(table){

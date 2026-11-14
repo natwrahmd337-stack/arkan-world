@@ -414,6 +414,95 @@ function toggleLang(){
   }
 })();
 </script>
+<script>
+(async function loadHeroSlides() {
+  const slidesContainer = document.getElementById("heroSlides");
+  const indicatorsContainer = document.getElementById("heroIndicators");
+  const supabase = window.arkanSupabase;
 
+  if (!slidesContainer || !indicatorsContainer || !supabase) return;
+
+  const fallbackImage =
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85";
+
+  try {
+    const { data, error } = await supabase
+      .from("site_media")
+      .select("id,title_ar,title_en,description_ar,image_url,sort_order")
+      .eq("media_type", "hero")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      slidesContainer.innerHTML = `
+        <div class="hero-slide active"
+          style="background-image:url('${fallbackImage}')">
+        </div>`;
+      return;
+    }
+
+    slidesContainer.innerHTML = "";
+    indicatorsContainer.innerHTML = "";
+
+    let currentSlide = 0;
+    let timer = null;
+
+    data.forEach((item, index) => {
+      const slide = document.createElement("div");
+      slide.className = "hero-slide" + (index === 0 ? " active" : "");
+      slide.style.backgroundImage =
+        `url("${item.image_url.replace(/"/g, '\\"')}")`;
+      slidesContainer.appendChild(slide);
+
+      const indicator = document.createElement("button");
+      indicator.type = "button";
+      indicator.className = index === 0 ? "active" : "";
+      indicator.setAttribute("aria-label", "الصورة " + (index + 1));
+
+      indicator.addEventListener("click", () => {
+        showSlide(index);
+        restartTimer();
+      });
+
+      indicatorsContainer.appendChild(indicator);
+    });
+
+    const showSlide = (index) => {
+      const slides = slidesContainer.querySelectorAll(".hero-slide");
+      const indicators = indicatorsContainer.querySelectorAll("button");
+
+      slides[currentSlide].classList.remove("active");
+      indicators[currentSlide].classList.remove("active");
+
+      currentSlide = index;
+
+      slides[currentSlide].classList.add("active");
+      indicators[currentSlide].classList.add("active");
+    };
+
+    const nextSlide = () => {
+      showSlide((currentSlide + 1) % data.length);
+    };
+
+    const restartTimer = () => {
+      clearInterval(timer);
+      if (data.length > 1) {
+        timer = setInterval(nextSlide, 5000);
+      }
+    };
+
+    restartTimer();
+
+  } catch (error) {
+    console.error("تعذر تحميل صور الغلاف:", error);
+    slidesContainer.innerHTML = `
+      <div class="hero-slide active"
+        style="background-image:url('${fallbackImage}')">
+      </div>`;
+  }
+})();
+</script>
 </body>
 </html>

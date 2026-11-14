@@ -695,6 +695,7 @@ async function readFunctionResponse(response) {
 }
 
 /* إضافة موظف وإرسال الدعوة */
+
 async function addEmployee() {
   const button = document.getElementById("addButton");
 
@@ -711,10 +712,7 @@ async function addEmployee() {
     document.getElementById("branch").value;
 
   if (!fullName || !email || !role || !branchId) {
-    showMessage(
-      "يرجى إدخال الاسم والبريد والصلاحية واختيار الفرع.",
-      "error"
-    );
+    showMessage("يرجى إدخال الاسم والبريد والصلاحية واختيار الفرع.", "error");
     return;
   }
 
@@ -729,10 +727,7 @@ async function addEmployee() {
     currentProfile.role === "admin" &&
     role === "admin"
   ) {
-    showMessage(
-      "لا يمكنك إنشاء حساب مدير نظام.",
-      "error"
-    );
+    showMessage("لا يمكنك إنشاء حساب مدير نظام.", "error");
     return;
   }
 
@@ -740,16 +735,13 @@ async function addEmployee() {
     currentProfile.role === "admin" &&
     branchId !== currentProfile.branch_id
   ) {
-    showMessage(
-      "يمكنك إضافة موظفين لفرعك فقط.",
-      "error"
-    );
+    showMessage("يمكنك إضافة موظفين لفرعك فقط.", "error");
     return;
   }
 
   button.disabled = true;
-  button.textContent = "جارٍ إرسال الدعوة...";
-  showMessage("جارٍ إنشاء حساب الموظف وإرسال الدعوة...");
+  button.textContent = "جارٍ إنشاء الحساب...";
+  showMessage("جارٍ إنشاء حساب الموظف...");
 
   try {
     const { data: sessionData, error: sessionError } =
@@ -758,9 +750,7 @@ async function addEmployee() {
     const session = sessionData?.session;
 
     if (sessionError || !session) {
-      throw new Error(
-        "انتهت جلسة الدخول. سجل الدخول مجدداً."
-      );
+      throw new Error("انتهت جلسة الدخول. سجل الدخول مجدداً.");
     }
 
     const response = await fetch(FUNCTION_URL, {
@@ -785,28 +775,125 @@ async function addEmployee() {
         : "";
 
       throw new Error(
-        (result.error || result.message ||
-        "تعذر إرسال الدعوة.") +
+        (result.error || "تعذر إنشاء الحساب.") +
         " (HTTP " + response.status + ")" +
         details
       );
     }
 
-    if (result.success !== true) {
+    if (
+      result.success !== true ||
+      !result.temporary_password
+    ) {
       throw new Error(
-        result.error || "لم يتم تأكيد إنشاء حساب الموظف."
+        result.error || "لم يتم استلام بيانات الدخول."
       );
     }
-
-    showMessage(
-      result.message ||
-      "تم إنشاء حساب الموظف وإرسال الدعوة بنجاح.",
-      "success"
-    );
 
     document.getElementById("fullName").value = "";
     document.getElementById("email").value = "";
     document.getElementById("role").value = "booking_agent";
+
+    showMessage(
+      "تم إنشاء حساب الموظف بنجاح.",
+      "success"
+    );
+
+    const passwordBox = document.getElementById("employeeCredentials");
+
+    if (passwordBox) {
+      passwordBox.remove();
+    }
+
+    const credentials = document.createElement("div");
+    credentials.id = "employeeCredentials";
+    credentials.style.cssText = `
+      margin-top: 18px;
+      padding: 18px;
+      background: #edebe0;
+      border: 1px solid #428177;
+      border-radius: 12px;
+      direction: rtl;
+      color: #263b38;
+    `;
+
+    const title = document.createElement("h3");
+    title.textContent = "بيانات دخول الموظف";
+    title.style.marginTop = "0";
+
+    const name = document.createElement("p");
+    name.textContent = "الاسم: " + fullName;
+
+    const mail = document.createElement("p");
+    mail.textContent = "البريد: " + email;
+
+    const passwordLabel = document.createElement("p");
+    passwordLabel.textContent = "كلمة المرور المؤقتة:";
+
+    const password = document.createElement("input");
+    password.type = "text";
+    password.readOnly = true;
+    password.value = result.temporary_password;
+    password.style.cssText = `
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      direction: ltr;
+      font-size: 14px;
+      margin-bottom: 12px;
+    `;
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.textContent = "نسخ كلمة المرور";
+    copyButton.style.cssText = `
+      padding: 10px 18px;
+      background: #428177;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    `;
+
+    copyButton.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(
+          result.temporary_password
+        );
+        copyButton.textContent = "تم النسخ";
+      } catch {
+        password.select();
+        document.execCommand("copy");
+        copyButton.textContent = "تم النسخ";
+      }
+    };
+
+    const warning = document.createElement("p");
+    warning.textContent =
+      "احتفظ بهذه البيانات وسلّمها للموظف بشكل خاص. لن تظهر كلمة المرور مرة أخرى.";
+    warning.style.cssText = `
+      font-size: 13px;
+      color: #6b1f2a;
+      margin-bottom: 0;
+    `;
+
+    credentials.append(
+      title,
+      name,
+      mail,
+      passwordLabel,
+      password,
+      copyButton,
+      warning
+    );
+
+    button.closest("form")?.appendChild(credentials);
+
+    if (!credentials.parentElement) {
+      button.parentElement.appendChild(credentials);
+    }
 
     await loadEmployees();
 
@@ -818,7 +905,7 @@ async function addEmployee() {
     );
   } finally {
     button.disabled = false;
-    button.textContent = "إرسال دعوة الموظف";
+    button.textContent = "إنشاء حساب الموظف";
   }
 }
 

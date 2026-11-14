@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#428177">
+<title>بوابة الموظفين | أركان العالم</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  font-family:Arial,sans-serif;
+  background:#edebe0;
+  color:#252b2a;
+}
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:white;
+  padding:32px;
+  border-radius:18px;
+  box-shadow:0 8px 35px #00000012;
+}
+.logo{
+  text-align:center;
+  color:#428177;
+  margin-bottom:28px;
+}
+.logo h2{margin-bottom:8px}
+.logo p{margin:0;color:#777;font-size:13px}
+h3{margin-top:0}
+label{
+  display:block;
+  font-weight:bold;
+  margin:17px 0 7px;
+}
+input{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  font-size:15px;
+}
+button{
+  width:100%;
+  padding:14px;
+  margin-top:22px;
+  border:0;
+  border-radius:9px;
+  background:#428177;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+button:disabled{opacity:.6}
+#message{
+  margin-top:18px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+.error{color:#a12635}
+.success{color:#247747}
+.hidden{display:none}
+.info{
+  background:#edebe0;
+  padding:15px;
+  border-radius:10px;
+  margin-top:18px;
+  line-height:2;
+}
+.logout{
+  background:#6b1f2a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+  <div class="logo">
+    <h2>أركان العالم</h2>
+    <p>PILLARS OF THE WORLD</p>
+    <p>بوابة الموظفين</p>
+  </div>
+
+  <div id="loginSection">
+    <h3>تسجيل دخول الموظفين</h3>
+
+    <form id="loginForm">
+      <label for="email">البريد الإلكتروني</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="أدخل بريدك الإلكتروني"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">كلمة المرور</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="أدخل كلمة المرور"
+        autocomplete="current-password"
+        required
+      >
+
+      <button id="loginButton" type="submit">
+        تسجيل الدخول
+      </button>
+    </form>
+  </div>
+
+  <div id="employeeSection" class="hidden">
+    <h3>مرحباً بك في بوابة الموظفين</h3>
+    <div id="employeeInfo" class="info"></div>
+
+    <button id="logoutButton" class="logout" type="button">
+      تسجيل الخروج
+    </button>
+  </div>
+
+  <div id="message"></div>
+
+</div>
+
+<script>
+"use strict";
+
+const db = window.arkanSupabase;
+
+const loginForm = document.getElementById("loginForm");
+const loginButton = document.getElementById("loginButton");
+const loginSection = document.getElementById("loginSection");
+const employeeSection = document.getElementById("employeeSection");
+const employeeInfo = document.getElementById("employeeInfo");
+const message = document.getElementById("message");
+
+function showMessage(text, type = "") {
+  message.textContent = text;
+  message.className = type;
+}
+
+function roleName(role) {
+  const roles = {
+    owner: "مالك المؤسسة",
+    admin: "مدير النظام",
+    branch_manager: "مدير فرع",
+    accountant: "محاسب",
+    booking_agent: "موظف حجوزات"
+  };
+
+  return roles[role] || "موظف";
+}
+
+async function checkEmployee() {
+  if (!db) {
+    showMessage(
+      "تعذر الاتصال بقاعدة البيانات. تحقق من config.js",
+      "error"
+    );
+    return;
+  }
+
+  try {
+    const { data, error } = await db.auth.getSession();
+
+    if (error) throw error;
+
+    if (data.session) {
+      await showEmployee(data.session.user);
+    }
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+loginForm.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  if (!db) {
+    showMessage("تعذر الاتصال بقاعدة البيانات.", "error");
+    return;
+  }
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  loginButton.disabled = true;
+  loginButton.textContent = "جارٍ تسجيل الدخول...";
+  showMessage("");
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    await showEmployee(data.user);
+
+  } catch (error) {
+    showMessage(
+      "تعذر تسجيل الدخول: تأكد من البريد وكلمة المرور.",
+      "error"
+    );
+
+    await db.auth.signOut();
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "تسجيل الدخول";
+  }
+});
+
+async function showEmployee(user) {
+  const { data: profile, error } = await db
+    .from("profiles")
+    .select("id, full_name, role, branch_id, is_active")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile) {
+    await db.auth.signOut();
+    showMessage("تعذر العثور على بيانات الموظف.", "error");
+    return;
+  }
+
+  if (!profile.is_active) {
+    await db.auth.signOut();
+    showMessage("حسابك غير مفعل. راجع الإدارة.", "error");
+    return;
+  }
+
+  loginSection.classList.add("hidden");
+  employeeSection.classList.remove("hidden");
+
+  employeeInfo.textContent =
+    "الاسم: " + (profile.full_name || "غير محدد") +
+    "\nالصلاحية: " + roleName(profile.role) +
+    "\nالبريد: " + user.email +
+    "\nرقم الفرع: " + (profile.branch_id || "غير محدد");
+
+  employeeInfo.style.whiteSpace = "pre-line";
+
+  showMessage(
+    "تم تسجيل الدخول بنجاح.",
+    "success"
+  );
+}
+
+document.getElementById("logoutButton")
+  .addEventListener("click", async function() {
+    await db.auth.signOut();
+    location.reload();
+  });
+
+checkEmployee();
+</script>
+
+</body>
+</html>

@@ -629,6 +629,21 @@ function toggleLang(){
   }
 })();
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "./service-worker.js"
+      );
 
+      console.log("Arkan Service Worker registered:", registration.scope);
+
+    } catch (error) {
+      console.error("Arkan Service Worker error:", error);
+    }
+  });
+}
+</script>
 </body>
 </html>

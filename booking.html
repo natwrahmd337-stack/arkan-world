@@ -1267,26 +1267,158 @@ body.booking-embed section{scroll-margin-top:10px}
 @media(prefers-reduced-motion:reduce){.category{transition:none}}
 
   
-/* ARKAN PORTAL: remove all travel photography from the booking experience */
-body.booking-embed .hero{
+/* ARKAN LUXURY BOOKING PORTAL - DESIGN 1 */
+
+/* خلفية البوابة */
+body.booking-embed {
   background:
-    radial-gradient(circle at 12% 18%,rgba(234,217,174,.16),transparent 30%),
-    linear-gradient(125deg,#173e39 0%,#315f58 48%,#428177 100%) !important;
+    radial-gradient(circle at 90% 5%, rgba(66,129,119,.09), transparent 28%),
+    linear-gradient(180deg,#f8faf8 0%,#eef3f0 100%) !important;
+  color: #263c38 !important;
 }
-body.booking-embed .hero::before,
-body.booking-embed .hero::after{
-  background:none !important;
-  background-image:none !important;
+
+/* إخفاء عناصر الموقع العامة داخل بوابة الحجز فقط */
+body.booking-embed .topbar,
+body.booking-embed header,
+body.booking-embed footer,
+body.booking-embed .mobile-bottom,
+body.booking-embed .arkan-side-menu,
+body.booking-embed .arkan-menu-overlay {
+  display: none !important;
 }
+
+/* واجهة الترحيب */
+body.booking-embed .hero {
+  position: relative !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(218,190,125,.22),transparent 25%),
+    radial-gradient(circle at 10% 90%,rgba(255,255,255,.09),transparent 30%),
+    linear-gradient(125deg,#173e39 0%,#285b52 52%,#428177 100%) !important;
+  border-radius: 0 0 30px 30px !important;
+  box-shadow: 0 15px 40px rgba(23,62,57,.16) !important;
+}
+
+body.booking-embed .hero::before {
+  content: "" !important;
+  position: absolute !important;
+  width: 260px !important;
+  height: 260px !important;
+  left: -90px !important;
+  bottom: -150px !important;
+  border: 1px solid rgba(232,210,160,.28) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+body.booking-embed .hero::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 180px !important;
+  height: 180px !important;
+  right: -70px !important;
+  top: -100px !important;
+  border: 1px solid rgba(232,210,160,.2) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+/* إزالة الصور من واجهة الحجز فقط */
 body.booking-embed .gallery-section,
 body.booking-embed #travelGallery,
 body.booking-embed .trip-card img,
 body.booking-embed .gallery-card img,
 body.booking-embed picture,
-body.booking-embed video{
-  display:none !important;
+body.booking-embed video {
+  display: none !important;
 }
 
+/* صندوق البحث */
+body.booking-embed .search-box {
+  background: #ffffff !important;
+  border: 1px solid rgba(66,129,119,.13) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 12px 35px rgba(32,72,64,.09) !important;
+}
+
+/* تصنيفات الرحلات */
+body.booking-embed .category {
+  border: 1px solid rgba(66,129,119,.16) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 15px rgba(32,72,64,.05) !important;
+  transition: .25s ease !important;
+}
+
+/* بطاقات الرحلات */
+body.booking-embed .trip-card {
+  background: #fff !important;
+  border: 1px solid rgba(66,129,119,.13) !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 28px rgba(32,72,64,.08) !important;
+  transition: transform .25s ease, box-shadow .25s ease !important;
+}
+
+body.booking-embed .trip-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 35px rgba(32,72,64,.13) !important;
+}
+
+/* الأزرار */
+body.booking-embed button,
+body.booking-embed .btn,
+body.booking-embed .book-btn {
+  border-radius: 13px !important;
+  font-weight: 800 !important;
+}
+
+/* خطوات الحجز */
+body.booking-embed .step {
+  border-radius: 18px !important;
+  border: 1px solid rgba(66,129,119,.12) !important;
+  background: #fff !important;
+  box-shadow: 0 7px 20px rgba(32,72,64,.05) !important;
+}
+
+/* عناصر الثقة */
+body.booking-embed .trust-item {
+  border-radius: 16px !important;
+  background: #fff !important;
+  border: 1px solid rgba(66,129,119,.12) !important;
+}
+
+/* بانر التواصل */
+body.booking-embed .contact-banner {
+  border-radius: 22px !important;
+  overflow: hidden !important;
+}
+
+/* تحسين الحقول */
+body.booking-embed input,
+body.booking-embed select,
+body.booking-embed textarea {
+  border-radius: 12px !important;
+  border: 1px solid #dce7e2 !important;
+  background: #fbfdfc !important;
+}
+
+/* تحسين العرض على الهاتف */
+@media (max-width: 700px) {
+  body.booking-embed .hero {
+    border-radius: 0 0 22px 22px !important;
+  }
+
+  body.booking-embed .trip-card {
+    border-radius: 18px !important;
+  }
+
+  body.booking-embed .search-box {
+    border-radius: 17px !important;
+  }
+}
 </style>
 </head>
 

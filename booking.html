@@ -3196,6 +3196,99 @@ document.querySelectorAll("#arkanSideMenu a").forEach(link => {
     toggleArkanMenu(false);
   });
 });
+    /* ARKAN APP - COMPACT BOOKING SCREEN */
+
+body.booking-embed {
+  padding: 0 !important;
+  background: #082f30 !important;
+  color: #f2eee3 !important;
+}
+
+/* إزالة واجهة الموقع الكبيرة */
+body.booking-embed .hero {
+  display: none !important;
+}
+
+/* إخفاء الأقسام الترويجية */
+body.booking-embed .gallery-section,
+body.booking-embed .trust-section,
+body.booking-embed .contact-banner {
+  display: none !important;
+}
+
+/* إخفاء صور المعرض فقط مع الحفاظ على صور الرحلات */
+body.booking-embed .gallery-card,
+body.booking-embed #travelGallery {
+  display: none !important;
+}
+
+/* جعل المحتوى أقرب لشاشة تطبيق */
+body.booking-embed .container {
+  width: calc(100% - 24px) !important;
+  max-width: 760px !important;
+}
+
+body.booking-embed section {
+  padding-top: 22px !important;
+  padding-bottom: 22px !important;
+}
+
+/* عنوان الرحلات */
+body.booking-embed .section-heading {
+  margin-bottom: 16px !important;
+}
+
+body.booking-embed .section-heading h2 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #f0dfb8 !important;
+}
+
+body.booking-embed .section-heading p {
+  font-size: 11px !important;
+  color: #b9ccc4 !important;
+}
+
+/* بطاقات الرحلات */
+body.booking-embed .trip-card {
+  border-radius: 17px !important;
+  padding-bottom: 16px !important;
+}
+
+body.booking-embed .trip-card h3 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+
+body.booking-embed .trip-card p {
+  font-size: 11px !important;
+}
+
+body.booking-embed .trip-card img {
+  height: 185px !important;
+}
+
+/* إخفاء التذييل وعناصر الموقع */
+body.booking-embed footer,
+body.booking-embed .topbar,
+body.booking-embed header,
+body.booking-embed .mobile-bottom {
+  display: none !important;
+}
+
+@media(max-width:520px) {
+  body.booking-embed .container {
+    width: calc(100% - 20px) !important;
+  }
+
+  body.booking-embed .trip-card img {
+    height: 165px !important;
+  }
+
+  body.booking-embed .trip-card h3 {
+    font-size: 16px !important;
+  }
+}
 </script>
 </body>
 </html>

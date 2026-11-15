@@ -1280,24 +1280,14 @@ if ("serviceWorker" in navigator) {
     }
   });
 }
-/* فتح بوابة الحجوزات ضمن التطبيق */
+/* فتح بوابة الحجوزات كصفحة مستقلة */
 function openBookingPortal(event) {
   if (event) event.preventDefault();
-  const portal = document.getElementById("bookingPortal");
-  const backButton = document.getElementById("portalBackBtn");
-  if (!portal) return;
-  portal.hidden = false;
-  if (backButton) backButton.hidden = false;
-  if (typeof closeDrawer === "function") closeDrawer();
-  requestAnimationFrame(() => portal.scrollIntoView({behavior:"smooth",block:"start"}));
+  window.location.href = "./booking.html?embed=1";
 }
 
 function closeBookingPortal() {
-  const portal = document.getElementById("bookingPortal");
-  const backButton = document.getElementById("portalBackBtn");
-  if (portal) portal.hidden = true;
-  if (backButton) backButton.hidden = true;
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.location.href = "./index.html";
 }
 
 </script>

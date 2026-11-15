@@ -342,11 +342,12 @@
             </div>
             <div class="field full">
   <label>صورة الرحلة</label>
-  <input
-    id="tripImageFile"
-    type="file"
-    accept="image/*"
-  >
+<input
+  id="tripImageFile"
+  type="file"
+  accept="image/*"
+  onchange="previewTripImage(this)"
+>
   <small>اختر صورة واضحة للرحلة، بحد أقصى 5 ميغابايت.</small>
   <div id="tripImagePreview"></div>
 </div>

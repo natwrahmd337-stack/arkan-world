@@ -2281,6 +2281,41 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+  <script>
+function toggleArkanMenu(forceState) {
+  const menu = document.getElementById("arkanSideMenu");
+  const overlay = document.getElementById("arkanMenuOverlay");
+  const button = document.getElementById("menuToggle");
+
+  if (!menu || !overlay) return;
+
+  const shouldOpen =
+    typeof forceState === "boolean"
+      ? forceState
+      : !menu.classList.contains("active");
+
+  menu.classList.toggle("active", shouldOpen);
+  overlay.classList.toggle("active", shouldOpen);
+
+  if (button) {
+    button.setAttribute("aria-expanded", String(shouldOpen));
+  }
+
+  document.body.style.overflow = shouldOpen ? "hidden" : "";
+}
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape") {
+    toggleArkanMenu(false);
+  }
+});
+
+document.querySelectorAll("#arkanSideMenu a").forEach(link => {
+  link.addEventListener("click", () => {
+    toggleArkanMenu(false);
+  });
+});
+</script>
 </body>
 </html>
 

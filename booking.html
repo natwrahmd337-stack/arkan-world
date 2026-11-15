@@ -3095,6 +3095,10 @@ async function loadTravelGallery(){
 const isBookingEmbed =
   new URLSearchParams(window.location.search).get("embed") === "1";
 
+if (isBookingEmbed) {
+  document.body.classList.add("booking-embed");
+}
+
 if (!isBookingEmbed) {
   // تم إيقاف صور الغلاف ومعرض الصور من واجهة الحجز
 }

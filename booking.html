@@ -828,29 +828,45 @@ button:disabled {
     </div>
   </div>
 
-  <header>
-    <div class="container navbar">
-      <a href="#" class="brand">
-        <div class="brand-mark">أ</div>
-        <div>
-          <div class="brand-name">أركان العالم</div>
-          <div class="brand-en">PILLARS OF THE WORLD</div>
-        </div>
+<header>
+  <div class="container navbar">
+
+    <button
+      class="menu-toggle"
+      id="menuToggle"
+      type="button"
+      aria-label="فتح القائمة"
+      aria-expanded="false"
+      onclick="toggleArkanMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <a href="./index.html" class="brand">
+      <img src="./arkan-logo.png" alt="أركان العالم">
+    </a>
+
+    <nav class="nav-links">
+      <a href="./index.html">الرئيسية</a>
+      <a href="#categories">الرحلات</a>
+      <a href="#how">كيف تحجز؟</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="btn btn-outline"
+        onclick="showLoginMessage()">
+        دخول المسافر
+      </button>
+
+      <a href="#trips" class="btn btn-primary">
+        احجز الآن
       </a>
-
-      <nav class="nav-links">
-        <a href="#home">الرئيسية</a>
-        <a href="#categories">الرحلات</a>
-        <a href="#how">كيف تحجز؟</a>
-        <a href="#contact">تواصل معنا</a>
-      </nav>
-
-      <div class="nav-actions">
-        <button class="btn btn-outline" onclick="showLoginMessage()">دخول المسافر</button>
-        <a href="#trips" class="btn btn-primary">احجز الآن</a>
-      </div>
     </div>
-  </header>
+
+  </div>
+</header>
 
   <main>
     <section class="hero" id="home">

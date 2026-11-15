@@ -1,6 +1,6 @@
 
-const CACHE_NAME = "arkan-app-v4";
-const IMAGE_CACHE = "arkan-images-v2";
+const CACHE_NAME = "arkan-app-v5";
+const IMAGE_CACHE = "arkan-images-v3";
 
 const APP_FILES = [
   "./",
@@ -37,8 +37,12 @@ self.addEventListener("activate", event => {
       await Promise.all(
         keys
           .filter(key =>
-            key.startsWith("arkan-app-") &&
-            key !== CACHE_NAME
+            (
+              key.startsWith("arkan-app-") ||
+              key.startsWith("arkan-images-")
+            ) &&
+            key !== CACHE_NAME &&
+            key !== IMAGE_CACHE
           )
           .map(key => caches.delete(key))
       );
@@ -55,7 +59,7 @@ self.addEventListener("fetch", event => {
 
   const url = new URL(request.url);
 
-  // تخزين صور أركان العامة من Supabase
+  // تحديث صور أركان من Supabase عند توفر الإنترنت
   const isSupabaseImage =
     url.hostname === SUPABASE_HOST &&
     url.pathname.includes(
@@ -67,32 +71,23 @@ self.addEventListener("fetch", event => {
       (async () => {
         const cache = await caches.open(IMAGE_CACHE);
 
-        const cached = await cache.match(request);
-
-        if (cached) {
-          return cached;
-        }
-
         try {
           const response = await fetch(request);
 
-          if (
-            response.ok ||
-            response.type === "opaque"
-          ) {
-            try {
-              await cache.put(
-                request,
-                response.clone()
-              );
-            } catch (error) {
-              console.error("Image cache error:", error);
-            }
+          if (response.ok || response.type === "opaque") {
+            await cache.put(request, response.clone());
+            return response;
           }
 
-          return response;
+          const cached = await cache.match(request);
+
+          return cached || response;
 
         } catch (error) {
+          const cached = await cache.match(request);
+
+          if (cached) return cached;
+
           return new Response("", {
             status: 503,
             statusText: "Image unavailable offline"

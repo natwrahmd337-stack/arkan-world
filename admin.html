@@ -1124,7 +1124,11 @@ async function loadArkanVoices(){
 }
   async function reviewArkanVoice(id,status){
  if(!["published","rejected","hidden"].includes(status))return;
-  const action=status==="published"?"نشر هذه المشاركة":"رفض هذه المشاركة";
+const action={
+  published:"إعادة نشر هذه المشاركة",
+  rejected:"رفض هذه المشاركة",
+  hidden:"إخفاء هذه المشاركة"
+}[status];
 
   if(!confirm("هل أنت متأكد من "+action+"؟"))return;
 

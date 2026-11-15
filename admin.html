@@ -2134,12 +2134,13 @@ function toggleLanguage(){
     const receiptNumber=
       "AW-RCP-"+String(payment.id).replace(/-/g,"").slice(0,8).toUpperCase();
 
-    const methods={
-      cash:"نقدي",
-      bank_transfer:"حوالة بنكية",
-      card:"بطاقة",
-      other:"أخرى"
-    };
+const methods={
+  cash:"نقدي",
+  bank_transfer:"حوالة بنكية",
+  card:"بطاقة",
+  sham_cash:"شام كاش",
+  other:"أخرى"
+};
 
     const types={
       deposit:"عربون",

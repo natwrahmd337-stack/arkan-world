@@ -1423,8 +1423,17 @@ body.booking-embed textarea {
 </head>
 
 <body>
-<script>if(new URLSearchParams(location.search).get('embed')==='1')document.body.classList.add('booking-embed');</script>
-
+<script>
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("embed") === "1") {
+    document.documentElement.classList.add("booking-embed");
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("booking-embed");
+    });
+  }
+})();
+</script>
   <div class="topbar">
     <div class="container topbar-inner">
       <span>✦ أركان العالم للسياحة والسفر</span>

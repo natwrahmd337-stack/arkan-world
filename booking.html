@@ -2055,6 +2055,241 @@ body.booking-embed #home.hero {
     font-size: 18px;
   }
 }
+    /* =====================================
+   ARKAN VOICES - ROYAL DESIGN
+===================================== */
+
+.arkan-voices {
+  position: relative;
+  padding: 85px 0;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 10% 20%,
+      rgba(215,182,109,.10),
+      transparent 38%
+    ),
+    linear-gradient(145deg, #082f30, #0b4140 55%, #072c2d);
+  color: #f5f0e5;
+}
+
+.arkan-voices::before {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border: 1px solid rgba(215,182,109,.12);
+  border-radius: 50%;
+  top: -190px;
+  right: -100px;
+  pointer-events: none;
+}
+
+.voices-heading {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 48px;
+}
+
+.voices-eyebrow {
+  display: inline-block;
+  color: #d7b66d;
+  font-size: 12px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.voices-heading h2 {
+  color: #f5f0e5;
+  font-size: clamp(32px, 5vw, 46px);
+  margin: 0 0 14px;
+  font-weight: 800;
+}
+
+.voices-heading p {
+  color: rgba(245,240,229,.72);
+  font-size: 16px;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.voices-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.voices-form-card,
+.voices-wall {
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(215,182,109,.22);
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.16);
+  backdrop-filter: blur(10px);
+}
+
+.voices-form-card h3,
+.voices-wall-heading h3 {
+  color: #e5c783;
+  font-size: 23px;
+  margin: 0 0 10px;
+}
+
+.voices-form-card > p,
+.voices-wall-heading p {
+  color: rgba(245,240,229,.68);
+  line-height: 1.8;
+  margin: 0 0 25px;
+}
+
+#arkanVoiceForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#arkanVoiceForm label:not(.voice-consent) {
+  color: #f0dfb8;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+#arkanVoiceForm input:not([type="checkbox"]),
+#arkanVoiceForm textarea,
+#arkanVoiceForm select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(215,182,109,.25);
+  border-radius: 12px;
+  padding: 14px 15px;
+  background: rgba(3,31,32,.65);
+  color: #fff8e9;
+  font: inherit;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+#arkanVoiceForm input:focus,
+#arkanVoiceForm textarea:focus,
+#arkanVoiceForm select:focus {
+  border-color: #d7b66d;
+  box-shadow: 0 0 0 3px rgba(215,182,109,.12);
+}
+
+#arkanVoiceForm textarea {
+  resize: vertical;
+  min-height: 125px;
+}
+
+#arkanVoiceForm select option {
+  background: #0b4140;
+  color: #fff;
+}
+
+.voice-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: rgba(245,240,229,.8);
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+.voice-consent input {
+  margin-top: 5px;
+  accent-color: #d7b66d;
+  flex-shrink: 0;
+}
+
+#voiceSubmit {
+  border: 0;
+  border-radius: 12px;
+  padding: 15px 22px;
+  background: linear-gradient(135deg, #e4c47d, #c49b4d);
+  color: #173b37;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+
+#voiceSubmit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 24px rgba(215,182,109,.2);
+}
+
+#voiceFormMessage {
+  min-height: 22px;
+  color: #e5c783;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.voices-wall-heading {
+  margin-bottom: 24px;
+}
+
+.voices-wall-heading > span {
+  color: #d7b66d;
+  font-size: 25px;
+}
+
+#arkanVoicesList {
+  display: grid;
+  gap: 14px;
+}
+
+.voice-public-card {
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(215,182,109,.15);
+}
+
+.voice-public-card strong {
+  display: block;
+  color: #e5c783;
+  margin-bottom: 8px;
+}
+
+.voice-public-card p {
+  color: rgba(245,240,229,.86);
+  line-height: 1.9;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.voice-public-rating {
+  color: #e5c783;
+  letter-spacing: 2px;
+  margin-top: 10px;
+}
+
+@media (max-width: 800px) {
+  .arkan-voices {
+    padding: 60px 0;
+  }
+
+  .voices-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .voices-form-card,
+  .voices-wall {
+    padding: 23px 18px;
+  }
+
+  .voices-heading {
+    margin-bottom: 32px;
+  }
+}
 </style>
 </head>
 

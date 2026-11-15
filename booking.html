@@ -3490,6 +3490,65 @@ async function loadArkanVoices() {
     list.textContent = "تعذر تحميل المشاركات حالياً.";
   }
 }
+  /* =====================================
+   ARKAN VOICES - SUBMIT MESSAGE
+===================================== */
+
+const arkanVoiceForm = document.getElementById("arkanVoiceForm");
+
+if (arkanVoiceForm) {
+  arkanVoiceForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const button = document.getElementById("voiceSubmit");
+    const message = document.getElementById("voiceFormMessage");
+
+    if (!db) {
+      message.textContent = "تعذر الاتصال بالنظام. حاول لاحقاً.";
+      return;
+    }
+
+    const payload = {
+      display_name: form.elements.display_name.value.trim(),
+      message: form.elements.message.value.trim(),
+      rating: form.elements.rating.value
+        ? Number(form.elements.rating.value)
+        : null,
+      publish_consent: document.getElementById("voiceConsent").checked
+    };
+
+    if (!payload.publish_consent) {
+      message.textContent = "يرجى الموافقة على النشر بعد مراجعة الإدارة.";
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "جارٍ إرسال مشاركتك...";
+    message.textContent = "";
+
+    try {
+      const { error } = await db
+        .from("arkan_voices")
+        .insert(payload);
+
+      if (error) throw error;
+
+      message.textContent =
+        "وصلتنا مشاركتك بنجاح، وستظهر بعد مراجعة الإدارة وموافقتها.";
+
+      form.reset();
+
+    } catch (error) {
+      console.error("Arkan Voices submission error:", error);
+      message.textContent =
+        error.message || "تعذر إرسال المشاركة. حاول مجدداً.";
+    } finally {
+      button.disabled = false;
+      button.textContent = "أرسل أثرك";
+    }
+  });
+}
   async function loadTrips() {
     const state = document.getElementById("tripsState");
 

@@ -1705,7 +1705,7 @@ function renderPayments(){
       <td>${esc(p.bookings?.booking_code||"—")}</td>
       <td>${esc(p.bookings?.customers?.full_name||"—")}</td>
       <td>${esc(money(p.amount,p.currency))}</td>
-      <td>${esc({cash:"نقدي",bank_transfer:"حوالة بنكية",card:"بطاقة",other:"أخرى"}[p.payment_method]||p.payment_method)}</td>
+    <td>${esc({cash:"نقدي",bank_transfer:"حوالة بنكية",card:"بطاقة",sham_cash:"شام كاش",other:"أخرى"}[p.payment_method]||p.payment_method)}</td>
       <td>${esc({deposit:"عربون",balance:"تكملة",refund:"استرداد",other:"أخرى"}[p.payment_type]||p.payment_type)}</td>
       <td>${esc(p.reference_number||"—")}</td>
     </tr>

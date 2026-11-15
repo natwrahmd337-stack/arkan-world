@@ -2132,7 +2132,21 @@ if (installBtn && !isStandalone) {
   });
 }
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "./service-worker.js"
+      );
 
+      console.log("Arkan Booking App:", registration.scope);
+    } catch (error) {
+      console.error("Service Worker Error:", error);
+    }
+  });
+}
+</script>
 </body>
 </html>
 

@@ -661,6 +661,18 @@
 #bookingFrame{display:block;width:100%;height:min(86vh,920px);min-height:560px;border:0;background:#f5f8f5}
 @media(max-width:520px){.booking-portal-section{margin-inline:10px}.booking-portal-frame-wrap{border-radius:17px}#bookingFrame{height:82vh;min-height:540px}}
 
+  /* ===== SINGLE APP MENU + BOOKING BACK CONTROL ===== */
+.top-actions{gap:10px}
+.icon-btn.menu-trigger{width:46px;height:46px;border-radius:15px;border:1px solid rgba(215,182,109,.58);background:linear-gradient(145deg,rgba(215,182,109,.22),rgba(66,129,119,.22));color:var(--gold-light);box-shadow:0 7px 20px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .22s ease,background .22s ease,border-color .22s ease}
+.icon-btn.menu-trigger:hover{transform:translateY(-2px);border-color:var(--gold-light);background:linear-gradient(145deg,rgba(215,182,109,.32),rgba(66,129,119,.3))}
+.menu-glyph{width:21px;height:17px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start}
+.menu-glyph i{height:2px;border-radius:5px;background:currentColor;display:block;transition:width .2s ease}
+.menu-glyph i:nth-child(1){width:21px}.menu-glyph i:nth-child(2){width:15px}.menu-glyph i:nth-child(3){width:19px}
+.menu-trigger:hover .menu-glyph i:nth-child(2){width:21px}
+.icon-btn.portal-back-btn{width:auto;min-width:66px;height:43px;padding:0 11px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(215,182,109,.55);border-radius:14px;background:linear-gradient(135deg,rgba(215,182,109,.2),rgba(66,129,119,.18));color:var(--gold-light);box-shadow:0 5px 16px rgba(0,0,0,.16)}
+.portal-back-btn span{font-size:21px;line-height:1}.portal-back-btn small{font:800 10px "Cairo",sans-serif}.portal-back-btn[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.icon-btn.menu-trigger,.menu-glyph i{transition:none}}
+
   </style>
 </head>
 
@@ -677,8 +689,9 @@
     </div>
 
     <div class="top-actions">
+      <button class="icon-btn portal-back-btn" id="portalBackBtn" type="button" onclick="closeBookingPortal()" aria-label="الرجوع للرئيسية" hidden><span>→</span><small>رجوع</small></button>
       <button class="icon-btn lang" type="button" onclick="toggleLang()" aria-label="Change language">EN</button>
-      <button class="icon-btn" type="button" onclick="openDrawer()" aria-label="Open menu">☰</button>
+      <button class="icon-btn menu-trigger" type="button" onclick="openDrawer()" aria-label="فتح قائمة التطبيق" aria-haspopup="true"><span class="menu-glyph"><i></i><i></i><i></i></span></button>
     </div>
   </header>
 
@@ -1271,10 +1284,20 @@ if ("serviceWorker" in navigator) {
 function openBookingPortal(event) {
   if (event) event.preventDefault();
   const portal = document.getElementById("bookingPortal");
+  const backButton = document.getElementById("portalBackBtn");
   if (!portal) return;
   portal.hidden = false;
+  if (backButton) backButton.hidden = false;
   if (typeof closeDrawer === "function") closeDrawer();
   requestAnimationFrame(() => portal.scrollIntoView({behavior:"smooth",block:"start"}));
+}
+
+function closeBookingPortal() {
+  const portal = document.getElementById("bookingPortal");
+  const backButton = document.getElementById("portalBackBtn");
+  if (portal) portal.hidden = true;
+  if (backButton) backButton.hidden = true;
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 </script>

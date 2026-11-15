@@ -61,9 +61,9 @@ if (isSupabaseImage) {
       try {
         const response = await fetch(request);
 
-        if (response.ok) {
-          await cache.put(request, response.clone());
-        }
+   if (response.ok || response.type === "opaque") {
+  await cache.put(request, response.clone());
+}
 
         return response;
       } catch (error) {

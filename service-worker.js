@@ -1,4 +1,4 @@
-const CACHE_NAME = "arkan-app-v6";
+const CACHE_NAME = "arkan-app-v7";
 const IMAGE_CACHE = "arkan-images-v3";
 
 const APP_FILES = [

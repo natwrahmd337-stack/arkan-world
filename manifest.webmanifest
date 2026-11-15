@@ -1,12 +1,12 @@
 
 {
-"id": "./index.html",
+  "id": "./booking.html",
   "name": "أركان العالم للسياحة والسفر",
   "short_name": "أركان العالم",
   "description": "تطبيق أركان العالم للسياحة والسفر والحج والعمرة",
   "lang": "ar",
   "dir": "rtl",
-"start_url": "./index.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

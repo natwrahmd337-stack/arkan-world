@@ -340,6 +340,16 @@
               <button class="primary-btn" id="saveTripBtn" type="submit">حفظ الرحلة</button>
               <button class="secondary-btn" type="button" onclick="closeTripForm()">إلغاء</button>
             </div>
+            <div class="field full">
+  <label>صورة الرحلة</label>
+  <input
+    id="tripImageFile"
+    type="file"
+    accept="image/*"
+  >
+  <small>اختر صورة واضحة للرحلة، بحد أقصى 5 ميغابايت.</small>
+  <div id="tripImagePreview"></div>
+</div>
             <div id="tripFormMessage"></div>
           </form>
         </div>

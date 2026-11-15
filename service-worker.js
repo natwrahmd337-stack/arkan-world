@@ -39,12 +39,48 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const request = event.request;
 
-  if (
-    request.method !== "GET" ||
-    new URL(request.url).origin !== self.location.origin
-  ) {
-    return;
-  }
+if (request.method !== "GET") {
+  return;
+}
+
+const requestURL = new URL(request.url);
+
+const isSupabaseImage =
+  requestURL.hostname.endsWith(".supabase.co") &&
+  requestURL.pathname.includes("/storage/v1/object/public/site-media/");
+
+if (isSupabaseImage) {
+  event.respondWith(
+    caches.open("arkan-images-v1").then(async cache => {
+      const cached = await cache.match(request);
+
+      if (cached) {
+        return cached;
+      }
+
+      try {
+        const response = await fetch(request);
+
+        if (response.ok) {
+          await cache.put(request, response.clone());
+        }
+
+        return response;
+      } catch (error) {
+        return new Response("", {
+          status: 503,
+          statusText: "Image unavailable offline"
+        });
+      }
+    })
+  );
+
+  return;
+}
+
+if (requestURL.origin !== self.location.origin) {
+  return;
+}
 
   if (request.mode === "navigate") {
     event.respondWith(

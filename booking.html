@@ -1835,7 +1835,19 @@ body.booking-embed textarea {
   function createTripCard(trip) {
     const card = document.createElement("article");
     card.className = "trip-card";
+const tripImage = document.createElement("img");
 
+if (trip.image_url) {
+  tripImage.src = trip.image_url;
+  tripImage.alt = trip.title_ar || "صورة الرحلة";
+  tripImage.loading = "lazy";
+
+  tripImage.style.cssText =
+    "width:100%;height:220px;object-fit:cover;" +
+    "border-radius:12px;margin-bottom:14px;display:block;";
+} else {
+  tripImage.style.display = "none";
+}
     const title = document.createElement("h3");
     title.textContent = trip.title_ar || "رحلة من أركان العالم";
 

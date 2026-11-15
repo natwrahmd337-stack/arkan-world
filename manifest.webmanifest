@@ -6,7 +6,7 @@
   "description": "تطبيق أركان العالم للسياحة والسفر والحج والعمرة",
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "./booking.html",
+"start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

@@ -293,7 +293,43 @@
           <p id="systemMessage" style="color:#666;font-size:14px">تم التحقق من صلاحية حساب الإدارة.</p>
         </div>
       </section>
+<section id="voices" class="section">
+  <div class="page-heading">
+    <div>
+      <h2>إدارة المشاركات – اترك أثراً</h2>
+      <p>مراجعة المشاركات قبل نشرها على موقع أركان</p>
+    </div>
+    <button class="primary-btn" onclick="loadArkanVoices()">
+      تحديث المشاركات
+    </button>
+  </div>
 
+  <div class="panel">
+    <div id="voicesMessage"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>المشاركة</th>
+            <th>التقييم</th>
+            <th>تاريخ الإرسال</th>
+            <th>الحالة</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="voicesTableBody">
+          <tr>
+            <td colspan="6" class="empty-state">
+              اضغط تحديث المشاركات للتحميل
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
       <section id="trips" class="section">
         <div class="page-heading">
           <div><h2>إدارة الرحلات</h2><p>إضافة وتعديل وحذف الرحلات</p></div>

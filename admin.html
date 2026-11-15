@@ -1323,6 +1323,7 @@ function openTripForm(){
   clearMessage("tripFormMessage");
   document.getElementById("tripFormPanel").scrollIntoView({behavior:"smooth"});
 }
+
 function closeTripForm(){
   document.getElementById("tripFormPanel").classList.add("hidden");
   document.getElementById("tripForm").reset();
@@ -1333,6 +1334,12 @@ function closeTripForm(){
 
   clearMessage("tripFormMessage");
 }
+
+function previewTripImage(input){
+  const file=input.files && input.files[0];
+  const preview=document.getElementById("tripImagePreview");
+
+  if(!file || !preview)return;
 
   if(!file.type.startsWith("image/")){
     input.value="";
@@ -1359,7 +1366,7 @@ function closeTripForm(){
 
   reader.readAsDataURL(file);
 }
-function editTrip(id){
+
   const x=tripsCache.find(t=>t.id===id);
   if(!x)return;
 

@@ -1123,8 +1123,7 @@ async function loadArkanVoices(){
   }
 }
   async function reviewArkanVoice(id,status){
-  if(!["published","rejected"].includes(status))return;
-
+ if(!["published","rejected","hidden"].includes(status))return;
   const action=status==="published"?"نشر هذه المشاركة":"رفض هذه المشاركة";
 
   if(!confirm("هل أنت متأكد من "+action+"؟"))return;

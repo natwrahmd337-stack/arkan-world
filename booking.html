@@ -816,6 +816,106 @@ button:disabled {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+    /* ===== ARKAN SIDE MENU ===== */
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid rgba(66,129,119,.25);
+  border-radius: 13px;
+  background: rgba(66,129,119,.08);
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 5px;
+  background: #428177;
+  transition: .3s;
+}
+
+.arkan-side-menu {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 300px;
+  max-width: 85%;
+  height: 100dvh;
+  background: #fff;
+  z-index: 1001;
+  padding: 85px 22px 30px;
+  box-shadow: -10px 0 35px rgba(0,0,0,.13);
+  transition: right .35s ease;
+  overflow-y: auto;
+}
+
+.arkan-side-menu.active {
+  right: 0;
+}
+
+.arkan-side-menu a {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px 12px;
+  margin-bottom: 7px;
+  color: #315f58;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: .2s;
+}
+
+.arkan-side-menu a:hover {
+  background: #edf5f2;
+  color: #b18b45;
+}
+
+.arkan-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.42);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+}
+
+.arkan-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.arkan-menu-title {
+  color: #b18b45;
+  font-weight: 800;
+  font-size: 19px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 800px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .navbar {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 801px) {
+  .menu-toggle {
+    display: flex;
+  }
+}
   </style>
 </head>
 

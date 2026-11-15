@@ -1553,6 +1553,248 @@ body.booking-embed .trip-card img {
     margin-left: 15px !important;
   }
 }
+    
+/* ===== ARKAN DARK TEAL APP IDENTITY ===== */
+
+:root {
+  --teal: #0b4946;
+  --teal-dark: #073532;
+  --burgundy: #c9a76a;
+  --ivory: #f2eee3;
+  --white: #ffffff;
+  --ink: #173b37;
+  --muted: #a9bdb6;
+  --border: rgba(218,190,133,.24);
+  --bg: #082f30;
+  --shadow: 0 15px 40px rgba(0,0,0,.22);
+  --radius: 20px;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(43,116,103,.32), transparent 38%),
+    linear-gradient(145deg,#082f30,#0b4542 55%,#062927) !important;
+  color: var(--ivory) !important;
+}
+
+.topbar {
+  display: none !important;
+}
+
+header {
+  background: rgba(6,43,41,.94) !important;
+  border-bottom: 1px solid rgba(218,190,133,.2) !important;
+}
+
+.brand-name,
+.nav-links,
+.nav-links a {
+  color: var(--ivory) !important;
+}
+
+.brand-en {
+  color: #c9a76a !important;
+}
+
+.brand img {
+  max-height: 58px;
+  width: auto;
+  object-fit: contain;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg,#d8bd83,#b38d50) !important;
+  color: #173b37 !important;
+  border: 1px solid rgba(255,255,255,.2) !important;
+}
+
+.btn-outline {
+  background: rgba(255,255,255,.06) !important;
+  color: #f2eee3 !important;
+  border: 1px solid rgba(218,190,133,.45) !important;
+}
+
+.hero {
+  padding: 55px 0 65px !important;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(218,190,133,.12),transparent 28%),
+    linear-gradient(135deg,#073532,#0d514b 58%,#082f30) !important;
+  color: var(--ivory) !important;
+}
+
+.hero::after {
+  border-color: rgba(218,190,133,.16) !important;
+}
+
+.hero h1 span {
+  color: #dfc58f !important;
+}
+
+.hero p,
+.stat span {
+  color: rgba(242,238,227,.75) !important;
+}
+
+.eyebrow {
+  color: #e4ca96 !important;
+  background: rgba(218,190,133,.09) !important;
+  border-color: rgba(218,190,133,.3) !important;
+}
+
+.search-wrap {
+  margin-top: -28px !important;
+}
+
+.search-box,
+.category,
+.step,
+.trust-item,
+.empty-state {
+  background: rgba(244,241,231,.97) !important;
+  color: #173b37 !important;
+  border: 1px solid rgba(218,190,133,.35) !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.16) !important;
+}
+
+.field label,
+.section-heading h2,
+.category h3,
+.step h3,
+.trust-item h3,
+.empty-state h3 {
+  color: #173b37 !important;
+}
+
+.field input,
+.field select {
+  background: #fffdf7 !important;
+  border-color: #ded6c4 !important;
+  color: #173b37 !important;
+}
+
+section {
+  background: transparent;
+}
+
+.section-kicker {
+  color: #dfc58f !important;
+}
+
+.section-heading h2 {
+  color: #f2eee3 !important;
+}
+
+.section-heading p {
+  color: #b9ccc4 !important;
+}
+
+.trips-section {
+  background: transparent !important;
+}
+
+.trip-card {
+  background: #f2eee3 !important;
+  color: #173b37 !important;
+  border: 1px solid rgba(218,190,133,.5) !important;
+  box-shadow: 0 15px 38px rgba(0,0,0,.24) !important;
+}
+
+.trip-card h3 {
+  color: #123f39 !important;
+}
+
+.trip-card p {
+  color: #667b72 !important;
+}
+
+.trip-card .trip-prices > div {
+  background: #e8e5d9 !important;
+  border-color: #d8c9a7 !important;
+  color: #17483f !important;
+}
+
+.trip-card .book-trip-button {
+  background: linear-gradient(135deg,#d8bd83,#b38d50) !important;
+  color: #173b37 !important;
+  border-color: #b38d50 !important;
+}
+
+.category-icon,
+.step-number,
+.empty-icon,
+.trust-icon {
+  background: #174d46 !important;
+  color: #e2c58d !important;
+}
+
+.trust-section {
+  background: rgba(4,35,34,.55) !important;
+}
+
+.contact-banner {
+  background: linear-gradient(120deg,#0b4946,#073532) !important;
+  border: 1px solid rgba(218,190,133,.4);
+}
+
+.contact-banner .btn {
+  background: linear-gradient(135deg,#d8bd83,#b38d50) !important;
+  color: #173b37 !important;
+}
+
+footer {
+  background: #052725 !important;
+  border-top: 1px solid rgba(218,190,133,.25);
+}
+
+.mobile-bottom {
+  background: rgba(5,39,37,.97) !important;
+  border-top: 1px solid rgba(218,190,133,.3) !important;
+}
+
+.mobile-bottom a {
+  color: #e8d6ad !important;
+}
+
+@media(max-width:700px) {
+  .navbar {
+    min-height: 68px !important;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .hero {
+    padding: 38px 0 52px !important;
+  }
+
+  .hero h1 {
+    font-size: 30px !important;
+  }
+
+  .search-box {
+    grid-template-columns: 1fr !important;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .steps-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .contact-banner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
+
 </style>
 </head>
 

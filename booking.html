@@ -1266,7 +1266,28 @@ body.booking-embed section{scroll-margin-top:10px}
 @media(max-width:520px){.hero{padding:43px 0 62px!important;border-radius:0 0 24px 24px!important}.hero::before{display:none}.hero h1{font-size:31px!important}.hero p{font-size:12px}.hero-stats .stat{padding:0 10px}.hero-stats .stat strong{font-size:16px}.hero-stats .stat span{font-size:9px}.search-wrap{margin-top:-28px}.search-box{padding:14px!important;gap:9px}.search-box .btn{grid-column:1/-1}.category{padding:19px 12px}.trip-card{padding:18px!important}.trip-prices{gap:5px}.trip-prices>div{font-size:9px;padding:9px 3px}}
 @media(prefers-reduced-motion:reduce){.category{transition:none}}
 
-  </style>
+  
+/* ARKAN PORTAL: remove all travel photography from the booking experience */
+body.booking-embed .hero{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(234,217,174,.16),transparent 30%),
+    linear-gradient(125deg,#173e39 0%,#315f58 48%,#428177 100%) !important;
+}
+body.booking-embed .hero::before,
+body.booking-embed .hero::after{
+  background:none !important;
+  background-image:none !important;
+}
+body.booking-embed .gallery-section,
+body.booking-embed #travelGallery,
+body.booking-embed .trip-card img,
+body.booking-embed .gallery-card img,
+body.booking-embed picture,
+body.booking-embed video{
+  display:none !important;
+}
+
+</style>
 </head>
 
 <body>

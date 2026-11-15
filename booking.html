@@ -1799,6 +1799,262 @@ html.booking-embed #home.hero,
 body.booking-embed #home.hero {
   display: none !important;
 }
+    /* =====================================
+   ARKAN ROYAL EXPLORER - HERO DESIGN
+===================================== */
+
+html.booking-embed #home.hero,
+body.booking-embed #home.hero {
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 35px 0 55px !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+
+.royal-hero {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  align-items: center;
+  gap: 55px;
+  min-height: 480px;
+  padding: 35px 0;
+  direction: rtl;
+}
+
+.royal-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.royal-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d7b66d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+}
+
+.royal-eyebrow span {
+  font-size: 20px;
+}
+
+.royal-hero-content h1 {
+  color: #f8f3e9;
+  font-size: clamp(34px, 4.5vw, 58px);
+  line-height: 1.5;
+  font-weight: 800;
+  margin: 0 0 20px;
+}
+
+.royal-hero-content h1 span {
+  display: block;
+  color: #d7b66d;
+}
+
+.royal-hero-content > p {
+  color: rgba(248,243,233,.78);
+  font-size: 16px;
+  line-height: 2.1;
+  max-width: 490px;
+  margin-bottom: 30px;
+}
+
+.royal-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.royal-hero-actions .btn-primary {
+  background: linear-gradient(135deg,#e5c77e,#c49b4c) !important;
+  color: #123c38 !important;
+  border: none !important;
+  border-radius: 10px;
+  padding: 15px 25px;
+  font-weight: 800;
+  box-shadow: 0 8px 25px rgba(215,182,109,.2);
+}
+
+.royal-hero-actions .btn-primary span {
+  margin-right: 12px;
+}
+
+.royal-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f8f3e9;
+  border: 1px solid rgba(215,182,109,.55);
+  border-radius: 10px;
+  padding: 14px 24px;
+  text-decoration: none;
+  transition: .25s ease;
+}
+
+.royal-secondary-btn:hover {
+  background: rgba(215,182,109,.12);
+  border-color: #d7b66d;
+}
+
+.royal-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 35px;
+  color: rgba(248,243,233,.7);
+  font-size: 12px;
+}
+
+.royal-hero-trust span {
+  white-space: nowrap;
+}
+
+.royal-hero-visual {
+  position: relative;
+  padding: 12px;
+}
+
+.royal-image-frame {
+  position: relative;
+  height: 430px;
+  border-radius: 25px;
+  overflow: hidden;
+  border: 1px solid rgba(215,182,109,.55);
+  box-shadow: 0 25px 65px rgba(0,0,0,.35);
+}
+
+.royal-image-frame::after {
+  content: "";
+  position: absolute;
+  inset: 35% 0 0;
+  background: linear-gradient(transparent,rgba(3,28,29,.88));
+}
+
+.royal-image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .7s ease;
+}
+
+.royal-image-frame:hover img {
+  transform: scale(1.045);
+}
+
+.royal-image-caption {
+  position: absolute;
+  z-index: 2;
+  right: 28px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  color: #fff;
+}
+
+.royal-image-caption span {
+  color: #e5c77e;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.royal-image-caption strong {
+  font-size: 22px;
+}
+
+.royal-floating-mark {
+  position: absolute;
+  left: -12px;
+  bottom: 55px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+  background: #f5efe2;
+  color: #16413c;
+  border: 1px solid #d7b66d;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+
+.royal-floating-mark span {
+  color: #bd9447;
+  font-size: 22px;
+}
+
+.royal-floating-mark small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 850px) {
+  .royal-hero {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 15px 0;
+  }
+
+  .royal-hero-content {
+    text-align: center;
+  }
+
+  .royal-eyebrow,
+  .royal-hero-actions {
+    justify-content: center;
+  }
+
+  .royal-hero-content > p {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .royal-hero-trust {
+    justify-content: center;
+  }
+
+  .royal-image-frame {
+    height: 340px;
+  }
+
+  .royal-floating-mark {
+    left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  html.booking-embed #home.hero,
+  body.booking-embed #home.hero {
+    padding: 20px 0 35px !important;
+  }
+
+  .royal-hero-content h1 {
+    font-size: 34px;
+  }
+
+  .royal-hero-trust {
+    gap: 10px;
+    font-size: 10px;
+  }
+
+  .royal-image-frame {
+    height: 270px;
+    border-radius: 18px;
+  }
+
+  .royal-image-caption strong {
+    font-size: 18px;
+  }
+}
 </style>
 </head>
 

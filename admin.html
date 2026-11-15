@@ -1329,7 +1329,42 @@ function closeTripForm(){
   document.getElementById("tripId").value="";
   clearMessage("tripFormMessage");
 }
+function previewTripImage(input){
+  const preview=document.getElementById("tripImagePreview");
+  if(!preview)return;
 
+  const file=input.files?.[0];
+
+  if(!file){
+    preview.innerHTML="";
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+    input.value="";
+    preview.innerHTML="";
+    showMessage("tripFormMessage","الملف المحدد ليس صورة.");
+    return;
+  }
+
+  if(file.size>5*1024*1024){
+    input.value="";
+    preview.innerHTML="";
+    showMessage("tripFormMessage","حجم الصورة يجب ألا يتجاوز 5 ميغابايت.");
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=function(e){
+    preview.innerHTML=`
+      <img src="${e.target.result}" alt="معاينة صورة الرحلة"
+        style="width:180px;height:120px;object-fit:cover;border-radius:10px;margin-top:10px">
+    `;
+  };
+
+  reader.readAsDataURL(file);
+}
 function editTrip(id){
   const x=tripsCache.find(t=>t.id===id);
   if(!x)return;

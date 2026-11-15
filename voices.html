@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#082f30">
+  <title>اترك أثراً | أركان العالم للسياحة والسفر</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: inherit, Arial, sans-serif;
+      background:
+        radial-gradient(ellipse at 85% 0%, rgba(215,182,109,.14), transparent 35%),
+        radial-gradient(ellipse at 10% 40%, rgba(66,129,119,.23), transparent 40%),
+        linear-gradient(150deg, #062f30, #0b4140 55%, #082d2e);
+      color: #f5f0e5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .voices-page {
+      width: min(1100px, calc(100% - 32px));
+      margin: auto;
+      padding: 28px 0 65px;
+    }
+
+    .voices-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 65px;
+    }
+
+    .brand {
+      color: #e5c783;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .back-link {
+      padding: 10px 17px;
+      border: 1px solid rgba(215,182,109,.4);
+      border-radius: 30px;
+      color: #f5f0e5;
+      font-size: 13px;
+    }
+
+    .voices-heading {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 48px;
+    }
+
+    .eyebrow {
+      color: #d7b66d;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      margin: 15px 0;
+      color: #f5f0e5;
+    }
+
+    h1 span {
+      color: #e5c783;
+    }
+
+    .voices-heading p {
+      color: rgba(245,240,229,.75);
+      line-height: 2;
+      font-size: 16px;
+    }
+
+    .voices-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(215,182,109,.23);
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.16);
+      backdrop-filter: blur(10px);
+    }
+
+    .panel h2 {
+      color: #e5c783;
+      font-size: 23px;
+      margin: 0 0 10px;
+    }
+
+    .panel-intro {
+      color: rgba(245,240,229,.68);
+      line-height: 1.9;
+      margin: 0 0 25px;
+      font-size: 14px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label:not(.consent) {
+      color: #f0dfb8;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 7px;
+    }
+
+    input:not([type="checkbox"]),
+    textarea,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(215,182,109,.25);
+      border-radius: 11px;
+      background: rgba(3,31,32,.65);
+      color: #fff8e9;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #d7b66d;
+      box-shadow: 0 0 0 3px rgba(215,182,109,.12);
+    }
+
+    textarea {
+      min-height: 135px;
+      resize: vertical;
+    }
+
+    select option {
+      background: #0b4140;
+    }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: rgba(245,240,229,.8);
+      font-size: 13px;
+      line-height: 1.9;
+      margin: 12px 0;
+      cursor: pointer;
+    }
+
+    .consent input {
+      margin-top: 6px;
+      accent-color: #d7b66d;
+      flex-shrink: 0;
+    }
+
+    .submit-button {
+      padding: 15px;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #e4c47d, #c49b4d);
+      color: #173b37;
+      font: inherit;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .submit-button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    #formMessage {
+      color: #e5c783;
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 22px;
+    }
+
+    #voicesList {
+      display: grid;
+      gap: 14px;
+    }
+
+    .voice-card {
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(215,182,109,.15);
+    }
+
+    .voice-card strong {
+      display: block;
+      color: #e5c783;
+      margin-bottom: 9px;
+    }
+
+    .voice-card p {
+      color: rgba(245,240,229,.88);
+      line-height: 1.9;
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .rating {
+      color: #e5c783;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
+
+    .page-footer {
+      text-align: center;
+      margin-top: 55px;
+      color: rgba(245,240,229,.55);
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    @media(max-width: 760px) {
+      .voices-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .voices-topbar {
+        margin-bottom: 45px;
+      }
+
+      .panel {
+        padding: 23px 18px;
+      }
+
+      .voices-heading p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="voices-page">
+
+    <header class="voices-topbar">
+      <a href="./index.html" class="brand">✦ ARKAN WORLD</a>
+      <a href="./index.html" class="back-link">← العودة للتطبيق</a>
+    </header>
+
+    <section class="voices-heading">
+      <div class="eyebrow">ARKAN VOICES</div>
+      <h1>اترك <span>أثراً</span></h1>
+      <p>
+        تجربتك معنا تستحق أن تُروى، وكلمتك قد تلهم مسافراً آخر.
+        شاركنا حكايتك واترك أثراً جميلاً مع أركان.
+      </p>
+    </section>
+
+    <section class="voices-layout">
+
+      <div class="panel">
+        <h2>شاركنا تجربتك</h2>
+        <p class="panel-intro">
+          يسعدنا أن نسمع منك. اكتب رسالتك وسنراجعها قبل نشرها.
+        </p>
+
+        <form id="voiceForm">
+
+          <label for="voiceName">الاسم الذي سيظهر مع مشاركتك</label>
+          <input
+            id="voiceName"
+            name="display_name"
+            type="text"
+            minlength="2"
+            maxlength="80"
+            placeholder="اسمك"
+            required
+          >
+
+          <label for="voiceText">رسالتك وتجربتك</label>
+          <textarea
+            id="voiceText"
+            name="message"
+            minlength="5"
+            maxlength="2000"
+            placeholder="احكِ لنا عن تجربتك مع أركان..."
+            required
+          ></textarea>
+
+          <label for="voiceRating">كيف تقيّم تجربتك؟</label>
+          <select id="voiceRating" name="rating">
+            <option value="">بدون تقييم</option>
+            <option value="5">5 - ممتازة</option>
+            <option value="4">4 - جيدة جداً</option>
+            <option value="3">3 - جيدة</option>
+            <option value="2">2 - مقبولة</option>
+            <option value="1">1 - تحتاج إلى تحسين</option>
+          </select>
+
+          <label class="consent">
+            <input type="checkbox" id="voiceConsent" required>
+            <span>
+              أوافق على نشر رسالتي واسمي الظاهر للجميع بعد مراجعتها
+              وموافقة إدارة أركان.
+            </span>
+          </label>
+
+          <button class="submit-button" id="submitVoice" type="submit">
+            أرسل أثرك
+          </button>
+
+          <div id="formMessage" role="status"></div>
+
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>آثار تركها مسافرونا</h2>
+        <p class="panel-intro">
+          كلمات وتجارب شاركها أصدقاء أركان.
+        </p>
+
+        <div id="voicesList">
+          جاري تحميل المشاركات...
+        </div>
+      </div>
+
+    </section>
+
+    <footer class="page-footer">
+      <div>ARKAN WORLD TRAVEL & TOURISM</div>
+      <div>نصحبكم في كل رحلة... معكم في كل وجهة</div>
+    </footer>
+
+  </main>
+
+  <script>
+    const db = window.arkanSupabase;
+
+    async function loadVoices() {
+      const list = document.getElementById("voicesList");
+
+      list.textContent = "جاري تحميل المشاركات...";
+
+      try {
+        if (!db) throw new Error("Supabase connection unavailable");
+
+        const { data, error } = await db
+          .from("arkan_voices")
+          .select("id,display_name,message,rating,created_at")
+          .eq("status", "published")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        list.replaceChildren();
+
+        if (!data || data.length === 0) {
+          list.textContent =
+            "لم تُنشر مشاركات بعد. كن أول من يترك أثراً مع أركان.";
+          return;
+        }
+
+        data.forEach(item => {
+          const card = document.createElement("article");
+          card.className = "voice-card";
+
+          const name = document.createElement("strong");
+          name.textContent = item.display_name;
+
+          const message = document.createElement("p");
+          message.textContent = item.message;
+
+          card.append(name, message);
+
+          if (item.rating !== null && item.rating !== undefined) {
+            const rating = document.createElement("div");
+            rating.className = "rating";
+            rating.textContent =
+              "★".repeat(Number(item.rating)) +
+              "☆".repeat(5 - Number(item.rating));
+
+            card.appendChild(rating);
+          }
+
+          list.appendChild(card);
+        });
+
+      } catch (error) {
+        console.error("Voices loading error:", error);
+        list.textContent = "تعذر تحميل المشاركات حالياً.";
+      }
+    }
+
+    document.getElementById("voiceForm").addEventListener(
+      "submit",
+      async function(event) {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        const button = document.getElementById("submitVoice");
+        const message = document.getElementById("formMessage");
+
+        if (!db) {
+          message.textContent = "تعذر الاتصال بالنظام. حاول لاحقاً.";
+          return;
+        }
+
+        const payload = {
+          display_name: form.elements.display_name.value.trim(),
+          message: form.elements.message.value.trim(),
+          rating: form.elements.rating.value
+            ? Number(form.elements.rating.value)
+            : null,
+          publish_consent:
+            document.getElementById("voiceConsent").checked
+        };
+
+        if (!payload.publish_consent) {
+          message.textContent =
+            "يرجى الموافقة على النشر بعد مراجعة الإدارة.";
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = "جارٍ إرسال مشاركتك...";
+        message.textContent = "";
+
+        try {
+          const { error } = await db
+            .from("arkan_voices")
+            .insert(payload);
+
+          if (error) throw error;
+
+          message.textContent =
+            "وصلتنا مشاركتك بنجاح، وستظهر بعد مراجعة الإدارة وموافقتها.";
+
+          form.reset();
+
+        } catch (error) {
+          console.error("Voice submission error:", error);
+          message.textContent =
+            error.message || "تعذر إرسال المشاركة. حاول مجدداً.";
+        } finally {
+          button.disabled = false;
+          button.textContent = "أرسل أثرك";
+        }
+      }
+    );
+
+    loadVoices();
+  </script>
+
+</body>
+</html>

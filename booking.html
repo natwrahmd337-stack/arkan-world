@@ -3432,7 +3432,64 @@ if (trip.image_url) {
       button.textContent = "إعادة إرسال طلب الحجز";
     }
   }
+/* =====================================
+   ARKAN VOICES - LOAD PUBLISHED MESSAGES
+===================================== */
 
+async function loadArkanVoices() {
+  const list = document.getElementById("arkanVoicesList");
+  if (!list) return;
+
+  list.textContent = "جاري تحميل المشاركات...";
+
+  try {
+    if (!db) throw new Error("Supabase connection unavailable");
+
+    const { data, error } = await db
+      .from("arkan_voices")
+      .select("id,display_name,message,rating,created_at")
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    list.replaceChildren();
+
+    if (!data || data.length === 0) {
+      list.textContent = "لم تُنشر مشاركات بعد. كن أول من يترك أثراً مع أركان.";
+      return;
+    }
+
+    data.forEach(item => {
+      const card = document.createElement("article");
+      card.className = "voice-public-card";
+
+      const name = document.createElement("strong");
+      name.textContent = item.display_name;
+
+      const message = document.createElement("p");
+      message.textContent = item.message;
+
+      card.append(name, message);
+
+      if (item.rating !== null && item.rating !== undefined) {
+        const rating = document.createElement("div");
+        rating.className = "voice-public-rating";
+        rating.textContent =
+          "★".repeat(Number(item.rating)) +
+          "☆".repeat(5 - Number(item.rating));
+
+        card.appendChild(rating);
+      }
+
+      list.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Arkan Voices loading error:", error);
+    list.textContent = "تعذر تحميل المشاركات حالياً.";
+  }
+}
   async function loadTrips() {
     const state = document.getElementById("tripsState");
 

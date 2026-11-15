@@ -1083,14 +1083,32 @@ async function loadArkanVoices(){
         <td>${voice.rating??"—"}</td>
         <td>${new Date(voice.created_at).toLocaleDateString("ar")}</td>
         <td>${esc(voice.status)}</td>
- <td>
+<td>
   <div class="inline-actions">
-    <button class="primary-btn" onclick="reviewArkanVoice('${voice.id}','published')">
-      قبول ونشر
-    </button>
-    <button class="danger-btn" onclick="reviewArkanVoice('${voice.id}','rejected')">
-      رفض
-    </button>
+    ${
+      voice.status === "pending"
+      ? `
+        <button class="primary-btn" onclick="reviewArkanVoice('${voice.id}','published')">
+          قبول ونشر
+        </button>
+        <button class="danger-btn" onclick="reviewArkanVoice('${voice.id}','rejected')">
+          رفض
+        </button>
+      `
+      : voice.status === "published"
+      ? `
+        <button class="danger-btn" onclick="reviewArkanVoice('${voice.id}','hidden')">
+          إخفاء
+        </button>
+      `
+      : voice.status === "hidden"
+      ? `
+        <button class="primary-btn" onclick="reviewArkanVoice('${voice.id}','published')">
+          إعادة النشر
+        </button>
+      `
+      : "—"
+    }
   </div>
 </td>
       </tr>

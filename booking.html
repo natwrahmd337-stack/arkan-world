@@ -2576,8 +2576,41 @@ async function loadTravelGallery(){
     gallery.innerHTML="<p>تعذر تحميل صور المعرض حالياً.</p>";
   }
 }
-loadSiteHero();
-loadTravelGallery();
+const isBookingEmbed =
+  new URLSearchParams(window.location.search).get("embed") === "1";
+
+if (isBookingEmbed) {
+  const bookingImagesStyle = document.createElement("style");
+
+  bookingImagesStyle.textContent = `
+    .hero {
+      background-image: none !important;
+      background-color: #315f58 !important;
+    }
+
+    .hero::before,
+    .hero::after {
+      background-image: none !important;
+      content: none !important;
+    }
+
+    #gallery,
+    .gallery-section,
+    #travelGallery,
+    .trip-card img,
+    .gallery-card img,
+    .hero-slides,
+    .hero-dots {
+      display: none !important;
+    }
+  `;
+
+  document.head.appendChild(bookingImagesStyle);
+} else {
+  loadSiteHero();
+  loadTravelGallery();
+}
+
 loadTrips();
 </script>
   <script>

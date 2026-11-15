@@ -650,6 +650,17 @@
       .hero h1 { font-size:25px; }
       .brand-name { font-size:13px; }
     }
+  
+/* بوابة الحجز المدمجة داخل تطبيق أركان */
+.booking-portal-section{margin:24px 16px 0;scroll-margin-top:18px}
+.booking-portal-heading{padding:0 4px 14px;text-align:right}
+.booking-portal-heading .eyebrow{color:var(--gold-light);font-size:10px;font-weight:800;letter-spacing:1px}
+.booking-portal-heading h2{margin:5px 0;color:var(--cream);font-size:19px;font-weight:900}
+.booking-portal-heading p{margin:0;color:var(--muted);font-size:10px;line-height:1.8}
+.booking-portal-frame-wrap{overflow:hidden;border:1px solid rgba(215,182,109,.38);border-radius:22px;background:#f5f8f5;box-shadow:0 16px 42px rgba(0,0,0,.24)}
+#bookingFrame{display:block;width:100%;height:min(86vh,920px);min-height:560px;border:0;background:#f5f8f5}
+@media(max-width:520px){.booking-portal-section{margin-inline:10px}.booking-portal-frame-wrap{border-radius:17px}#bookingFrame{height:82vh;min-height:540px}}
+
   </style>
 </head>
 
@@ -778,7 +789,19 @@
     <section class="booking-banner">
       <h2 data-ar="خطوتك القادمة نحو السفر" data-en="Your next step towards travel">خطوتك القادمة نحو السفر</h2>
       <p data-ar="تصفح الرحلات المتاحة وتعرّف على تفاصيل الحجز." data-en="Browse available trips and explore booking details.">تصفح الرحلات المتاحة وتعرّف على تفاصيل الحجز.</p>
-      <a href="./trips.html" data-ar="عرض الرحلات والحجز" data-en="View trips & book">عرض الرحلات والحجز</a>
+      <a href="#bookingPortal" onclick="openBookingPortal(event)" data-ar="عرض الرحلات والحجز" data-en="View trips & book">عرض الرحلات والحجز</a>
+    </section>
+
+
+    <section class="booking-portal-section" id="bookingPortal" hidden>
+      <div class="booking-portal-heading">
+        <div class="eyebrow" data-ar="بوابة أركان للحجوزات" data-en="ARKAN BOOKING PORTAL">بوابة أركان للحجوزات</div>
+        <h2 data-ar="احجز رحلتك بثقة وراحة" data-en="Book your journey with confidence">احجز رحلتك بثقة وراحة</h2>
+        <p data-ar="تصفح البرامج المتاحة، اختر رحلتك، وأكمل طلب الحجز والدفع من مكان واحد." data-en="Explore available trips, choose your journey, and complete your booking in one place.">تصفح البرامج المتاحة، اختر رحلتك، وأكمل طلب الحجز والدفع من مكان واحد.</p>
+      </div>
+      <div class="booking-portal-frame-wrap">
+        <iframe id="bookingFrame" src="./booking.html?embed=1" title="بوابة حجوزات أركان العالم" loading="lazy" referrerpolicy="same-origin" allow="clipboard-write"></iframe>
+      </div>
     </section>
 
     <section class="trust-strip">
@@ -844,7 +867,7 @@
 
   <nav class="drawer-links">
     <a href="./index.html"><span>⌂</span><span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a>
-    <a href="./booking.html"><span>▣</span><span data-ar="بوابة الحجوزات" data-en="Booking Portal">بوابة الحجوزات</span></a>
+    <a href="#bookingPortal" onclick="openBookingPortal(event)"><span>▣</span><span data-ar="بوابة الحجوزات" data-en="Booking Portal">بوابة الحجوزات</span></a>
     <a href="./trips.html"><span>✈</span><span data-ar="الرحلات السياحية" data-en="Tourist Trips">الرحلات السياحية</span></a>
     <a href="./umrah.html"><span>☪</span><span data-ar="الحج والعمرة" data-en="Hajj & Umrah">الحج والعمرة</span></a>
     <a href="./flights.html"><span>🛫</span><span data-ar="تذاكر الطيران" data-en="Flight Tickets">تذاكر الطيران</span></a>
@@ -1244,6 +1267,16 @@ if ("serviceWorker" in navigator) {
     }
   });
 }
+/* فتح بوابة الحجوزات ضمن التطبيق */
+function openBookingPortal(event) {
+  if (event) event.preventDefault();
+  const portal = document.getElementById("bookingPortal");
+  if (!portal) return;
+  portal.hidden = false;
+  if (typeof closeDrawer === "function") closeDrawer();
+  requestAnimationFrame(() => portal.scrollIntoView({behavior:"smooth",block:"start"}));
+}
+
 </script>
 
 </body>

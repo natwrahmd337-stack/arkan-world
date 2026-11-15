@@ -916,10 +916,281 @@ button:disabled {
     display: flex;
   }
 }
+
+/* ===== ARKAN BOOKING PORTAL — LUXURY REFINEMENT ===== */
+:root{--gold:#c6a35d;--gold-soft:#ead9ae;--teal-deep:#244f49;--portal-shadow:0 18px 48px rgba(28,65,57,.12)}
+body{background:radial-gradient(circle at 90% 0%,rgba(198,163,93,.10),transparent 27%),linear-gradient(180deg,#f8faf8 0%,#f0f5f1 100%)}
+.hero{border-radius:0 0 30px 30px;background:radial-gradient(circle at 10% 15%,rgba(234,217,174,.22),transparent 30%),linear-gradient(125deg,#173e39 0%,#315f58 48%,#428177 100%)}
+.hero::after{border-color:rgba(234,217,174,.22)}
+.hero h1 span{color:var(--gold-soft)}
+.search-box{border:1px solid rgba(198,163,93,.24)!important;box-shadow:0 18px 42px rgba(30,70,61,.13),inset 0 1px 0 #fff!important}
+.field select,.field input{min-height:49px;border-radius:13px;background:#fbfcfa}
+.category,.step,.trust-item,.trip-card,.gallery-card{border-color:rgba(198,163,93,.22)!important;box-shadow:0 12px 30px rgba(30,70,61,.08),inset 0 1px 0 rgba(255,255,255,.9)!important}
+.category-icon,.empty-icon,.step-number,.trust-icon{background:linear-gradient(145deg,#edf5f0,#e2eee8)}
+.trips-section{background:transparent}
+.trips-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.trip-card{padding:20px;border-radius:22px;overflow:hidden}
+.trip-card h3{color:#244f49;font-size:19px;line-height:1.6;margin:10px 0}
+.trip-card p{color:#64716c;font-size:12px;line-height:1.9;margin:5px 0}
+.trip-type{display:inline-flex;align-items:center;border:1px solid rgba(198,163,93,.4);background:rgba(234,217,174,.28);color:#866a32;padding:5px 11px;border-radius:30px;font-size:11px;font-weight:800}
+.trip-prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:15px}
+.trip-prices>div{background:#f2f6f2;border:1px solid #e3ebe5;color:#315f58;padding:9px 6px;border-radius:11px;text-align:center;font-size:10px;font-weight:800}
+.book-trip-button{min-height:47px;margin-top:16px!important}
+.gallery-section,.trust-section{background:rgba(234,239,232,.72)}
+.contact-banner{border:1px solid rgba(234,217,174,.42);box-shadow:var(--portal-shadow);background:radial-gradient(circle at 95% 0%,rgba(234,217,174,.18),transparent 35%),linear-gradient(115deg,#244f49,#428177)}
+#bookingModal{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#bookingModal>div{border:1px solid rgba(198,163,93,.35);border-radius:24px!important;box-shadow:0 24px 80px rgba(0,0,0,.28)}
+#bookingModal input,#bookingModal select,#bookingModal textarea,#paymentStep input{border:1px solid #dce7e0!important;border-radius:12px!important;outline:none;transition:border-color .2s,box-shadow .2s}
+#bookingModal input:focus,#bookingModal select:focus,#bookingModal textarea:focus,#paymentStep input:focus{border-color:#428177!important;box-shadow:0 0 0 3px rgba(66,129,119,.10)}
+#paymentStep{border:1px solid rgba(198,163,93,.28);border-radius:20px;padding:18px;background:rgba(255,255,255,.92);box-shadow:var(--portal-shadow)}
+body.booking-embed{padding-bottom:0!important;background:#f5f8f5}
+body.booking-embed .topbar,body.booking-embed header,body.booking-embed footer,body.booking-embed .mobile-bottom,body.booking-embed .arkan-side-menu,body.booking-embed .arkan-menu-overlay{display:none!important}
+body.booking-embed .hero{margin-top:0;padding-top:55px;border-radius:0 0 28px 28px}
+body.booking-embed .container{width:min(100% - 28px,1160px)}
+body.booking-embed section{scroll-margin-top:12px}
+@media(max-width:700px){.trips-grid{grid-template-columns:1fr}.trip-prices{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{border-radius:0 0 24px 24px}#bookingModal>div{padding:19px!important}}
+
+
+    /* ===== ARKAN SIGNATURE LUXURY BOOKING EXPERIENCE ===== */
+    :root{
+      --gold:#c9a96e;
+      --gold-light:#f0dfb8;
+      --deep:#183f39;
+      --deep-2:#24564e;
+      --paper:#f7f5ef;
+      --line:rgba(201,169,110,.25);
+      --lux-shadow:0 24px 65px rgba(25,58,51,.12);
+    }
+    body{
+      color:#203c36;
+      background:
+        radial-gradient(ellipse at 8% 12%,rgba(201,169,110,.10),transparent 28%),
+        linear-gradient(180deg,#fbfaf7 0%,#f1f5f1 48%,#fbfaf7 100%);
+    }
+    .hero{
+      min-height:470px;
+      padding:88px 0 100px;
+      display:flex;
+      align-items:center;
+      background:
+        radial-gradient(ellipse at 12% 18%,rgba(226,197,141,.20),transparent 33%),
+        radial-gradient(ellipse at 90% 90%,rgba(201,169,110,.17),transparent 30%),
+        linear-gradient(118deg,#102f2b 0%,#1d4942 48%,#39786d 100%);
+      border-radius:0 0 42px 42px;
+      box-shadow:0 18px 55px rgba(24,63,57,.16);
+    }
+    .hero::after{
+      width:520px;height:520px;left:-170px;bottom:-350px;
+      border:1px solid rgba(240,223,184,.24);
+      box-shadow:0 0 0 55px rgba(240,223,184,.045),0 0 0 110px rgba(240,223,184,.025);
+    }
+    .hero-content{max-width:760px}
+    .eyebrow{
+      padding:9px 17px;margin-bottom:23px;
+      color:#f3dfb6;background:rgba(255,255,255,.08);
+      border:1px solid rgba(218,190,137,.5);
+      border-radius:40px;font-weight:700;letter-spacing:.2px;
+    }
+    .hero h1{font-size:clamp(36px,5.2vw,62px);line-height:1.35;letter-spacing:-1px}
+    .hero h1 span{color:#e6c98f}
+    .hero p{max-width:620px;font-size:15px;line-height:2.15;color:rgba(255,255,255,.82)}
+    .hero .btn-primary{
+      color:#203f38!important;
+      background:linear-gradient(135deg,#f1dfb8,#c9a96e)!important;
+      border:1px solid rgba(255,255,255,.55)!important;
+      box-shadow:0 12px 28px rgba(0,0,0,.18)!important;
+    }
+    .hero .btn-outline{border:1px solid rgba(240,223,184,.5)!important;background:rgba(255,255,255,.07)!important}
+    .hero-stats{gap:0;margin-top:43px}
+    .stat{min-width:130px;padding:0 23px;border-right:1px solid rgba(240,223,184,.25)}
+    .stat:first-child{padding-right:0}
+    .stat strong{font-size:22px;color:#f0d8a8}
+    .stat span{font-size:11px}
+    .search-wrap{margin-top:-42px}
+    .search-box{
+      padding:23px;border-radius:23px!important;
+      border:1px solid rgba(201,169,110,.34)!important;
+      background:rgba(255,255,255,.96)!important;
+      box-shadow:0 24px 60px rgba(25,58,51,.15)!important;
+      backdrop-filter:blur(18px);
+    }
+    .field label{font-size:12px;color:#34574f;margin-bottom:9px}
+    .field select,.field input{
+      min-height:52px;padding:0 15px;border-radius:13px;
+      border:1px solid #e5e9e3;background:#fafbf8;color:#29473f;font-size:13px;
+    }
+    .search-box .btn{min-height:52px;border-radius:13px!important;padding-inline:23px}
+    section{padding:76px 0}
+    .section-heading{margin-bottom:30px}
+    .section-kicker{color:#a8864d;font-size:12px;letter-spacing:.5px}
+    .section-heading h2{color:#1d443c;font-size:clamp(25px,3vw,34px);letter-spacing:-.4px}
+    .section-heading p{font-size:13px;color:#7a8982}
+    .category-grid{gap:18px}
+    .category{
+      position:relative;overflow:hidden;
+      padding:27px 18px 25px;border-radius:21px!important;
+      background:linear-gradient(145deg,#fff,#f7f8f3)!important;
+      border:1px solid rgba(201,169,110,.26)!important;
+      box-shadow:0 12px 32px rgba(25,58,51,.06)!important;
+    }
+    .category::after{
+      content:"";position:absolute;width:90px;height:90px;left:-35px;bottom:-45px;
+      border:1px solid rgba(201,169,110,.22);border-radius:50%;
+      box-shadow:0 0 0 13px rgba(201,169,110,.035);
+    }
+    .category-icon{
+      width:62px;height:62px;border-radius:19px;margin-bottom:15px;
+      color:#a98448;background:linear-gradient(145deg,#f8f0df,#e9e1ce);
+      font-size:27px;
+    }
+    .category h3{color:#244b42;font-size:15px}
+    .category p{font-size:11px}
+    .trips-section{background:transparent}
+    .trips-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+    .trip-card{
+      position:relative;overflow:hidden;padding:25px!important;
+      border-radius:24px!important;
+      background:linear-gradient(145deg,#fff 0%,#fbfaf6 100%)!important;
+      border:1px solid rgba(201,169,110,.28)!important;
+      box-shadow:0 16px 42px rgba(25,58,51,.085)!important;
+    }
+    .trip-card::before{
+      content:"";position:absolute;top:0;right:0;left:0;height:5px;
+      background:linear-gradient(90deg,#b28d50,#ead8ad,#428177);
+    }
+    .trip-card h3{font-size:21px!important;color:#1c443c!important;margin:14px 0 13px!important}
+    .trip-card p{font-size:12px!important;color:#687a72!important;line-height:2!important}
+    .trip-card .trip-type{
+      color:#8d6d36;background:#f8f0df;border:1px solid #ead9b5;
+      padding:6px 13px;font-size:11px;letter-spacing:.2px;
+    }
+    .trip-prices{gap:9px;margin-top:19px}
+    .trip-prices>div{
+      padding:12px 6px;border-radius:13px;
+      color:#315c50;background:#f2f6f1;border:1px solid #e0e9df;
+      font-size:11px;line-height:1.8;
+    }
+    .book-trip-button{
+      min-height:50px;margin-top:20px!important;border-radius:14px!important;
+      background:linear-gradient(135deg,#285d52,#173e38)!important;
+      color:#f6e7c7!important;font-size:14px!important;
+      border:1px solid rgba(201,169,110,.45)!important;
+      box-shadow:0 10px 22px rgba(24,63,57,.18)!important;
+    }
+    .empty-state{
+      border:1px dashed rgba(169,139,83,.45)!important;
+      background:rgba(255,255,255,.72)!important;border-radius:22px!important;
+    }
+    .steps-grid{gap:18px}
+    .step{border-radius:20px!important;padding:25px!important;background:#fff!important}
+    .step-number{color:#f3dfb8;background:linear-gradient(145deg,#285d52,#173e38)!important}
+    .step h3{color:#254b42}
+    .gallery-section,.trust-section{background:linear-gradient(135deg,#f2f2e9,#edf3ee)}
+    .gallery-card{border-radius:20px!important;overflow:hidden}
+    .gallery-card img{height:260px}
+    .contact-banner{
+      border-radius:27px;padding:38px;
+      background:radial-gradient(circle at 95% 0%,rgba(240,223,184,.18),transparent 34%),linear-gradient(115deg,#173e38,#39786d);
+      box-shadow:0 22px 50px rgba(25,58,51,.16);
+    }
+    #bookingModal{
+      padding:18px!important;
+      background:rgba(10,28,25,.72)!important;
+      backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);
+    }
+    #bookingModal>div{
+      max-width:570px!important;max-height:min(92dvh,900px)!important;
+      padding:31px!important;border-radius:27px!important;
+      border:1px solid rgba(201,169,110,.48)!important;
+      background:linear-gradient(145deg,#fff 0%,#fbfaf5 100%)!important;
+      box-shadow:0 35px 100px rgba(0,0,0,.35)!important;
+    }
+    #bookingModal>div>div:first-of-type{
+      color:#a27f43!important;font-size:12px;letter-spacing:.4px;
+      padding-bottom:12px;border-bottom:1px solid #eee6d6;
+    }
+    #bookingModal h2{color:#1d443c;font-size:25px;margin-top:19px!important}
+    #bookingTripTitle{color:#78877f!important;font-size:13px;line-height:1.8}
+    #bookingModal form label,#paymentStep label{
+      display:block;margin:5px 0 7px;color:#35564d;
+      font-size:12px;font-weight:800;
+    }
+    #bookingModal input,#bookingModal select,#bookingModal textarea,#paymentStep input{
+      min-height:47px;padding:11px 13px!important;
+      background:#fbfcf9!important;border:1px solid #e2e9e1!important;
+      border-radius:12px!important;color:#25473e;
+      font:inherit;font-size:13px;
+    }
+    #bookingModal input:focus,#bookingModal select:focus,#bookingModal textarea:focus,#paymentStep input:focus{
+      border-color:#b99a60!important;box-shadow:0 0 0 4px rgba(201,169,110,.13)!important;
+    }
+    #bookingUnitPrice{color:#315b50}
+    #bookingModal #bookingTotal{
+      display:block;color:#9a773d!important;font-size:25px!important;
+      margin-top:4px;
+    }
+    #bookingModal #closeBooking{
+      left:17px!important;top:17px!important;width:39px!important;height:39px!important;
+      background:#f4efe4!important;color:#6d5731!important;
+      border:1px solid #e8dcc2!important;box-shadow:none!important;
+    }
+    #bookingModal #submitBooking,#paymentStep #submitPayment{
+      min-height:52px;border-radius:14px!important;
+      background:linear-gradient(135deg,#285d52,#173e38)!important;
+      color:#f5e4bf!important;border:1px solid rgba(201,169,110,.55)!important;
+      font-size:14px!important;box-shadow:0 10px 24px rgba(24,63,57,.18)!important;
+    }
+    #paymentStep{
+      border:1px solid rgba(201,169,110,.3);border-radius:22px;
+      padding:20px;background:#fff;box-shadow:var(--lux-shadow);
+    }
+    #paymentStep>div:first-child{
+      background:#edf5ef!important;border:1px solid #d5e5d8!important;
+      border-radius:15px!important;color:#285d48!important;
+    }
+    #paymentStep>div:nth-child(2){
+      border:1px solid #e8e1d2!important;border-radius:17px!important;background:#fffdf8;
+    }
+    #paymentStep h3{color:#285d52!important}
+    #paymentStep #shamCashId{color:#8f713e!important}
+    @media(max-width:800px){
+      .hero{min-height:420px;padding:65px 0 85px}
+      .trips-grid{grid-template-columns:1fr}
+      .search-box{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:520px){
+      .hero{min-height:0;padding:55px 0 78px;border-radius:0 0 27px 27px}
+      .hero h1{font-size:34px;line-height:1.45}
+      .hero p{font-size:12px}
+      .hero-stats{gap:0;justify-content:space-between}
+      .stat{min-width:0;padding:0 12px}
+      .stat strong{font-size:17px}
+      .stat span{font-size:9px}
+      .search-wrap{margin-top:-34px}
+      .search-box{padding:15px;gap:10px;border-radius:18px!important}
+      .search-box .btn{grid-column:1/-1}
+      section{padding:53px 0}
+      .category-grid{gap:11px}
+      .category{padding:20px 10px}
+      .trips-grid{gap:15px}
+      .trip-card{padding:19px!important}
+      .trip-card h3{font-size:18px!important}
+      .trip-prices{gap:5px}
+      .trip-prices>div{font-size:9px;padding:9px 3px}
+      .gallery-card img{height:190px}
+      #bookingModal{padding:9px!important}
+      #bookingModal>div{padding:23px 17px!important;border-radius:21px!important;max-height:94dvh!important}
+      #bookingModal h2{font-size:21px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+    }
+
   </style>
 </head>
 
 <body>
+<script>if(new URLSearchParams(location.search).get('embed')==='1')document.body.classList.add('booking-embed');</script>
 
   <div class="topbar">
     <div class="container topbar-inner">
@@ -2209,7 +2480,7 @@ loadTravelGallery();
 loadTrips();
 </script>
   <script>
-if ("serviceWorker" in navigator) {
+if (!document.body.classList.contains("booking-embed") && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js")
       .then(registration => {

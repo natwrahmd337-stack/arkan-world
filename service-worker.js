@@ -120,13 +120,13 @@ self.addEventListener("fetch", event => {
 
           if (cached) return cached;
 
-          const booking = await caches.match("./booking.html");
+      const home = await caches.match("./index.html");
 
-          if (booking) return booking;
+if (home) return home;
 
-          const home = await caches.match("./index.html");
+const booking = await caches.match("./booking.html");
 
-          if (home) return home;
+if (booking) return booking;
 
           return new Response(
             "التطبيق غير متاح دون اتصال. افتحه مرة واحدة مع الإنترنت أولاً.",

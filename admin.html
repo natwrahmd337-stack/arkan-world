@@ -1366,7 +1366,7 @@ function previewTripImage(input){
 
   reader.readAsDataURL(file);
 }
-
+function editTrip(id){
   const x=tripsCache.find(t=>t.id===id);
   if(!x)return;
 

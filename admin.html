@@ -1049,7 +1049,52 @@ async function loadDashboard(){
     document.getElementById(id).textContent=await countRows(table);
   }));
 }
+/* ARKAN VOICES */
+async function loadArkanVoices(){
+  if(!db)return;
 
+  const tbody=document.getElementById("voicesTableBody");
+  const message=document.getElementById("voicesMessage");
+
+  tbody.innerHTML=`
+    <tr><td colspan="6" class="empty-state">جاري تحميل المشاركات...</td></tr>
+  `;
+  message.innerHTML="";
+
+  try{
+    const {data,error}=await db
+      .from("arkan_voices")
+      .select("id,display_name,message,rating,status,created_at")
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    if(!data || !data.length){
+      tbody.innerHTML=`
+        <tr><td colspan="6" class="empty-state">لا توجد مشاركات حالياً</td></tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML=data.map(voice=>`
+      <tr>
+        <td>${esc(voice.display_name)}</td>
+        <td>${esc(voice.message)}</td>
+        <td>${voice.rating??"—"}</td>
+        <td>${new Date(voice.created_at).toLocaleDateString("ar")}</td>
+        <td>${esc(voice.status)}</td>
+        <td>سيتم إضافة إجراءات المراجعة</td>
+      </tr>
+    `).join("");
+
+  }catch(error){
+    console.error("ARKAN VOICES:",error);
+    message.textContent="تعذر تحميل المشاركات: "+error.message;
+    tbody.innerHTML=`
+      <tr><td colspan="6" class="empty-state">حدث خطأ أثناء التحميل</td></tr>
+    `;
+  }
+}
 /* BRANCHES */
 async function loadBranches(){
   if(!db)return;

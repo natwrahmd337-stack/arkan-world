@@ -916,10 +916,45 @@ button:disabled {
     display: flex;
   }
 }
+
+/* ===== ARKAN BOOKING PORTAL — LUXURY REFINEMENT ===== */
+:root{--gold:#c6a35d;--gold-soft:#ead9ae;--teal-deep:#244f49;--portal-shadow:0 18px 48px rgba(28,65,57,.12)}
+body{background:radial-gradient(circle at 90% 0%,rgba(198,163,93,.10),transparent 27%),linear-gradient(180deg,#f8faf8 0%,#f0f5f1 100%)}
+.hero{border-radius:0 0 30px 30px;background:radial-gradient(circle at 10% 15%,rgba(234,217,174,.22),transparent 30%),linear-gradient(125deg,#173e39 0%,#315f58 48%,#428177 100%)}
+.hero::after{border-color:rgba(234,217,174,.22)}
+.hero h1 span{color:var(--gold-soft)}
+.search-box{border:1px solid rgba(198,163,93,.24)!important;box-shadow:0 18px 42px rgba(30,70,61,.13),inset 0 1px 0 #fff!important}
+.field select,.field input{min-height:49px;border-radius:13px;background:#fbfcfa}
+.category,.step,.trust-item,.trip-card,.gallery-card{border-color:rgba(198,163,93,.22)!important;box-shadow:0 12px 30px rgba(30,70,61,.08),inset 0 1px 0 rgba(255,255,255,.9)!important}
+.category-icon,.empty-icon,.step-number,.trust-icon{background:linear-gradient(145deg,#edf5f0,#e2eee8)}
+.trips-section{background:transparent}
+.trips-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.trip-card{padding:20px;border-radius:22px;overflow:hidden}
+.trip-card h3{color:#244f49;font-size:19px;line-height:1.6;margin:10px 0}
+.trip-card p{color:#64716c;font-size:12px;line-height:1.9;margin:5px 0}
+.trip-type{display:inline-flex;align-items:center;border:1px solid rgba(198,163,93,.4);background:rgba(234,217,174,.28);color:#866a32;padding:5px 11px;border-radius:30px;font-size:11px;font-weight:800}
+.trip-prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:15px}
+.trip-prices>div{background:#f2f6f2;border:1px solid #e3ebe5;color:#315f58;padding:9px 6px;border-radius:11px;text-align:center;font-size:10px;font-weight:800}
+.book-trip-button{min-height:47px;margin-top:16px!important}
+.gallery-section,.trust-section{background:rgba(234,239,232,.72)}
+.contact-banner{border:1px solid rgba(234,217,174,.42);box-shadow:var(--portal-shadow);background:radial-gradient(circle at 95% 0%,rgba(234,217,174,.18),transparent 35%),linear-gradient(115deg,#244f49,#428177)}
+#bookingModal{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#bookingModal>div{border:1px solid rgba(198,163,93,.35);border-radius:24px!important;box-shadow:0 24px 80px rgba(0,0,0,.28)}
+#bookingModal input,#bookingModal select,#bookingModal textarea,#paymentStep input{border:1px solid #dce7e0!important;border-radius:12px!important;outline:none;transition:border-color .2s,box-shadow .2s}
+#bookingModal input:focus,#bookingModal select:focus,#bookingModal textarea:focus,#paymentStep input:focus{border-color:#428177!important;box-shadow:0 0 0 3px rgba(66,129,119,.10)}
+#paymentStep{border:1px solid rgba(198,163,93,.28);border-radius:20px;padding:18px;background:rgba(255,255,255,.92);box-shadow:var(--portal-shadow)}
+body.booking-embed{padding-bottom:0!important;background:#f5f8f5}
+body.booking-embed .topbar,body.booking-embed header,body.booking-embed footer,body.booking-embed .mobile-bottom,body.booking-embed .arkan-side-menu,body.booking-embed .arkan-menu-overlay{display:none!important}
+body.booking-embed .hero{margin-top:0;padding-top:55px;border-radius:0 0 28px 28px}
+body.booking-embed .container{width:min(100% - 28px,1160px)}
+body.booking-embed section{scroll-margin-top:12px}
+@media(max-width:700px){.trips-grid{grid-template-columns:1fr}.trip-prices{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{border-radius:0 0 24px 24px}#bookingModal>div{padding:19px!important}}
+
   </style>
 </head>
 
 <body>
+<script>if(new URLSearchParams(location.search).get('embed')==='1')document.body.classList.add('booking-embed');</script>
 
   <div class="topbar">
     <div class="container topbar-inner">
@@ -2209,7 +2244,7 @@ loadTravelGallery();
 loadTrips();
 </script>
   <script>
-if ("serviceWorker" in navigator) {
+if (!document.body.classList.contains("booking-embed") && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js")
       .then(registration => {

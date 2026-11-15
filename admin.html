@@ -1327,18 +1327,12 @@ function closeTripForm(){
   document.getElementById("tripFormPanel").classList.add("hidden");
   document.getElementById("tripForm").reset();
   document.getElementById("tripId").value="";
+
+  const preview=document.getElementById("tripImagePreview");
+  if(preview)preview.innerHTML="";
+
   clearMessage("tripFormMessage");
 }
-function previewTripImage(input){
-  const preview=document.getElementById("tripImagePreview");
-  if(!preview)return;
-
-  const file=input.files?.[0];
-
-  if(!file){
-    preview.innerHTML="";
-    return;
-  }
 
   if(!file.type.startsWith("image/")){
     input.value="";

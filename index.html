@@ -1,322 +1,373 @@
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#428177">
-  <link rel="manifest" href="./manifest.webmanifest">
+<meta name="description" content="أركان العالم للسياحة والسفر والحج والعمرة. نصحبكم في كل رحلة، معكم في كل وجهة.">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>أركان العالم | للسياحة والسفر</title>
-<meta name="description" content="مؤسسة أركان العالم للسياحة والسفر والحج والعمرة. نصحبكم في كل رحلة، معكم في كل وجهة.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
 
 <style>
-:root {
+:root{
   --green:#428177;
-  --wine:#6b1f2a;
-  --cream:#edebe0;
+  --green-dark:#285e56;
+  --gold:#c5a45b;
+  --gold-light:#e5d5a8;
+  --cream:#f3f1e8;
   --white:#fff;
-  --dark:#161616;
+  --dark:#172522;
+  --muted:#77827e;
+  --glass:rgba(255,255,255,.72);
+  --shadow:0 14px 40px rgba(24,55,48,.09);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-
+html{scroll-behavior:smooth}
 body{
   font-family:Arial,Tahoma,sans-serif;
   background:var(--cream);
   color:var(--dark);
   line-height:1.8;
 }
-
 a{text-decoration:none;color:inherit}
+button{font-family:inherit}
+.container{width:min(1160px,90%);margin:auto}
 
+/* Header */
 header{
-  background:rgba(255,255,255,.82);
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.88);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
-  padding:15px 6%;
+  border-bottom:1px solid #ffffff;
+  box-shadow:0 5px 25px #0000000b;
+}
+.header-inner{
+  width:min(1200px,92%);
+  min-height:82px;
+  margin:auto;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  position:sticky;
-  top:0;
-  z-index:10;
-  box-shadow:0 5px 25px #00000012;
-  border-bottom:1px solid #ffffffaa;
+  gap:20px;
 }
-
-.logo{font-size:21px;font-weight:bold;color:var(--green)}
-.logo small{display:block;font-size:10px;letter-spacing:3px;color:var(--wine)}
-
-nav{display:flex;gap:22px;align-items:center}
-nav a{font-size:14px;transition:.3s}
+.logo{
+  color:var(--green);
+  font-size:23px;
+  font-weight:900;
+  line-height:1.3;
+  white-space:nowrap;
+}
+.logo small{
+  display:block;
+  color:#987a3d;
+  font-size:9px;
+  letter-spacing:3px;
+  direction:ltr;
+  text-align:right;
+}
+nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+nav a{
+  font-size:14px;
+  font-weight:700;
+  transition:.25s;
+}
 nav a:hover{color:var(--green)}
-
 .lang{
-  background:linear-gradient(145deg,#d5bd7b,#92743b);
+  border:0;
+  background:linear-gradient(145deg,#d7bd7a,#98773a);
   color:white;
-  border:1px solid #ffffff77;
   padding:9px 17px;
   border-radius:12px;
   cursor:pointer;
-  box-shadow:4px 5px 12px #0002,inset 1px 1px 3px #ffffff66;
-  transition:.3s;
+  font-weight:bold;
 }
 
-.lang:hover{
-  transform:translateY(-3px);
-  box-shadow:0 7px 18px #0003,0 0 12px #d8b96b66;
-}
-
-.lang:active{transform:scale(.96)}
-
+/* Hero */
 .hero{
-  min-height:590px;
-  padding:100px 8%;
+  min-height:570px;
+  position:relative;
   display:flex;
   align-items:center;
-  position:relative;
-  isolation:isolate;
   overflow:hidden;
+  isolation:isolate;
   color:white;
-  background:#172b2a;
+  background:#17332f;
+  padding:90px 0;
 }
-
-.hero-slides{
-  position:absolute;
-  inset:0;
-  z-index:-3;
-}
-
-.hero-slide{
-  position:absolute;
-  inset:0;
-  background-position:center;
-  background-size:cover;
-  opacity:0;
-  transform:scale(1.06);
-  transition:opacity 1.2s ease,transform 6s ease;
-}
-
-.hero-slide.active{
-  opacity:1;
-  transform:scale(1);
-}
-
-.hero-overlay{
+.hero-slides,.hero-overlay{
   position:absolute;
   inset:0;
   z-index:-2;
-  background:linear-gradient(90deg,#161616d9,#16161670);
 }
-
-.hero-content{
-  max-width:650px;
-  position:relative;
-  z-index:1;
+.hero-slide{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transform:scale(1.05);
+  transition:opacity 1.2s ease,transform 6s ease;
 }
-
+.hero-slide.active{opacity:1;transform:scale(1)}
+.hero-overlay{
+  z-index:-1;
+  background:linear-gradient(90deg,#101b1bdc,#142c28a8 60%,#142c2870);
+}
+.hero-content{max-width:700px}
+.hero-tag{
+  color:var(--gold-light);
+  letter-spacing:2px;
+  font-size:14px;
+  font-weight:bold;
+}
+.hero h1{
+  font-size:clamp(38px,6vw,66px);
+  line-height:1.3;
+  margin:20px 0;
+}
+.hero p{
+  color:#eee;
+  font-size:18px;
+  max-width:620px;
+  margin-bottom:28px;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 25px;
+  border-radius:13px;
+  border:1px solid #ffffff55;
+  background:linear-gradient(145deg,#55a094,#28675e);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 7px 18px #0002;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 25px #0003}
+.btn.gold{
+  background:linear-gradient(145deg,#d7bd7a,#98773a);
+}
 .hero-indicators{
   position:absolute;
-  bottom:30px;
+  bottom:25px;
   left:50%;
   transform:translateX(-50%);
   display:flex;
-  gap:10px;
-  z-index:2;
+  gap:9px;
 }
-
 .hero-indicators button{
-  width:10px;
-  height:10px;
-  border:1px solid #ffffffaa;
-  border-radius:50%;
-  background:#ffffff55;
-  cursor:pointer;
-  transition:.3s;
+  width:10px;height:10px;border:0;border-radius:20px;
+  background:#ffffff88;cursor:pointer;
 }
+.hero-indicators button.active{width:28px;background:var(--gold)}
 
-.hero-indicators button.active{
-  width:30px;
-  border-radius:20px;
-  background:#d8b96b;
-}
-
-.hero .tag{color:#e6d7b0;letter-spacing:2px}
-
-h1{
-  font-size:clamp(36px,6vw,65px);
-  line-height:1.3;
-  margin:18px 0;
-}
-
-.hero p{font-size:18px;color:#eee;margin-bottom:28px}
-
-/* الأزرار الزجاجية */
-.btn{
-  display:inline-block;
-  position:relative;
-  padding:13px 28px;
-  border-radius:14px;
-  background:linear-gradient(145deg,#55a094,#28675e);
-  color:#fff;
-  margin:6px;
-  border:1px solid #ffffff55;
-  cursor:pointer;
-  text-decoration:none;
-  font-weight:700;
-  box-shadow:
-    6px 6px 14px #0003,
-    -4px -4px 12px #ffffff20,
-    inset 1px 1px 2px #ffffff55;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  transition:all .3s ease;
-}
-
-.btn:hover{
-  transform:translateY(-4px);
-  box-shadow:
-    8px 10px 20px #0004,
-    0 0 16px #55b9a555,
-    inset 1px 1px 3px #ffffff77;
-}
-
-.btn:active{
-  transform:translateY(1px) scale(.97);
-  box-shadow:inset 3px 3px 8px #0004;
-}
-
-.btn.alt{
-  background:linear-gradient(145deg,#d5bd7b,#92743b);
-  color:#fff;
-  border:1px solid #f7e7b477;
-}
-
-section{padding:75px 7%}
-
-.section-title{text-align:center;margin-bottom:40px}
-.section-title h2{font-size:32px;color:var(--green)}
-.section-title p{color:#777}
-
-.services{
+/* Clock and weather */
+.info-section{padding:35px 0 15px}
+.info-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  grid-template-columns:1.15fr .85fr;
   gap:20px;
 }
-
-.card{
-  background:rgba(255,255,255,.62);
+.info-card{
+  background:var(--glass);
+  border:1px solid #fff;
+  border-radius:22px;
+  padding:25px;
+  box-shadow:var(--shadow);
   backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border:1px solid #ffffffc9;
-  border-radius:18px;
-  padding:27px;
-  box-shadow:
-    8px 10px 25px #0000000d,
-    inset 1px 1px 3px #ffffff;
-  transition:transform .3s ease,box-shadow .3s ease;
 }
-
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:
-    10px 15px 30px #00000016,
-    0 0 15px #42817722,
-    inset 1px 1px 3px #ffffff;
+.info-label{
+  color:var(--green);
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:8px;
 }
+.clock-time{
+  font-size:clamp(34px,5vw,49px);
+  font-weight:900;
+  color:var(--green-dark);
+  direction:ltr;
+  text-align:right;
+  line-height:1.4;
+  font-variant-numeric:tabular-nums;
+}
+.date-line{color:#697570;font-size:14px;margin-top:5px}
+.hijri-line{color:#98773a;font-size:14px;font-weight:bold;margin-top:4px}
+.weather-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.weather-icon{font-size:38px}
+.weather-temp{font-size:34px;font-weight:900;color:var(--green-dark)}
+.weather-details{font-size:13px;color:#68736e;margin-top:8px}
+.weather-message{font-size:13px;color:#68736e;margin-top:8px}
+.weather-button{
+  border:0;
+  background:#e7eee9;
+  color:var(--green-dark);
+  border-radius:10px;
+  padding:9px 13px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+.weather-button:hover{background:#dce9e2}
 
-.card .symbol{font-size:35px;margin-bottom:12px}
-.card h3{color:var(--wine);margin-bottom:8px}
-
-.about{
-  background:rgba(255,255,255,.65);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
+/* Sections */
+section.content-section{padding:75px 0}
+.section-heading{text-align:center;margin-bottom:35px}
+.section-heading h2{font-size:32px;color:var(--green-dark)}
+.section-heading p{color:var(--muted);font-size:14px;margin-top:5px}
+.services-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.service-card{
+  display:block;
+  background:var(--glass);
+  border:1px solid #fff;
+  border-radius:20px;
+  padding:27px;
+  box-shadow:var(--shadow);
+  transition:.3s;
+}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 18px 35px #0002}
+.service-icon{
+  width:58px;height:58px;
+  display:grid;place-items:center;
+  background:#e4eee9;
+  border-radius:17px;
+  font-size:29px;
+  margin-bottom:15px;
+}
+.service-card h3{color:var(--green-dark);font-size:19px;margin-bottom:7px}
+.service-card p{color:#77817d;font-size:14px}
+.service-link{
+  display:inline-block;
+  color:#98773a;
+  font-size:13px;
+  font-weight:bold;
+  margin-top:15px;
+}
+
+/* About */
+.about-wrap{
+  background:linear-gradient(120deg,#e5eee8,#f7f4e9);
+  border-radius:26px;
+  padding:40px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:35px;
   align-items:center;
 }
-
-.about h2{font-size:34px;color:var(--green);margin-bottom:15px}
-
-.about img{
-  width:100%;
-  border-radius:18px;
+.about-wrap h2{font-size:32px;color:var(--green-dark);margin-bottom:15px}
+.about-wrap p{color:#64716b}
+.about-image{
+  min-height:270px;
+  border-radius:20px;
+  background:
+    linear-gradient(#17332f22,#17332f22),
+    url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1100&q=85")
+    center/cover;
   box-shadow:0 12px 30px #0002;
 }
+.about-slogan{display:block;color:#98773a;margin-top:20px}
 
-.offices{
+/* Branches */
+.branches-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(2,1fr);
   gap:20px;
 }
-
-.office{
-  background:rgba(255,255,255,.65);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border:1px solid #ffffffbb;
+.branch-card{
+  background:var(--glass);
+  border:1px solid white;
   border-right:5px solid var(--green);
+  border-radius:18px;
   padding:25px;
-  border-radius:16px;
-  box-shadow:0 8px 25px #0000000d;
-  transition:.3s;
+  box-shadow:var(--shadow);
 }
+.branch-card h3{color:var(--green-dark);font-size:21px;margin-bottom:10px}
+.branch-card p{color:#65716b;font-size:14px;margin:5px 0}
+.branch-card .btn{margin-top:13px}
 
-.office:hover{
-  transform:translateY(-5px);
-  box-shadow:0 14px 30px #0002;
-}
-
-.contact{
-  background:var(--dark);
+/* Contact */
+.contact-section{
+  background:linear-gradient(120deg,#173b35,#142a27);
   color:white;
   text-align:center;
+  padding:65px 20px;
 }
+.contact-section h2{font-size:32px;color:var(--gold-light)}
+.contact-section p{color:#e1e8e3;margin:10px 0 22px}
 
-.contact h2{color:#d8c99d;font-size:32px}
-.contact p{margin:12px 0}
-
+/* Footer */
 footer{
-  background:#101010;
-  color:#aaa;
-  padding:25px;
+  background:#101a18;
+  color:#aebbb5;
   text-align:center;
+  padding:25px 15px;
   font-size:13px;
 }
+.footer-brand{color:var(--gold-light);font-weight:bold;letter-spacing:2px}
 
+/* WhatsApp */
 .whatsapp{
   position:fixed;
-  bottom:22px;
   left:20px;
+  bottom:20px;
+  z-index:90;
   background:linear-gradient(145deg,#35d985,#159b58);
   color:white;
-  padding:13px 20px;
+  padding:12px 19px;
   border-radius:50px;
-  z-index:20;
-  border:1px solid #ffffff66;
-  box-shadow:0 7px 20px #0003,inset 1px 1px 3px #ffffff66;
-  transition:.3s;
+  box-shadow:0 7px 20px #0003;
+  font-weight:bold;
 }
 
-.whatsapp:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 25px #0004,0 0 14px #20b96b66;
+/* Mobile */
+@media(max-width:800px){
+  .header-inner{min-height:72px;flex-wrap:wrap;padding:12px 0}
+  nav{gap:12px;flex-wrap:wrap;justify-content:center}
+  nav a{font-size:12px}
+  .logo{font-size:19px}
+  .hero{min-height:510px;padding:65px 0}
+  .hero p{font-size:16px}
+  .info-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .about-wrap{grid-template-columns:1fr;padding:25px}
+  .about-image{min-height:220px}
 }
-
-@media(max-width:700px){
-  header{padding:12px 4%;gap:10px}
-  .logo{font-size:17px}
-  nav{gap:9px;flex-wrap:wrap;justify-content:center}
+@media(max-width:520px){
+  .header-inner{justify-content:center}
+  nav{width:100%;gap:13px}
   nav a{font-size:11px}
-  .lang{padding:7px 11px}
-  .hero{min-height:510px;padding:70px 7%}
-  .about{grid-template-columns:1fr}
-  section{padding:55px 6%}
-  .btn{padding:11px 20px}
+  .hero{min-height:480px}
+  .hero h1{font-size:39px}
+  .services-grid{grid-template-columns:1fr}
+  .branches-grid{grid-template-columns:1fr}
+  section.content-section{padding:55px 0}
+  .section-heading h2{font-size:27px}
+  .info-card{padding:20px}
+  .whatsapp{left:12px;bottom:12px;padding:10px 15px}
 }
 </style>
 </head>
@@ -324,17 +375,21 @@ footer{
 <body>
 
 <header>
-  <a href="#" class="logo">
-    أركان العالم
-    <small>PILLARS OF THE WORLD</small>
-  </a>
-  <nav>
-    <a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
-    <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
-    <a href="#about" data-ar="من نحن" data-en="About">من نحن</a>
-    <a href="#contact" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
-    <button class="lang" onclick="toggleLang()">EN</button>
-  </nav>
+  <div class="header-inner">
+    <a href="./index.html" class="logo">
+      أركان العالم
+      <small>PILLARS OF THE WORLD</small>
+    </a>
+
+    <nav>
+      <a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+      <a href="./booking.html" data-ar="الرحلات والحجوزات" data-en="Trips & Booking">الرحلات والحجوزات</a>
+      <a href="#services" data-ar="خدماتنا" data-en="Services">خدماتنا</a>
+      <a href="#about" data-ar="من نحن" data-en="About">من نحن</a>
+      <a href="#contact" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</a>
+      <button class="lang" onclick="toggleLang()">EN</button>
+    </nav>
+  </div>
 </header>
 
 <main>
@@ -345,227 +400,442 @@ footer{
       style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85')">
     </div>
   </div>
-
   <div class="hero-overlay"></div>
 
-  <div class="hero-content" id="heroContent">
-    <div class="tag" data-ar="سفر • سياحة • ثقة"
-         data-en="TRAVEL • TOURISM • TRUST">
-      سفر • سياحة • ثقة
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag" data-ar="سفر • سياحة • ثقة" data-en="TRAVEL • TOURISM • TRUST">
+        سفر • سياحة • ثقة
+      </div>
+
+      <h1 data-ar="العالم أقرب إليك مما تتخيل"
+          data-en="The World Is Closer Than You Think">
+        العالم أقرب إليك مما تتخيل
+      </h1>
+
+      <p data-ar="نصحبكم في كل رحلة... معكم في كل وجهة. خدمات سياحية متكاملة ورحلات الحج والعمرة والسفر."
+         data-en="With you on every journey, by your side at every destination. Travel, tourism, Hajj and Umrah services.">
+        نصحبكم في كل رحلة... معكم في كل وجهة. خدمات سياحية متكاملة ورحلات الحج والعمرة والسفر.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn" href="./booking.html"
+           data-ar="استكشف الرحلات" data-en="Explore Trips">استكشف الرحلات</a>
+        <a class="btn gold" href="#contact"
+           data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</a>
+      </div>
     </div>
-
-    <h1 data-ar="العالم أقرب إليك مما تتخيل"
-        data-en="The World Is Closer Than You Think">
-      العالم أقرب إليك مما تتخيل
-    </h1>
-
-    <p data-ar="نصحبكم في كل رحلة... معكم في كل وجهة. خدمات سياحية متكاملة ورحلات الحج والعمرة والسفر."
-       data-en="With you on every journey, by your side at every destination. Travel, tourism, Hajj and Umrah services.">
-      نصحبكم في كل رحلة... معكم في كل وجهة.
-      خدمات سياحية متكاملة ورحلات الحج والعمرة والسفر.
-    </p>
-
-    <a class="btn" href="#services"
-       data-ar="اكتشف خدماتنا" data-en="Explore Services">
-      اكتشف خدماتنا
-    </a>
-
-    <a class="btn alt" href="#contact"
-       data-ar="تواصل معنا" data-en="Contact Us">
-      تواصل معنا
-    </a>
   </div>
 
   <div class="hero-indicators" id="heroIndicators"></div>
 </section>
 
-<section id="services">
-  <div class="section-title">
-    <h2 data-ar="خدماتنا" data-en="Our Services">خدماتنا</h2>
-    <p data-ar="كل ما تحتاجه لرحلة مريحة وآمنة"
-       data-en="Everything you need for a comfortable journey">
-      كل ما تحتاجه لرحلة مريحة وآمنة
+<!-- الساعة والتاريخ والطقس -->
+<section class="info-section">
+  <div class="container">
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-label" data-ar="الوقت والتاريخ المحلي" data-en="LOCAL TIME & DATE">
+          الوقت والتاريخ المحلي
+        </div>
+        <div class="clock-time" id="liveClock">--:--:--</div>
+        <div class="date-line" id="gregorianDate">جارٍ تحميل التاريخ...</div>
+        <div class="hijri-line" id="hijriDate">جارٍ تحميل التاريخ الهجري...</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-label" data-ar="الطقس في موقعك" data-en="WEATHER AT YOUR LOCATION">
+          الطقس في موقعك
+        </div>
+
+        <div class="weather-top">
+          <div>
+            <div class="weather-temp" id="weatherTemp">--°</div>
+            <div id="weatherDescription" class="weather-details"
+                 data-ar="لم يتم تحديد الموقع بعد" data-en="Location not selected yet">
+              لم يتم تحديد الموقع بعد
+            </div>
+          </div>
+          <div class="weather-icon" id="weatherIcon">🌤️</div>
+        </div>
+
+        <div class="weather-message" id="weatherMessage"
+             data-ar="اسمح بالوصول إلى موقعك لمعرفة حالة الطقس."
+             data-en="Allow location access to see local weather.">
+          اسمح بالوصول إلى موقعك لمعرفة حالة الطقس.
+        </div>
+
+        <button class="weather-button" id="weatherButton" type="button"
+                onclick="getLocalWeather()"
+                data-ar="تحديد موقعي وعرض الطقس"
+                data-en="Find My Location & Weather">
+          تحديد موقعي وعرض الطقس
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- الخدمات -->
+<section class="content-section" id="services">
+  <div class="container">
+    <div class="section-heading">
+      <h2 data-ar="خدماتنا" data-en="Our Services">خدماتنا</h2>
+      <p data-ar="خدمات متكاملة لتكون رحلتك أسهل وأكثر راحة"
+         data-en="Integrated services to make your journey easier">
+        خدمات متكاملة لتكون رحلتك أسهل وأكثر راحة
+      </p>
+    </div>
+
+    <div class="services-grid">
+
+      <a class="service-card" href="./booking.html">
+        <div class="service-icon">🕋</div>
+        <h3 data-ar="الحج والعمرة" data-en="Hajj & Umrah">الحج والعمرة</h3>
+        <p data-ar="رحلات إيمانية وخدمات متكاملة لضيوف الرحمن."
+           data-en="Spiritual journeys and services for pilgrims.">
+          رحلات إيمانية وخدمات متكاملة لضيوف الرحمن.
+        </p>
+        <span class="service-link" data-ar="اكتشف المزيد ←" data-en="Discover More →">اكتشف المزيد ←</span>
+      </a>
+
+      <a class="service-card" href="./booking.html">
+        <div class="service-icon">🚌</div>
+        <h3 data-ar="الرحلات السياحية" data-en="Tourist Trips">الرحلات السياحية</h3>
+        <p data-ar="رحلات وتجارب سياحية مميزة لوجهات متنوعة."
+           data-en="Memorable trips and experiences to different destinations.">
+          رحلات وتجارب سياحية مميزة لوجهات متنوعة.
+        </p>
+        <span class="service-link" data-ar="اكتشف المزيد ←" data-en="Discover More →">اكتشف المزيد ←</span>
+      </a>
+
+      <div class="service-card">
+        <div class="service-icon">✈️</div>
+        <h3 data-ar="حجوزات الطيران" data-en="Flight Booking">حجوزات الطيران</h3>
+        <p data-ar="خدمات المساعدة في ترتيبات السفر واختيار الرحلات المناسبة."
+           data-en="Assistance with travel arrangements and flight options.">
+          خدمات المساعدة في ترتيبات السفر واختيار الرحلات المناسبة.
+        </p>
+        <span class="service-link" data-ar="قريباً" data-en="Coming Soon">قريباً</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🛂</div>
+        <h3 data-ar="التأشيرات" data-en="Visas">التأشيرات</h3>
+        <p data-ar="متابعة إجراءات التأشيرات وتقديم المساعدة اللازمة."
+           data-en="Visa application guidance and assistance.">
+          متابعة إجراءات التأشيرات وتقديم المساعدة اللازمة.
+        </p>
+        <span class="service-link" data-ar="قريباً" data-en="Coming Soon">قريباً</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🏨</div>
+        <h3 data-ar="الفنادق والإقامة" data-en="Hotels & Accommodation">الفنادق والإقامة</h3>
+        <p data-ar="المساعدة في اختيار أماكن إقامة تناسب احتياجاتكم."
+           data-en="Help finding accommodation suited to your needs.">
+          المساعدة في اختيار أماكن إقامة تناسب احتياجاتكم.
+        </p>
+        <span class="service-link" data-ar="قريباً" data-en="Coming Soon">قريباً</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🌍</div>
+        <h3 data-ar="المطارات والوجهات" data-en="Airports & Destinations">المطارات والوجهات</h3>
+        <p data-ar="معلومات وخدمات تساعدك في التخطيط لرحلتك."
+           data-en="Information and services to help plan your journey.">
+          معلومات وخدمات تساعدك في التخطيط لرحلتك.
+        </p>
+        <span class="service-link" data-ar="قريباً" data-en="Coming Soon">قريباً</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- من نحن -->
+<section class="content-section" id="about">
+  <div class="container">
+    <div class="about-wrap">
+      <div>
+        <div class="info-label" data-ar="تعرفوا علينا" data-en="GET TO KNOW US">تعرفوا علينا</div>
+        <h2 data-ar="من نحن" data-en="Who We Are">من نحن</h2>
+        <p data-ar="مؤسسة أركان العالم للسياحة والسفر، نعمل على تقديم خدمات السفر والسياحة والحج والعمرة، ونحرص على مرافقة عملائنا في كل خطوة من رحلتهم."
+           data-en="Pillars of the World Travel & Tourism provides travel, tourism, Hajj and Umrah services, supporting our customers at every step of their journey.">
+          مؤسسة أركان العالم للسياحة والسفر، نعمل على تقديم خدمات السفر والسياحة والحج والعمرة، ونحرص على مرافقة عملائنا في كل خطوة من رحلتهم.
+        </p>
+        <strong class="about-slogan"
+          data-ar="نصحبكم في كل رحلة... معكم في كل وجهة"
+          data-en="With you on every journey, by your side at every destination">
+          نصحبكم في كل رحلة... معكم في كل وجهة
+        </strong>
+      </div>
+      <div class="about-image" role="img" aria-label="وجهة سياحية"></div>
+    </div>
+  </div>
+</section>
+
+<!-- الفروع -->
+<section class="content-section" id="branches">
+  <div class="container">
+    <div class="section-heading">
+      <h2 data-ar="فروعنا" data-en="Our Branches">فروعنا</h2>
+      <p data-ar="نحن أقرب إليكم" data-en="We are closer to you">نحن أقرب إليكم</p>
+    </div>
+
+    <div class="branches-grid">
+      <div class="branch-card">
+        <h3>📍 إدلب</h3>
+        <p>حي الجامعة – جانب المستوصف – بناء الحضارة</p>
+        <p dir="ltr">0956553485</p>
+        <a class="btn" href="https://wa.me/963956553485">واتساب</a>
+      </div>
+
+      <div class="branch-card">
+        <h3>📍 سراقب</h3>
+        <p>إدلب – سراقب – شرقي شركة الكهرباء</p>
+        <p dir="ltr">0932077243</p>
+        <a class="btn" href="https://wa.me/963932077243">واتساب</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="container">
+    <h2 data-ar="لنخطط لرحلتك القادمة" data-en="Let's Plan Your Next Journey">
+      لنخطط لرحلتك القادمة
+    </h2>
+    <p data-ar="تواصل معنا وسنكون سعداء بخدمتكم"
+       data-en="Contact us. We will be happy to assist you.">
+      تواصل معنا وسنكون سعداء بخدمتكم
     </p>
+    <a class="btn gold" href="https://wa.me/963956553485"
+       data-ar="تواصل عبر واتساب" data-en="Contact via WhatsApp">
+      تواصل عبر واتساب
+    </a>
   </div>
-
-  <div class="services">
-    <div class="card">
-      <div class="symbol">🕋</div>
-      <h3 data-ar="الحج والعمرة" data-en="Hajj & Umrah">الحج والعمرة</h3>
-      <p data-ar="تنظيم رحلات إيمانية وخدمات متكاملة لضيوف الرحمن."
-         data-en="Organized spiritual journeys and services for pilgrims.">
-        تنظيم رحلات إيمانية وخدمات متكاملة لضيوف الرحمن.
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="symbol">✈️</div>
-      <h3 data-ar="حجوزات الطيران" data-en="Flight Booking">حجوزات الطيران</h3>
-      <p data-ar="مساعدتكم في ترتيبات السفر واختيار الرحلات المناسبة."
-         data-en="Assistance with travel arrangements and flight options.">
-        مساعدتكم في ترتيبات السفر واختيار الرحلات المناسبة.
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="symbol">🌍</div>
-      <h3 data-ar="التأشيرات" data-en="Visas">التأشيرات</h3>
-      <p data-ar="خدمات متابعة وإجراءات التأشيرات."
-         data-en="Visa application guidance and assistance.">
-        خدمات متابعة وإجراءات التأشيرات.
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="symbol">🏨</div>
-      <h3 data-ar="الفنادق والإقامة" data-en="Hotels & Accommodation">الفنادق والإقامة</h3>
-      <p data-ar="المساعدة في اختيار أماكن إقامة تناسب احتياجاتكم."
-         data-en="Help finding accommodation suited to your needs.">
-        المساعدة في اختيار أماكن إقامة تناسب احتياجاتكم.
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="symbol">🚌</div>
-      <h3 data-ar="الرحلات السياحية" data-en="Tourist Trips">الرحلات السياحية</h3>
-      <p data-ar="رحلات سياحية وتجارب لا تنسى."
-         data-en="Tourist trips and memorable experiences.">
-        رحلات سياحية وتجارب لا تنسى.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="about" id="about">
-  <div>
-    <h2 data-ar="من نحن" data-en="Who We Are">من نحن</h2>
-    <p data-ar="مؤسسة أركان العالم للسياحة والسفر، نعمل على تقديم خدمات السفر والسياحة والحج والعمرة، ونحرص على مرافقة عملائنا في كل خطوة من رحلتهم."
-       data-en="Pillars of the World Travel & Tourism provides travel, tourism, Hajj and Umrah services, supporting our customers at every step of their journey.">
-      مؤسسة أركان العالم للسياحة والسفر، نعمل على تقديم خدمات السفر والسياحة والحج والعمرة، ونحرص على مرافقة عملائنا في كل خطوة من رحلتهم.
-    </p>
-    <br>
-    <strong style="color:var(--wine)"
-      data-ar="نصحبكم في كل رحلة... معكم في كل وجهة"
-      data-en="With you on every journey, by your side at every destination">
-      نصحبكم في كل رحلة... معكم في كل وجهة
-    </strong>
-  </div>
-
-  <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=85" alt="Travel destination">
-</section>
-
-<section id="branches">
-  <div class="section-title">
-    <h2 data-ar="فروعنا" data-en="Our Branches">فروعنا</h2>
-    <p data-ar="نحن أقرب إليكم" data-en="We are closer to you">نحن أقرب إليكم</p>
-  </div>
-
-  <div class="offices">
-    <div class="office">
-      <h3>📍 إدلب</h3>
-      <p>حي الجامعة – جانب المستوصف – بناء الحضارة</p>
-      <p dir="ltr">0956553485</p>
-      <a class="btn" href="https://wa.me/963956553485">واتساب</a>
-    </div>
-
-    <div class="office">
-      <h3>📍 سراقب</h3>
-      <p>إدلب – سراقب – شرقي شركة الكهرباء</p>
-      <p dir="ltr">0932077243</p>
-      <a class="btn" href="https://wa.me/963932077243">واتساب</a>
-    </div>
-  </div>
-</section>
-
-<section class="contact" id="contact">
-  <h2 data-ar="لنخطط لرحلتك القادمة" data-en="Let's Plan Your Next Journey">
-    لنخطط لرحلتك القادمة
-  </h2>
-  <p data-ar="تواصل معنا وسنكون سعداء بخدمتكم"
-     data-en="Contact us. We will be happy to assist you.">
-    تواصل معنا وسنكون سعداء بخدمتكم
-  </p>
-  <a class="btn" href="https://wa.me/963956553485"
-     data-ar="تواصل عبر واتساب" data-en="Contact via WhatsApp">
-    تواصل عبر واتساب
-  </a>
 </section>
 
 </main>
 
 <footer>
-  PILLARS OF THE WORLD © 2026
-  <br>
-  سفر • سياحة • ثقة
+  <div class="footer-brand">PILLARS OF THE WORLD</div>
+  <div>© 2026 أركان العالم للسياحة والسفر</div>
+  <div>سفر • سياحة • ثقة</div>
 </footer>
 
 <a class="whatsapp" href="https://wa.me/963956553485">واتساب</a>
 
 <script>
+/* اللغة */
 let currentLang = "ar";
 
 function toggleLang(){
   currentLang = currentLang === "ar" ? "en" : "ar";
+
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
 
   document.querySelectorAll("[data-ar]").forEach(el=>{
-    el.textContent = el.getAttribute("data-" + currentLang);
+    const value = el.getAttribute("data-" + currentLang);
+    if(value !== null) el.textContent = value;
   });
 
   document.querySelector(".lang").textContent =
     currentLang === "ar" ? "EN" : "AR";
 }
-</script>
 
-<div id="connection-status" style="padding:15px;text-align:center">
-  جارٍ اختبار الاتصال بقاعدة البيانات...
-</div>
+/* الساعة والتاريخ حسب جهاز الزائر */
+function updateLocalClock(){
+  const now = new Date();
 
-<script>
-(async function () {
-  const status = document.getElementById('connection-status');
+  document.getElementById("liveClock").textContent =
+    new Intl.DateTimeFormat(currentLang === "ar" ? "ar" : "en-GB",{
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    }).format(now);
 
-  try {
-    const { count, error } = await window.arkanSupabase
-      .from('branches')
-      .select('*', { count: 'exact', head: true });
+  document.getElementById("gregorianDate").textContent =
+    new Intl.DateTimeFormat(currentLang === "ar" ? "ar" : "en-GB",{
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    }).format(now);
 
-    if (error) throw error;
-
-    status.textContent = 'تم الاتصال بنجاح! عدد الفروع: ' + count;
-  } catch (error) {
-    status.textContent = 'تعذر الاتصال: ' + error.message;
+  try{
+    document.getElementById("hijriDate").textContent =
+      new Intl.DateTimeFormat(
+        currentLang === "ar" ? "ar-SA-u-ca-islamic" : "en-u-ca-islamic",
+        {
+          year:"numeric",
+          month:"long",
+          day:"numeric"
+        }
+      ).format(now);
+  }catch(error){
+    document.getElementById("hijriDate").textContent =
+      currentLang === "ar" ? "التاريخ الهجري غير متاح على هذا الجهاز" : "Hijri date unavailable";
   }
-})();
-</script>
+}
 
-<script>
-(async function loadHeroSlides() {
+updateLocalClock();
+setInterval(updateLocalClock,1000);
+
+/* الطقس: لا يتم طلب الموقع إلا بعد ضغط الزائر */
+function weatherText(ar,en){
+  return currentLang === "ar" ? ar : en;
+}
+
+function getWeatherDescription(code){
+  const descriptions = {
+    0:["سماء صافية","Clear sky","☀️"],
+    1:["غائم جزئياً","Mainly clear","🌤️"],
+    2:["غائم جزئياً","Partly cloudy","⛅"],
+    3:["غائم","Overcast","☁️"],
+    45:["ضباب","Fog","🌫️"],
+    48:["ضباب كثيف","Rime fog","🌫️"],
+    51:["رذاذ خفيف","Light drizzle","🌦️"],
+    53:["رذاذ متوسط","Moderate drizzle","🌦️"],
+    55:["رذاذ كثيف","Dense drizzle","🌧️"],
+    61:["أمطار خفيفة","Light rain","🌧️"],
+    63:["أمطار متوسطة","Moderate rain","🌧️"],
+    65:["أمطار غزيرة","Heavy rain","🌧️"],
+    71:["ثلوج خفيفة","Light snow","🌨️"],
+    73:["ثلوج متوسطة","Moderate snow","🌨️"],
+    75:["ثلوج غزيرة","Heavy snow","❄️"],
+    80:["زخات مطر","Rain showers","🌦️"],
+    81:["زخات مطر متوسطة","Moderate showers","🌧️"],
+    82:["زخات مطر قوية","Violent showers","⛈️"],
+    95:["عواصف رعدية","Thunderstorm","⛈️"]
+  };
+
+  return descriptions[code] || ["حالة جوية متغيرة","Variable conditions","🌤️"];
+}
+
+async function loadWeather(latitude,longitude){
+  const message = document.getElementById("weatherMessage");
+
+  message.textContent = weatherText("جارٍ جلب حالة الطقس...","Loading weather...");
+
+  try{
+    const url =
+      "https://api.open-meteo.com/v1/forecast?latitude=" +
+      encodeURIComponent(latitude) +
+      "&longitude=" + encodeURIComponent(longitude) +
+      "&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto";
+
+    const response = await fetch(url);
+    if(!response.ok) throw new Error("Weather request failed");
+
+    const result = await response.json();
+    const current = result.current;
+
+    const description = getWeatherDescription(current.weather_code);
+
+    document.getElementById("weatherTemp").textContent =
+      Math.round(current.temperature_2m) + "°";
+
+    document.getElementById("weatherDescription").textContent =
+      weatherText(description[0],description[1]);
+
+    document.getElementById("weatherIcon").textContent = description[2];
+
+    document.getElementById("weatherMessage").textContent =
+      weatherText(
+        "الإحساس: " + Math.round(current.apparent_temperature) +
+        "° | الرطوبة: " + current.relative_humidity_2m +
+        "% | سرعة الرياح: " + current.wind_speed_10m + " كم/س",
+        "Feels like: " + Math.round(current.apparent_temperature) +
+        "° | Humidity: " + current.relative_humidity_2m +
+        "% | Wind: " + current.wind_speed_10m + " km/h"
+      );
+
+  }catch(error){
+    console.error("Weather error:",error);
+    message.textContent = weatherText(
+      "تعذر جلب الطقس حالياً. حاول مرة أخرى.",
+      "Unable to load weather. Please try again."
+    );
+  }
+}
+
+function getLocalWeather(){
+  const message = document.getElementById("weatherMessage");
+
+  if(!navigator.geolocation){
+    message.textContent = weatherText(
+      "المتصفح لا يدعم تحديد الموقع.",
+      "Geolocation is not supported by this browser."
+    );
+    return;
+  }
+
+  message.textContent = weatherText(
+    "بانتظار السماح بالوصول إلى الموقع...",
+    "Waiting for location permission..."
+  );
+
+  navigator.geolocation.getCurrentPosition(
+    position=>{
+      loadWeather(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+    },
+    error=>{
+      let text = weatherText(
+        "لم نتمكن من تحديد موقعك. تأكد من السماح بالوصول للموقع.",
+        "Could not get your location. Please allow location access."
+      );
+
+      if(error.code === 1){
+        text = weatherText(
+          "رفضت إذن الموقع. يمكنك السماح به من إعدادات المتصفح.",
+          "Location permission was denied. You can enable it in browser settings."
+        );
+      }
+
+      message.textContent = text;
+    },
+    {
+      enableHighAccuracy:false,
+      timeout:15000,
+      maximumAge:600000
+    }
+  );
+}
+
+/* صور الغلاف من Supabase */
+(async function loadHeroSlides(){
   const slidesContainer = document.getElementById("heroSlides");
   const indicatorsContainer = document.getElementById("heroIndicators");
   const supabase = window.arkanSupabase;
 
-  if (!slidesContainer || !indicatorsContainer || !supabase) return;
+  if(!slidesContainer || !indicatorsContainer || !supabase) return;
 
   const fallbackImage =
     "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85";
 
-  try {
-    const { data, error } = await supabase
+  try{
+    const {data,error} = await supabase
       .from("site_media")
       .select("id,title_ar,title_en,description_ar,image_url,sort_order")
-      .eq("media_type", "hero")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true });
+      .eq("media_type","hero")
+      .eq("is_active",true)
+      .order("sort_order",{ascending:true});
 
-    if (error) throw error;
+    if(error) throw error;
 
-    if (!data || data.length === 0) {
-      slidesContainer.innerHTML = `
-        <div class="hero-slide active"
-          style="background-image:url('${fallbackImage}')">
-        </div>`;
+    if(!data || data.length === 0){
+      slidesContainer.innerHTML =
+        '<div class="hero-slide active" style="background-image:url(\'' +
+        fallbackImage + '\')"></div>';
       return;
     }
 
@@ -575,19 +845,20 @@ function toggleLang(){
     let currentSlide = 0;
     let timer = null;
 
-    data.forEach((item, index) => {
+    data.forEach((item,index)=>{
+      if(!item.image_url) return;
+
       const slide = document.createElement("div");
       slide.className = "hero-slide" + (index === 0 ? " active" : "");
-      slide.style.backgroundImage =
-        `url("${item.image_url.replace(/"/g, '\\"')}")`;
+      slide.style.backgroundImage = "url(" + JSON.stringify(item.image_url) + ")";
       slidesContainer.appendChild(slide);
 
       const indicator = document.createElement("button");
       indicator.type = "button";
       indicator.className = index === 0 ? "active" : "";
-      indicator.setAttribute("aria-label", "الصورة " + (index + 1));
+      indicator.setAttribute("aria-label","الصورة " + (index + 1));
 
-      indicator.addEventListener("click", () => {
+      indicator.addEventListener("click",()=>{
         showSlide(index);
         restartTimer();
       });
@@ -595,56 +866,54 @@ function toggleLang(){
       indicatorsContainer.appendChild(indicator);
     });
 
-    const showSlide = (index) => {
+    const showSlide = index=>{
       const slides = slidesContainer.querySelectorAll(".hero-slide");
       const indicators = indicatorsContainer.querySelectorAll("button");
 
+      if(!slides.length) return;
+
       slides[currentSlide].classList.remove("active");
-      indicators[currentSlide].classList.remove("active");
+      if(indicators[currentSlide]) indicators[currentSlide].classList.remove("active");
 
       currentSlide = index;
 
       slides[currentSlide].classList.add("active");
-      indicators[currentSlide].classList.add("active");
+      if(indicators[currentSlide]) indicators[currentSlide].classList.add("active");
     };
 
-    const nextSlide = () => {
-      showSlide((currentSlide + 1) % data.length);
+    const nextSlide = ()=>{
+      showSlide((currentSlide + 1) % slidesContainer.children.length);
     };
 
-    const restartTimer = () => {
+    const restartTimer = ()=>{
       clearInterval(timer);
-      if (data.length > 1) {
-        timer = setInterval(nextSlide, 5000);
+      if(slidesContainer.children.length > 1){
+        timer = setInterval(nextSlide,5000);
       }
     };
 
     restartTimer();
 
-  } catch (error) {
-    console.error("تعذر تحميل صور الغلاف:", error);
-    slidesContainer.innerHTML = `
-      <div class="hero-slide active"
-        style="background-image:url('${fallbackImage}')">
-      </div>`;
+  }catch(error){
+    console.error("تعذر تحميل صور الغلاف:",error);
+    slidesContainer.innerHTML =
+      '<div class="hero-slide active" style="background-image:url(\'' +
+      fallbackImage + '\')"></div>';
   }
 })();
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", async () => {
-    try {
-      const registration = await navigator.serviceWorker.register(
-        "./service-worker.js"
-      );
 
-      console.log("Arkan Service Worker registered:", registration.scope);
-
-    } catch (error) {
-      console.error("Arkan Service Worker error:", error);
+/* تسجيل Service Worker */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",async()=>{
+    try{
+      const registration = await navigator.serviceWorker.register("./service-worker.js");
+      console.log("Arkan Service Worker registered:",registration.scope);
+    }catch(error){
+      console.error("Arkan Service Worker error:",error);
     }
   });
 }
 </script>
+
 </body>
 </html>

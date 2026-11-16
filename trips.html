@@ -1,0 +1,835 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#428177">
+  <meta name="description" content="اكتشف الرحلات السياحية وبرامج السفر مع أركان العالم للسياحة والسفر">
+  <title>الرحلات السياحية | أركان العالم</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+
+  <style>
+    :root {
+      --primary: #428177;
+      --primary-dark: #285d55;
+      --gold: #c9a45c;
+      --gold-light: #e6d2a5;
+      --cream: #f8f6f0;
+      --dark: #183b37;
+      --muted: #71817d;
+      --white: #fff;
+      --shadow: 0 12px 35px rgba(24,59,55,.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .topbar {
+      background: var(--primary-dark);
+      color: white;
+      padding: 10px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .topbar a {
+      color: var(--gold-light);
+    }
+
+    header {
+      background: rgba(255,255,255,.97);
+      padding: 16px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      box-shadow: 0 3px 20px rgba(0,0,0,.04);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand strong {
+      font-size: 21px;
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    .brand small {
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .header-links a:hover {
+      color: var(--gold);
+    }
+
+    .back-home {
+      border: 1px solid var(--gold);
+      color: var(--primary-dark);
+      padding: 8px 17px;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .hero {
+      min-height: 330px;
+      padding: 65px 6%;
+      background:
+        linear-gradient(110deg, rgba(24,59,55,.95), rgba(40,93,85,.84)),
+        radial-gradient(circle at 80% 20%, #c9a45c, transparent 40%);
+      color: white;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 720px;
+    }
+
+    .eyebrow {
+      color: var(--gold-light);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.4;
+      margin: 12px 0;
+      font-weight: 900;
+    }
+
+    .hero p {
+      color: #e5ece9;
+      line-height: 2;
+      font-size: 15px;
+      max-width: 600px;
+    }
+
+    .hero-line {
+      width: 75px;
+      height: 3px;
+      background: var(--gold);
+      margin-top: 25px;
+      border-radius: 5px;
+    }
+
+    .container {
+      width: min(1180px, 90%);
+      margin: auto;
+    }
+
+    .section-heading {
+      margin: 55px 0 25px;
+      text-align: center;
+    }
+
+    .section-heading span {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .section-heading h2 {
+      margin: 7px 0;
+      color: var(--primary-dark);
+      font-size: 27px;
+      font-weight: 900;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 25px 0 35px;
+    }
+
+    .filter-btn {
+      border: 1px solid #dce5e1;
+      background: white;
+      color: var(--primary-dark);
+      padding: 9px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .trips-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 23px;
+      padding-bottom: 60px;
+    }
+
+    .trip-card {
+      background: white;
+      border-radius: 17px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .25s, box-shadow .25s;
+      border: 1px solid #edf0eb;
+    }
+
+    .trip-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px rgba(24,59,55,.14);
+    }
+
+    .trip-image {
+      height: 205px;
+      position: relative;
+      background: #e7eeea;
+      overflow: hidden;
+    }
+
+    .trip-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .trip-type {
+      position: absolute;
+      top: 13px;
+      right: 13px;
+      background: rgba(24,59,55,.9);
+      color: white;
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .trip-content {
+      padding: 19px;
+    }
+
+    .trip-content h3 {
+      color: var(--primary-dark);
+      font-size: 18px;
+      margin: 0 0 12px;
+      font-weight: 900;
+    }
+
+    .trip-destination {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .trip-description {
+      font-size: 12px;
+      color: #697a75;
+      line-height: 1.9;
+      min-height: 45px;
+    }
+
+    .trip-details {
+      border-top: 1px solid #edf0eb;
+      margin-top: 15px;
+      padding-top: 14px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .detail-row span:first-child {
+      color: var(--muted);
+    }
+
+    .detail-row strong {
+      color: var(--primary-dark);
+    }
+
+    .prices {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .price {
+      background: #f5f4ed;
+      color: var(--primary-dark);
+      border: 1px solid #eee7d7;
+      padding: 6px 9px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .book-btn {
+      width: 100%;
+      display: block;
+      margin-top: 17px;
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      padding: 11px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 900;
+      transition: .2s;
+    }
+
+    .book-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .state-box {
+      grid-column: 1 / -1;
+      background: white;
+      border-radius: 15px;
+      padding: 45px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    .state-icon {
+      font-size: 35px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .retry-btn {
+      background: var(--primary);
+      color: white;
+      border: 0;
+      padding: 9px 22px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 12px;
+      font-weight: 800;
+    }
+
+    .booking-banner {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 42px 20px;
+      margin-bottom: 60px;
+      border-radius: 18px;
+    }
+
+    .booking-banner h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+
+    .booking-banner p {
+      color: #dce9e4;
+      font-size: 13px;
+    }
+
+    .booking-banner a {
+      display: inline-block;
+      background: var(--gold);
+      color: #183b37;
+      padding: 11px 25px;
+      border-radius: 30px;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    footer {
+      background: #183b37;
+      color: white;
+      text-align: center;
+      padding: 28px 15px 85px;
+      font-size: 13px;
+    }
+
+    footer small {
+      display: block;
+      color: var(--gold-light);
+      margin-top: 7px;
+    }
+
+    .bottom-nav {
+      display: none;
+    }
+
+    @media(max-width: 900px) {
+      .trips-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .header-links {
+        gap: 12px;
+      }
+    }
+
+    @media(max-width: 600px) {
+      .topbar {
+        justify-content: center;
+      }
+
+      header {
+        padding: 13px 5%;
+      }
+
+      .brand strong {
+        font-size: 18px;
+      }
+
+      .header-links {
+        display: none;
+      }
+
+      .hero {
+        min-height: 280px;
+        padding: 45px 6%;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
+
+      .container {
+        width: 92%;
+      }
+
+      .section-heading {
+        margin-top: 38px;
+      }
+
+      .section-heading h2 {
+        font-size: 23px;
+      }
+
+      .trips-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+      }
+
+      .trip-image {
+        height: 210px;
+      }
+
+      .booking-banner {
+        margin-bottom: 35px;
+      }
+
+      .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 20;
+        background: white;
+        box-shadow: 0 -5px 25px rgba(0,0,0,.08);
+        justify-content: space-around;
+        padding: 9px 5px calc(9px + env(safe-area-inset-bottom));
+      }
+
+      .bottom-nav a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px;
+        color: #71817d;
+      }
+
+      .bottom-nav a span:first-child {
+        font-size: 19px;
+      }
+
+      .bottom-nav a.active {
+        color: var(--primary);
+        font-weight: 900;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <span>أركان العالم للسياحة والسفر</span>
+    <a href="https://wa.me/963956553485" target="_blank" rel="noopener">تواصل معنا عبر واتساب</a>
+  </div>
+
+  <header>
+    <a class="brand" href="./index.html">
+      <strong>أركان العالم</strong>
+      <small>TRAVEL • TOURISM • TRUST</small>
+    </a>
+
+    <nav class="header-links">
+      <a href="./index.html">الرئيسية</a>
+      <a href="./booking.html">بوابة الحجوزات</a>
+      <a href="./umrah.html">الحج والعمرة</a>
+      <a href="./contact.html">تواصل معنا</a>
+    </nav>
+
+    <a class="back-home" href="./index.html">العودة للرئيسية</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">ARKAN WORLD • EXPLORE THE WORLD</div>
+      <h1>اكتشف العالم مع أركان</h1>
+      <p>
+        رحلات وتجارب سياحية مختارة بعناية، لنرافقك في كل رحلة
+        ونمنحك تجربة سفر تجمع بين الراحة والثقة والاهتمام بالتفاصيل.
+      </p>
+      <div class="hero-line"></div>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <div class="section-heading">
+      <span>YOUR NEXT DESTINATION</span>
+      <h2>الرحلات السياحية المتاحة</h2>
+      <p>تعرّف على برامجنا واختر وجهتك القادمة</p>
+    </div>
+
+    <div class="filters" id="tripFilters">
+      <button class="filter-btn active" data-filter="all">جميع الرحلات</button>
+      <button class="filter-btn" data-filter="tourism">سياحية</button>
+      <button class="filter-btn" data-filter="domestic">داخلية</button>
+      <button class="filter-btn" data-filter="international">خارجية</button>
+    </div>
+
+    <div class="trips-grid" id="tripsGrid">
+      <div class="state-box">
+        <span class="state-icon">✈</span>
+        جارٍ تحميل الرحلات...
+      </div>
+    </div>
+
+    <section class="booking-banner">
+      <h2>خطوتك القادمة نحو السفر</h2>
+      <p>اختر رحلتك وتواصل معنا لإتمام إجراءات الحجز.</p>
+      <a href="./booking.html">الانتقال إلى بوابة الحجوزات</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>أركان العالم للسياحة والسفر</div>
+    <small>سفر • سياحة • ثقة</small>
+    <div style="margin-top:12px">© <span id="yearNow"></span> Arkan World</div>
+  </footer>
+
+  <nav class="bottom-nav">
+    <a href="./index.html">
+      <span>⌂</span>
+      <span>الرئيسية</span>
+    </a>
+    <a href="./trips.html" class="active">
+      <span>✈</span>
+      <span>الرحلات</span>
+    </a>
+    <a href="./account.html">
+      <span>♙</span>
+      <span>حسابي</span>
+    </a>
+    <a href="./contact.html">
+      <span>✆</span>
+      <span>تواصل</span>
+    </a>
+  </nav>
+
+  <script>
+    const db = window.arkanSupabase;
+
+    const tripsGrid = document.getElementById("tripsGrid");
+    const filters = document.getElementById("tripFilters");
+
+    let allTrips = [];
+    let currentFilter = "all";
+
+    document.getElementById("yearNow").textContent =
+      new Date().getFullYear();
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    function formatDate(value) {
+      if (!value) return "غير محدد";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) return "غير محدد";
+
+      return date.toLocaleDateString("ar", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    }
+
+    function formatPrice(value, currency) {
+      if (value === null || value === undefined || value === "") {
+        return null;
+      }
+
+      const number = Number(value);
+
+      if (!Number.isFinite(number)) return null;
+
+      return number.toLocaleString("ar") + " " + (currency || "");
+    }
+
+    function getTripCategory(type) {
+      const value = String(type || "").toLowerCase();
+
+      if (
+        value.includes("domestic") ||
+        value.includes("داخلي")
+      ) return "domestic";
+
+      if (
+        value.includes("international") ||
+        value.includes("خارجي")
+      ) return "international";
+
+      return "tourism";
+    }
+
+    function getTripTypeLabel(type) {
+      const category = getTripCategory(type);
+
+      if (category === "domestic") return "رحلة داخلية";
+      if (category === "international") return "رحلة خارجية";
+
+      return type || "رحلة سياحية";
+    }
+
+    function renderTrips() {
+      const trips = allTrips.filter(trip => {
+        return currentFilter === "all" ||
+          getTripCategory(trip.trip_type) === currentFilter;
+      });
+
+      if (!trips.length) {
+        tripsGrid.innerHTML = `
+          <div class="state-box">
+            <span class="state-icon">✈</span>
+            لا توجد رحلات متاحة ضمن هذا التصنيف حالياً.
+          </div>
+        `;
+        return;
+      }
+
+      tripsGrid.innerHTML = trips.map(trip => {
+        const title = escapeHTML(trip.title_ar || trip.title_en || "رحلة سياحية");
+        const destination = escapeHTML(trip.destination || "وجهة سياحية");
+        const description = escapeHTML(trip.description_ar || "اكتشف تفاصيل هذه الرحلة مع فريق أركان.");
+        const departureCity = escapeHTML(trip.departure_city || "غير محدد");
+        const currency = escapeHTML(trip.currency || "");
+
+        const image = trip.image_url
+          ? escapeHTML(trip.image_url)
+          : "";
+
+        const imageHTML = image
+          ? `<img src="${image}" alt="${title}" loading="lazy" onerror="this.parentElement.style.background='#e7eeea';this.remove();">`
+          : "";
+
+        const prices = [
+          ["رباعي", formatPrice(trip.price_quad, currency)],
+          ["ثلاثي", formatPrice(trip.price_triple, currency)],
+          ["ثنائي", formatPrice(trip.price_double, currency)]
+        ].filter(item => item[1]);
+
+        const pricesHTML = prices.length
+          ? prices.map(item => `
+              <span class="price">${item[0]}: ${escapeHTML(item[1])}</span>
+            `).join("")
+          : `<span class="price">السعر عند الاستفسار</span>`;
+
+        const message = encodeURIComponent(
+          "السلام عليكم، أريد الاستفسار عن الرحلة: " +
+          (trip.title_ar || trip.title_en || "") +
+          " إلى " + (trip.destination || "")
+        );
+
+        return `
+          <article class="trip-card">
+            <div class="trip-image">
+              ${imageHTML}
+              <span class="trip-type">${escapeHTML(getTripTypeLabel(trip.trip_type))}</span>
+            </div>
+
+            <div class="trip-content">
+              <h3>${title}</h3>
+
+              <div class="trip-destination">
+                📍 الوجهة: ${destination}
+              </div>
+
+              <p class="trip-description">${description}</p>
+
+              <div class="trip-details">
+                <div class="detail-row">
+                  <span>مدينة الانطلاق</span>
+                  <strong>${departureCity}</strong>
+                </div>
+
+                <div class="detail-row">
+                  <span>موعد الانطلاق</span>
+                  <strong>${formatDate(trip.departure_at)}</strong>
+                </div>
+
+                <div class="detail-row">
+                  <span>موعد العودة</span>
+                  <strong>${formatDate(trip.return_at)}</strong>
+                </div>
+              </div>
+
+              <div class="prices">
+                ${pricesHTML}
+              </div>
+
+              <a class="book-btn"
+                 href="https://wa.me/963956553485?text=${message}"
+                 target="_blank"
+                 rel="noopener">
+                استفسر عن الرحلة
+              </a>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadTrips() {
+      tripsGrid.innerHTML = `
+        <div class="state-box">
+          <span class="state-icon">✈</span>
+          جارٍ تحميل الرحلات...
+        </div>
+      `;
+
+      try {
+        if (!db) {
+          throw new Error("تعذر الاتصال بقاعدة البيانات.");
+        }
+
+        const { data, error } = await db
+          .from("public_trips")
+          .select("*")
+          .order("departure_at", { ascending: true });
+
+        if (error) throw error;
+
+        allTrips = data || [];
+        renderTrips();
+
+      } catch (error) {
+        console.error("Trips loading error:", error);
+
+        tripsGrid.innerHTML = `
+          <div class="state-box">
+            <span class="state-icon">⚠</span>
+            تعذر تحميل الرحلات حالياً.
+            <br>
+            يرجى المحاولة مرة أخرى.
+            <br>
+            <button class="retry-btn" onclick="loadTrips()">إعادة المحاولة</button>
+          </div>
+        `;
+      }
+    }
+
+    filters.addEventListener("click", event => {
+      const button = event.target.closest("[data-filter]");
+
+      if (!button) return;
+
+      currentFilter = button.dataset.filter;
+
+      filters.querySelectorAll(".filter-btn").forEach(item => {
+        item.classList.toggle("active", item === button);
+      });
+
+      renderTrips();
+    });
+
+    loadTrips();
+  </script>
+
+</body>
+</html>

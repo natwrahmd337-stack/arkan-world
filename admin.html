@@ -1088,6 +1088,76 @@ async function loadDashboard(){
     document.getElementById(id).textContent=await countRows(table);
   }));
 }
+  async function loadFlightRequests(){
+
+  if(!db)return;
+
+  const tbody = document.getElementById("flightRequestsTableBody");
+
+  if(!tbody)return;
+
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="8">جارٍ تحميل طلبات الطيران...</td>
+    </tr>
+  `;
+
+  const {data,error} = await db
+    .from("flight_requests")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    console.error("Flight requests error:",error);
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8">تعذر تحميل الطلبات. تحقق من الصلاحيات أو الاتصال.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  if(!data || data.length===0){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8">لا توجد طلبات طيران حالياً.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = data.map(request=>{
+
+    const statusLabels = {
+      new:"جديد",
+      processing:"قيد المعالجة",
+      quoted:"تم إرسال السعر",
+      confirmed:"مؤكد",
+      rejected:"مرفوض",
+      cancelled:"ملغي"
+    };
+
+    return `
+      <tr>
+        <td>${request.request_code || "—"}</td>
+        <td>${request.passenger_name || "—"}</td>
+        <td>${request.departure_city || "—"}</td>
+        <td>${request.arrival_city || "—"}</td>
+        <td>${request.departure_date || "—"}</td>
+        <td>${request.travelers_count || "—"}</td>
+        <td>${statusLabels[request.status] || request.status || "—"}</td>
+        <td>
+          <button onclick="alert('رقم الطلب: ${request.request_code}')">
+            عرض
+          </button>
+        </td>
+      </tr>
+    `;
+
+  }).join("");
+
+}
 /* ARKAN VOICES */
 async function loadArkanVoices(){
   if(!db)return;

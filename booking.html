@@ -60,12 +60,33 @@
       padding: 8px 0;
     }
 
-    .topbar-inner {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+ .topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.booking-home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 15px;
+  border: 1px solid #d7b66d;
+  border-radius: 25px;
+  color: #f2d99e;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all .25s ease;
+}
+
+.booking-home-btn:hover {
+  background: #d7b66d;
+  color: #082f30;
+}
 
     header {
       background: rgba(255,255,255,.96);

@@ -331,6 +331,43 @@
     </div>
   </div>
 </section>
+      <section id="flight-requests" class="section">
+  <div class="page-heading">
+    <div>
+      <h2>طلبات الطيران</h2>
+      <p>مراجعة طلبات المسافرين ومتابعة إجراءات الحجز</p>
+    </div>
+    <button class="primary-btn" onclick="loadFlightRequests()">
+      تحديث الطلبات
+    </button>
+  </div>
+
+  <div class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>رقم الطلب</th>
+            <th>اسم المسافر</th>
+            <th>من</th>
+            <th>إلى</th>
+            <th>تاريخ السفر</th>
+            <th>عدد المسافرين</th>
+            <th>الحالة</th>
+            <th>التفاصيل</th>
+          </tr>
+        </thead>
+        <tbody id="flightRequestsTableBody">
+          <tr>
+            <td colspan="8" class="empty-state">
+              اضغط تحديث الطلبات للتحميل
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
       <section id="trips" class="section">
         <div class="page-heading">
           <div><h2>إدارة الرحلات</h2><p>إضافة وتعديل وحذف الرحلات</p></div>

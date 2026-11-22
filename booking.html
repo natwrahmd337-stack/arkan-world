@@ -3317,37 +3317,69 @@ if (trip.image_url) {
     }
   }
 
-  async function submitPublicBooking(event) {
-    event.preventDefault();
 
-    const form = event.currentTarget;
-    const button = document.getElementById("submitBooking");
-    const message = document.getElementById("bookingMessage");
+async function submitPublicBooking(event) {
+  event.preventDefault();
 
-    if (!selectedTrip || !db) {
-      message.textContent = "تعذر الاتصال بالنظام. يرجى المحاولة لاحقاً.";
-      return;
-    }
+  const form = event.currentTarget;
+  const button = document.getElementById("submitBooking");
+  const message = document.getElementById("bookingMessage");
 
-    const formData = new FormData(form);
+  if (!selectedTrip || !db) {
+    message.textContent = "تعذر الاتصال بالنظام. يرجى المحاولة لاحقاً.";
+    return;
+  }
 
-    const payload = {
-      full_name: String(formData.get("full_name") || "").trim(),
-      phone: String(formData.get("phone") || "").trim(),
-      email: String(formData.get("email") || "").trim(),
-      city: String(formData.get("city") || "").trim(),
-      trip_id: selectedTrip.id,
-      room_type: String(formData.get("room_type") || ""),
-      travelers_count: Number(formData.get("travelers_count")),
-      booking_notes: String(formData.get("booking_notes") || "").trim(),
-      website: String(formData.get("website") || "")
-    };
+  const formData = new FormData(form);
 
-    button.disabled = true;
-    button.textContent = "جارٍ إرسال الطلب...";
-    message.textContent = "";
+  const payload = {
+    full_name: String(formData.get("full_name") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    email: String(formData.get("email") || "").trim(),
+    city: String(formData.get("city") || "").trim(),
+    trip_id: selectedTrip.id,
+    room_type: String(formData.get("room_type") || ""),
+    travelers_count: Number(formData.get("travelers_count")),
+    booking_notes: String(formData.get("booking_notes") || "").trim(),
+    website: String(formData.get("website") || "")
+  };
 
-    try {
+  if (payload.website) {
+    message.textContent = "تعذر معالجة الطلب.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ إرسال الطلب...";
+  message.textContent = "";
+
+  try {
+    // التحقق من وجود جلسة مسافر
+    const { data: sessionData, error: sessionError } =
+      await db.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    let result;
+
+    if (sessionData.session) {
+      // المسافر المسجل: الحجز عبر الدالة الآمنة
+      const { data, error } = await db.rpc(
+        "create_customer_booking",
+        {
+          p_trip_id: selectedTrip.id,
+          p_room_type: payload.room_type,
+          p_travelers_count: payload.travelers_count,
+          p_booking_notes: payload.booking_notes || null
+        }
+      );
+
+      if (error) throw error;
+
+      result = data;
+
+    } else {
+      // الزائر: الحفاظ على الحجز العام الحالي
       const { data, error } = await db.functions.invoke(
         BOOKING_FUNCTION,
         { body: payload }
@@ -3355,25 +3387,29 @@ if (trip.image_url) {
 
       if (error) throw error;
 
-      if (!data || data.success !== true) {
-        throw new Error(
-          data?.message || "لم يتم قبول طلب الحجز."
-        );
-      }
-
-      showPaymentStep(data);
-
-    } catch (error) {
-      console.error("Booking submission error:", error);
-
-      message.style.color = "#a32626";
-      message.textContent =
-        error.message || "تعذر إرسال طلب الحجز. حاول مجدداً.";
-
-      button.disabled = false;
-      button.textContent = "إعادة إرسال طلب الحجز";
+      result = data;
     }
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message || "لم يتم قبول طلب الحجز."
+      );
+    }
+
+    showPaymentStep(result);
+
+  } catch (error) {
+    console.error("Booking submission error:", error);
+
+    message.style.color = "#a32626";
+    message.textContent =
+      error.message || "تعذر إرسال طلب الحجز. حاول مجدداً.";
+
+    button.disabled = false;
+    button.textContent = "إعادة إرسال طلب الحجز";
   }
+}
+
 /* =====================================
    ARKAN VOICES - LOAD PUBLISHED MESSAGES
 ===================================== */

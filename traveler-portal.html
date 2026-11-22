@@ -23,353 +23,113 @@
   --line:#e7e5dc;
   --shadow:0 15px 45px #263e3510;
 }
-
-* { box-sizing:border-box; }
-
-body {
-  margin:0;
-  min-height:100vh;
-  font-family:'Cairo',Tahoma,sans-serif;
-  background:var(--cream);
-  color:var(--ink);
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:'Cairo',Tahoma,sans-serif;
+  background:var(--cream);color:var(--ink)
 }
-
-button { font-family:inherit; }
-
-.topbar {
-  background:var(--white);
-  border-bottom:1px solid var(--line);
-  padding:13px 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  position:sticky;
-  top:0;
-  z-index:10;
+button{font-family:inherit}
+.topbar{
+  background:white;border-bottom:1px solid var(--line);padding:13px 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;position:sticky;top:0;z-index:10
 }
-
-.brand {
-  display:flex;
-  align-items:center;
-  gap:12px;
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:52px;height:52px;object-fit:contain}
+.brand h1{font-size:17px;margin:0;font-weight:900;color:var(--teal-dark)}
+.brand span{display:block;color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:700}
+.top-actions{display:flex;align-items:center;gap:10px}
+.top-actions button{
+  border:1px solid var(--line);background:white;color:var(--teal-dark);
+  border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:700
 }
-
-.brand img {
-  width:52px;
-  height:52px;
-  object-fit:contain;
+.top-actions button:disabled{opacity:.6;cursor:wait}
+.top-actions .logout{background:#fff5f2;color:#a64c40;border-color:#f1d9d3}
+.container{width:min(1120px,92%);margin:35px auto 60px}
+.welcome{
+  background:linear-gradient(120deg,#428177,#315f58);border-radius:22px;
+  padding:32px;color:white;position:relative;overflow:hidden;box-shadow:var(--shadow)
 }
-
-.brand h1 {
-  font-size:17px;
-  margin:0;
-  font-weight:900;
-  color:var(--teal-dark);
+.welcome:after{
+  content:"✦";position:absolute;left:45px;top:-55px;
+  font-size:190px;color:#ffffff12;pointer-events:none
 }
-
-.brand span {
-  display:block;
-  color:var(--gold);
-  font-size:10px;
-  letter-spacing:2px;
-  font-weight:700;
+.welcome small{color:#e5d5ad;font-weight:700}
+.welcome h2{font-size:clamp(25px,4vw,38px);margin:8px 0;font-weight:900}
+.welcome p{margin:0;color:#e5efeb;line-height:2;font-size:14px}
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin:32px 0 17px
 }
-
-.top-actions {
-  display:flex;
-  align-items:center;
-  gap:10px;
+.section-title h3{margin:0;font-size:20px;color:var(--teal-dark)}
+.section-title span{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:22px}
+.stat,.panel{
+  background:white;border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow)
 }
-
-.top-actions button {
-  border:1px solid var(--line);
-  background:white;
-  color:var(--teal-dark);
-  border-radius:10px;
-  padding:9px 14px;
-  cursor:pointer;
-  font-weight:700;
+.stat{padding:20px}
+.stat .symbol{font-size:23px}
+.stat strong{display:block;font-size:27px;color:var(--teal);margin:5px 0 0}
+.stat small{color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.panel{border-radius:17px;padding:23px}
+.panel h3{margin:0 0 18px;color:var(--teal-dark);font-size:17px}
+.profile-row{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:12px 0;border-bottom:1px solid var(--line)
 }
-
-.top-actions .logout {
-  background:#fff5f2;
-  color:#a64c40;
-  border-color:#f1d9d3;
+.profile-row:last-child{border-bottom:0}
+.profile-row span{color:var(--muted);font-size:13px}
+.profile-row strong{font-size:13px;text-align:left;overflow-wrap:anywhere}
+.booking-list{display:grid;gap:13px}
+.booking{border:1px solid var(--line);border-radius:13px;padding:16px;background:#fffefa}
+.booking-head{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;margin-bottom:10px
 }
-
-.container {
-  width:min(1120px,92%);
-  margin:35px auto 60px;
+.booking-head strong{color:var(--teal-dark);font-size:15px}
+.status{border-radius:30px;padding:5px 10px;font-size:11px;font-weight:800;background:#f1eee4;color:var(--gold)}
+.status.confirmed,.status.approved,.status.active,.status.completed{
+  background:#e9f5ed;color:#28764c
 }
-
-.welcome {
-  background:linear-gradient(120deg,#428177,#315f58);
-  border-radius:22px;
-  padding:32px;
-  color:white;
-  position:relative;
-  overflow:hidden;
-  box-shadow:var(--shadow);
+.status.cancelled,.status.rejected{background:#fff0ed;color:#a64c40}
+.booking-info{display:grid;grid-template-columns:1fr 1fr;gap:9px;font-size:12px}
+.booking-info div{color:var(--muted)}
+.booking-info strong{display:block;color:var(--ink);margin-top:3px;overflow-wrap:anywhere}
+.empty{
+  text-align:center;padding:28px 12px;color:var(--muted);font-size:13px;
+  line-height:2;background:#faf9f4;border-radius:12px
 }
-
-.welcome::after {
-  content:"✦";
-  position:absolute;
-  left:45px;
-  top:-55px;
-  font-size:190px;
-  color:#ffffff12;
+.empty .icon{display:block;font-size:30px;margin-bottom:8px}
+.message{
+  display:none;margin:18px 0;padding:13px 16px;border-radius:12px;
+  font-size:13px;line-height:1.9;overflow-wrap:anywhere
 }
-
-.welcome small {
-  color:#e5d5ad;
-  font-weight:700;
+.message.error{display:block;background:#fff0ed;border:1px solid #f0d0c9;color:#a64c40}
+.message.success{display:block;background:#e9f5ed;border:1px solid #c7e6d0;color:#28764c}
+.loading{text-align:center;padding:60px 15px;color:var(--teal-dark)}
+.spinner{
+  width:35px;height:35px;border:3px solid #42817730;border-top-color:var(--teal);
+  border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite
 }
-
-.welcome h2 {
-  font-size:clamp(25px,4vw,38px);
-  margin:8px 0;
-  font-weight:900;
+@keyframes spin{to{transform:rotate(360deg)}}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px;line-height:2}
+.hidden{display:none!important}
+@media(max-width:750px){
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .welcome{padding:25px 20px}
 }
-
-.welcome p {
-  margin:0;
-  color:#e5efeb;
-  line-height:2;
-  font-size:14px;
-}
-
-.section-title {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin:32px 0 17px;
-}
-
-.section-title h3 {
-  margin:0;
-  font-size:20px;
-  color:var(--teal-dark);
-}
-
-.section-title span {
-  font-size:12px;
-  color:var(--muted);
-}
-
-.stats {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-  margin-top:22px;
-}
-
-.stat {
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:20px;
-  box-shadow:var(--shadow);
-}
-
-.stat .symbol {
-  font-size:23px;
-}
-
-.stat strong {
-  display:block;
-  font-size:27px;
-  color:var(--teal);
-  margin:5px 0 0;
-}
-
-.stat small {
-  color:var(--muted);
-  font-size:12px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:17px;
-}
-
-.panel {
-  background:white;
-  border:1px solid var(--line);
-  border-radius:17px;
-  padding:23px;
-  box-shadow:var(--shadow);
-}
-
-.panel h3 {
-  margin:0 0 18px;
-  color:var(--teal-dark);
-  font-size:17px;
-}
-
-.profile-row {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:12px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.profile-row:last-child {
-  border-bottom:0;
-}
-
-.profile-row span {
-  color:var(--muted);
-  font-size:13px;
-}
-
-.profile-row strong {
-  font-size:13px;
-  text-align:left;
-  overflow-wrap:anywhere;
-}
-
-.booking-list {
-  display:grid;
-  gap:13px;
-}
-
-.booking {
-  border:1px solid var(--line);
-  border-radius:13px;
-  padding:16px;
-  background:#fffefa;
-}
-
-.booking-head {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.booking-head strong {
-  color:var(--teal-dark);
-  font-size:15px;
-}
-
-.status {
-  border-radius:30px;
-  padding:5px 10px;
-  font-size:11px;
-  font-weight:800;
-  background:#f1eee4;
-  color:var(--gold);
-}
-
-.booking-info {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  font-size:12px;
-}
-
-.booking-info div {
-  color:var(--muted);
-}
-
-.booking-info strong {
-  display:block;
-  color:var(--ink);
-  margin-top:3px;
-}
-
-.empty {
-  text-align:center;
-  padding:28px 12px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:2;
-  background:#faf9f4;
-  border-radius:12px;
-}
-
-.empty .icon {
-  display:block;
-  font-size:30px;
-  margin-bottom:8px;
-}
-
-.message {
-  display:none;
-  margin:18px 0;
-  padding:13px 16px;
-  border-radius:12px;
-  font-size:13px;
-  line-height:1.9;
-  overflow-wrap:anywhere;
-}
-
-.message.error {
-  display:block;
-  background:#fff0ed;
-  border:1px solid #f0d0c9;
-  color:#a64c40;
-}
-
-.message.success {
-  display:block;
-  background:#e9f5ed;
-  border:1px solid #c7e6d0;
-  color:#28764c;
-}
-
-.loading {
-  text-align:center;
-  padding:60px 15px;
-  color:var(--teal-dark);
-}
-
-.spinner {
-  width:35px;
-  height:35px;
-  border:3px solid #42817730;
-  border-top-color:var(--teal);
-  border-radius:50%;
-  margin:0 auto 14px;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform:rotate(360deg); }
-}
-
-.footer {
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  padding:25px 10px;
-  line-height:2;
-}
-
-.hidden { display:none !important; }
-
-@media(max-width:750px) {
-  .grid { grid-template-columns:1fr; }
-  .stats { grid-template-columns:1fr 1fr; }
-  .welcome { padding:25px 20px; }
-}
-
-@media(max-width:420px) {
-  .topbar { padding:10px 4%; }
-  .brand img { width:42px;height:42px; }
-  .brand h1 { font-size:14px; }
-  .top-actions button { padding:8px 9px;font-size:11px; }
-  .stats { gap:9px; }
-  .stat { padding:14px; }
-  .stat strong { font-size:23px; }
-  .booking-info { grid-template-columns:1fr; }
+@media(max-width:420px){
+  .topbar{padding:10px 4%}
+  .brand img{width:42px;height:42px}
+  .brand h1{font-size:14px}
+  .top-actions button{padding:8px 9px;font-size:11px}
+  .stats{gap:9px}
+  .stat{padding:14px}
+  .stat strong{font-size:23px}
+  .booking-info{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -384,7 +144,6 @@ button { font-family:inherit; }
       <span>TRAVEL & TOURISM</span>
     </div>
   </div>
-
   <div class="top-actions">
     <button id="refreshBtn" type="button">↻ تحديث</button>
     <button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button>
@@ -392,14 +151,12 @@ button { font-family:inherit; }
 </header>
 
 <main class="container">
-
   <div id="loading" class="loading">
     <div class="spinner"></div>
     جارٍ تجهيز حسابك...
   </div>
 
   <div id="portal" class="hidden">
-
     <section class="welcome">
       <small>أهلاً بك في عالم أركان</small>
       <h2>مرحباً، <span id="welcomeName">مسافرنا العزيز</span> ✦</h2>
@@ -412,13 +169,11 @@ button { font-family:inherit; }
         <strong id="totalBookings">—</strong>
         <small>إجمالي الحجوزات</small>
       </div>
-
       <div class="stat">
         <div class="symbol">🧳</div>
         <strong id="activeBookings">—</strong>
         <small>الحجوزات النشطة</small>
       </div>
-
       <div class="stat">
         <div class="symbol">✓</div>
         <strong id="completedBookings">—</strong>
@@ -432,29 +187,12 @@ button { font-family:inherit; }
     </div>
 
     <div class="grid">
-
       <section class="panel">
         <h3>معلومات المسافر</h3>
-
-        <div class="profile-row">
-          <span>الاسم الكامل</span>
-          <strong id="profileName">—</strong>
-        </div>
-
-        <div class="profile-row">
-          <span>البريد الإلكتروني</span>
-          <strong id="profileEmail">—</strong>
-        </div>
-
-        <div class="profile-row">
-          <span>رقم الهاتف</span>
-          <strong id="profilePhone">—</strong>
-        </div>
-
-        <div class="profile-row">
-          <span>المدينة</span>
-          <strong id="profileCity">—</strong>
-        </div>
+        <div class="profile-row"><span>الاسم الكامل</span><strong id="profileName">—</strong></div>
+        <div class="profile-row"><span>البريد الإلكتروني</span><strong id="profileEmail">—</strong></div>
+        <div class="profile-row"><span>رقم الهاتف</span><strong id="profilePhone">—</strong></div>
+        <div class="profile-row"><span>المدينة</span><strong id="profileCity">—</strong></div>
       </section>
 
       <section class="panel">
@@ -463,19 +201,15 @@ button { font-family:inherit; }
           <div class="empty">جارٍ تحميل الحجوزات...</div>
         </div>
       </section>
-
     </div>
 
     <div id="message" class="message" role="status" aria-live="polite"></div>
-
   </div>
 </main>
 
 <footer class="footer">
-  سفر • سياحة • ثقة
-  <br>
-  نصحبكم في كل رحلة... معكم في كل وجهة
-  <br>
+  سفر • سياحة • ثقة<br>
+  نصحبكم في كل رحلة... معكم في كل وجهة<br>
   © أركان العالم للسياحة والسفر
 </footer>
 
@@ -490,13 +224,20 @@ const db = window.arkanSupabase;
 const loading = document.getElementById("loading");
 const portal = document.getElementById("portal");
 const message = document.getElementById("message");
+const bookingList = document.getElementById("bookingList");
 
 let currentUser = null;
 let currentCustomerId = null;
+let loadingData = false;
 
 function showMessage(text, type = "error") {
   message.textContent = text;
   message.className = "message " + type;
+}
+
+function clearMessage() {
+  message.textContent = "";
+  message.className = "message";
 }
 
 function escapeHTML(value) {
@@ -511,9 +252,7 @@ function escapeHTML(value) {
 
 function formatDate(value) {
   if (!value) return "غير محدد";
-
   const date = new Date(value);
-
   if (Number.isNaN(date.getTime())) return "غير محدد";
 
   return new Intl.DateTimeFormat("ar", {
@@ -523,13 +262,14 @@ function formatDate(value) {
   }).format(date);
 }
 
+function normalizeStatus(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
 async function checkAccess() {
-  if (!db) {
-    throw new Error("تعذر الاتصال بخدمة أركان.");
-  }
+  if (!db) throw new Error("تعذر الاتصال بخدمة أركان.");
 
   const { data, error } = await db.auth.getSession();
-
   if (error) throw error;
 
   if (!data.session) {
@@ -544,6 +284,7 @@ async function checkAccess() {
 
   if (roleError) throw roleError;
 
+  // يجب أن يكون حساب المسافر غير مرتبط بدور موظف.
   if (role) {
     await db.auth.signOut();
     window.location.replace("traveler-login.html");
@@ -562,10 +303,8 @@ async function loadProfile() {
 
   if (error) throw error;
 
-  if (!data) {
-    throw new Error(
-      "لم يتم العثور على ملف المسافر المرتبط بحسابك. يرجى التواصل مع إدارة أركان."
-    );
+  if (!data || !data.customer_id) {
+    throw new Error("لم يتم العثور على ملف المسافر المرتبط بحسابك.");
   }
 
   currentCustomerId = data.customer_id;
@@ -577,22 +316,84 @@ async function loadProfile() {
 
   document.getElementById("welcomeName").textContent = name;
   document.getElementById("profileName").textContent = name;
-  document.getElementById("profileEmail").textContent =
-    currentUser.email || "—";
-  document.getElementById("profilePhone").textContent =
-    data.phone || "—";
-  document.getElementById("profileCity").textContent =
-    data.city || "غير محددة";
+  document.getElementById("profileEmail").textContent = currentUser.email || "—";
+  document.getElementById("profilePhone").textContent = data.phone || "—";
+  document.getElementById("profileCity").textContent = data.city || "غير محددة";
+}
+
+function updateBookingStats(bookings) {
+  document.getElementById("totalBookings").textContent = bookings.length;
+
+  const activeStatuses = ["confirmed","pending","approved","active"];
+  const completedStatuses = ["completed","finished","done"];
+
+  const active = bookings.filter(item =>
+    activeStatuses.includes(normalizeStatus(item.status))
+  );
+
+  const completed = bookings.filter(item =>
+    completedStatuses.includes(normalizeStatus(item.status))
+  );
+
+  document.getElementById("activeBookings").textContent = active.length;
+  document.getElementById("completedBookings").textContent = completed.length;
+}
+
+function renderBookings(bookings) {
+  if (!bookings.length) {
+    bookingList.innerHTML = `
+      <div class="empty">
+        <span class="icon">🧳</span>
+        لا توجد حجوزات مرتبطة بحسابك حالياً.
+        <br>
+        نتمنى أن تكون رحلتك القادمة معنا قريباً.
+      </div>`;
+    return;
+  }
+
+  bookingList.innerHTML = bookings.map(item => {
+    const title =
+      item.trip_name ||
+      item.title ||
+      item.booking_type ||
+      "حجز لدى أركان";
+
+    const rawStatus = item.status || "قيد المراجعة";
+    const safeStatus = normalizeStatus(rawStatus);
+    const date = item.travel_date || item.departure_date || item.created_at;
+    const number = item.booking_number || item.reference_number || item.id || "—";
+
+    const allowedStatusClasses = [
+      "confirmed","approved","active","completed","cancelled","rejected"
+    ];
+
+    const statusClass = allowedStatusClasses.includes(safeStatus)
+      ? safeStatus
+      : "";
+
+    return `
+      <article class="booking">
+        <div class="booking-head">
+          <strong>${escapeHTML(title)}</strong>
+          <span class="status ${statusClass}">${escapeHTML(rawStatus)}</span>
+        </div>
+        <div class="booking-info">
+          <div>رقم الحجز<strong>${escapeHTML(number)}</strong></div>
+          <div>تاريخ الرحلة<strong>${escapeHTML(formatDate(date))}</strong></div>
+        </div>
+      </article>`;
+  }).join("");
 }
 
 async function loadBookings() {
-  const list = document.getElementById("bookingList");
+  if (!currentCustomerId) {
+    throw new Error("تعذر تحديد ملف المسافر.");
+  }
 
-  /*
-    لا نفترض أسماء أعمدة أو جداول غير مؤكدة.
-    نتحقق أولاً من الجدول المتوقع للحجوزات.
-  */
+  bookingList.innerHTML = '<div class="empty">جارٍ تحميل الحجوزات...</div>';
 
+  // هذا الفلتر يحدد حجوزات المسافر الحالي.
+  // يجب أن تفرض سياسات RLS في Supabase العزل الفعلي بين الحسابات.
   const { data, error } = await db
     .from("bookings")
     .select("*")
@@ -600,99 +401,32 @@ async function loadBookings() {
     .order("created_at", { ascending:false });
 
   if (error) {
-    list.innerHTML =
-      '<div class="empty">تعذر تحميل الحجوزات حالياً. يمكنك المحاولة لاحقاً.</div>';
+    console.error("Bookings loading error:", error);
+    bookingList.innerHTML =
+      '<div class="empty">تعذر تحميل الحجوزات حالياً. يرجى المحاولة لاحقاً.</div>';
 
     document.getElementById("totalBookings").textContent = "—";
     document.getElementById("activeBookings").textContent = "—";
     document.getElementById("completedBookings").textContent = "—";
-
-    console.error("Bookings loading error:", error);
     return;
   }
 
   const bookings = data || [];
-
-  document.getElementById("totalBookings").textContent =
-    bookings.length;
-
-  const active = bookings.filter(item =>
-    ["confirmed","pending","approved","active"].includes(
-      String(item.status || "").toLowerCase()
-    )
-  );
-
-  const completed = bookings.filter(item =>
-    ["completed","finished","done"].includes(
-      String(item.status || "").toLowerCase()
-    )
-  );
-
-  document.getElementById("activeBookings").textContent =
-    active.length;
-
-  document.getElementById("completedBookings").textContent =
-    completed.length;
-
-  if (!bookings.length) {
-    list.innerHTML = `
-      <div class="empty">
-        <span class="icon">🧳</span>
-        لا توجد حجوزات مرتبطة بحسابك حالياً.
-        <br>
-        نتمنى أن تكون رحلتك القادمة معنا قريباً.
-      </div>
-    `;
-    return;
-  }
-
-  list.innerHTML = bookings.map(item => {
-    const title =
-      item.trip_name ||
-      item.title ||
-      item.booking_type ||
-      "حجز لدى أركان";
-
-    const status = item.status || "قيد المراجعة";
-
-    const date =
-      item.travel_date ||
-      item.departure_date ||
-      item.created_at;
-
-    const bookingNumber =
-      item.booking_number ||
-      item.reference_number ||
-      item.id ||
-      "—";
-
-    return `
-      <article class="booking">
-        <div class="booking-head">
-          <strong>${escapeHTML(title)}</strong>
-          <span class="status">${escapeHTML(status)}</span>
-        </div>
-
-        <div class="booking-info">
-          <div>
-            رقم الحجز
-            <strong>${escapeHTML(bookingNumber)}</strong>
-          </div>
-
-          <div>
-            تاريخ الرحلة
-            <strong>${escapeHTML(formatDate(date))}</strong>
-          </div>
-        </div>
-      </article>
-    `;
-  }).join("");
+  updateBookingStats(bookings);
+  renderBookings(bookings);
 }
 
 async function initializePortal() {
-  try {
-    const allowed = await checkAccess();
+  if (loadingData) return;
+  loadingData = true;
 
+  const refreshButton = document.getElementById("refreshBtn");
+  refreshButton.disabled = true;
+
+  try {
+    clearMessage();
+
+    const allowed = await checkAccess();
     if (!allowed) return;
 
     await loadProfile();
@@ -703,43 +437,29 @@ async function initializePortal() {
     await loadBookings();
 
   } catch (error) {
-    console.error(error);
-
+    console.error("Portal error:", error);
     loading.classList.add("hidden");
     portal.classList.remove("hidden");
-
-    showMessage(
-      error.message || "حدث خطأ أثناء تحميل حساب المسافر."
-    );
+    showMessage(error.message || "حدث خطأ أثناء تحميل حساب المسافر.");
+  } finally {
+    loadingData = false;
+    refreshButton.disabled = false;
   }
 }
 
 document.getElementById("refreshBtn").addEventListener("click", async () => {
-  const button = document.getElementById("refreshBtn");
-
-  button.disabled = true;
-  button.textContent = "جارٍ التحديث...";
-
-  try {
-    await initializePortal();
-  } finally {
-    button.disabled = false;
-    button.textContent = "↻ تحديث";
-  }
+  await initializePortal();
 });
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   const button = document.getElementById("logoutBtn");
-
   button.disabled = true;
 
   try {
     const { error } = await db.auth.signOut();
-
     if (error) throw error;
 
     window.location.replace("traveler-login.html");
-
   } catch (error) {
     showMessage(error.message || "تعذر تسجيل الخروج.");
     button.disabled = false;

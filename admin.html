@@ -204,6 +204,72 @@
       .topbar { padding:0 10px; }
       .topbar-brand { font-size:12px; }
     }
+
+    /* Premium visa administration workspace */
+    #visas { --visa-teal:#245c55; --visa-gold:#b99a60; --visa-ink:#20332f; }
+    #visas .visa-hero {
+      position:relative; overflow:hidden; display:flex; align-items:center; justify-content:space-between;
+      min-height:190px; padding:32px 38px; margin-bottom:22px; border-radius:20px;
+      color:#fff; background:linear-gradient(115deg,#173f3a 0%,#28675e 58%,#428177 100%);
+      box-shadow:0 14px 35px rgba(24,68,61,.15);
+    }
+    #visas .visa-hero:after { content:""; position:absolute; width:300px;height:300px;border:1px solid rgba(220,195,143,.22);border-radius:50%;left:8%;top:-190px;box-shadow:0 0 0 24px rgba(255,255,255,.025),0 0 0 50px rgba(255,255,255,.02); }
+    #visas .visa-hero-copy { position:relative;z-index:1;max-width:680px; }
+    #visas .visa-eyebrow,#visas .visa-kicker { display:block;font-size:10px;font-weight:800;letter-spacing:2px;color:#cbb17c;margin-bottom:10px; }
+    #visas .visa-hero h2 { margin:0 0 10px;font-size:27px;font-weight:800;color:#fff; }
+    #visas .visa-hero p { margin:0;color:rgba(255,255,255,.8);font-size:13px;line-height:1.9; }
+    #visas .visa-hero-mark { display:grid;place-items:center;width:82px;height:82px;border:1px solid rgba(220,195,143,.55);border-radius:50%;color:#d8bd87;font-size:38px;flex-shrink:0; }
+    #visas .visa-workspace { display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:20px;align-items:start; }
+    #visas .visa-form-panel,#visas .visa-list-panel { min-width:0;background:#fff;border:1px solid #e9ece8;border-radius:17px;padding:23px;box-shadow:0 8px 26px rgba(28,55,48,.055); }
+    #visas .visa-panel-heading { display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid #edf0ec;margin-bottom:8px; }
+    #visas .visa-heading-icon { width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:#edf4f1;color:#2e6a60;font-size:25px; }
+    #visas .visa-panel-heading h3,#visas .visa-list-heading h3 { margin:0 0 5px;color:#203b35;font-size:19px; }
+    #visas .visa-panel-heading p,#visas .visa-list-heading p { margin:0;color:#87918d;font-size:12px;line-height:1.7; }
+    #visas .visa-form-section { padding:18px 0 5px;border-bottom:1px solid #f0f1ee; }
+    #visas .visa-form-section h4 { display:flex;align-items:center;gap:9px;margin:0 0 16px;color:#315b52;font-size:13px; }
+    #visas .visa-form-section h4 span { color:#b3945b;font-size:11px;letter-spacing:1px; }
+    #visas .visa-fields { gap:0 13px; }
+    #visas .visa-fields label { display:block;min-width:0;margin:0 0 13px;color:#596761;font-size:12px;font-weight:700; }
+    #visas .visa-fields label em { color:#b35d50;font-style:normal; }
+    #visas .visa-fields input,#visas .visa-fields textarea {
+      display:block;width:100%;margin-top:7px;padding:11px 12px;border:1px solid #e2e8e3;border-radius:9px;
+      background:#fbfcfa;color:#263c35;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;
+    }
+    #visas .visa-fields textarea { resize:vertical;line-height:1.8; }
+    #visas .visa-fields input:focus,#visas .visa-fields textarea:focus { border-color:#6b9b8d;box-shadow:0 0 0 3px rgba(66,129,119,.1);background:#fff; }
+    #visas .visa-fields input::placeholder,#visas .visa-fields textarea::placeholder { color:#b1bab4;font-weight:400; }
+    #visas .visa-fields .full { grid-column:1/-1; }
+    #visas .visa-form-footer { padding-top:18px; }
+    #visas .visa-draft-note { color:#7c8982;font-size:11px;margin-bottom:13px; }
+    #visas .visa-draft-note span { color:#c19c5c;margin-left:5px; }
+    #visas .visa-form-actions { display:flex;gap:9px;flex-wrap:wrap; }
+    #visas .visa-save-btn { border-radius:9px;padding:12px 20px;background:#285e55; }
+    #visas .visa-reset-btn,#visas .visa-refresh-btn { border-radius:9px;padding:10px 14px;border:1px solid #e2e8e3;background:#fff;color:#50665e; }
+    #visas .visa-list-heading { display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:17px;border-bottom:1px solid #edf0ec; }
+    #visas .visa-list-heading .visa-kicker { margin-bottom:5px; }
+    #visas .visa-admin-list { display:grid;gap:12px; }
+    #visas #visaAdminList > .panel { margin:0!important;padding:13px!important;border:1px solid #e9eee9;border-radius:13px;box-shadow:none;background:#fcfdfb;transition:transform .2s,border-color .2s; }
+    #visas #visaAdminList > .panel:hover { transform:translateY(-2px);border-color:#cbdcd3; }
+    #visas #visaAdminList > .panel img { width:100px!important;height:86px!important;object-fit:cover;border-radius:10px!important;background:#edf2ee; }
+    #visas #visaAdminList > .panel strong { display:block;color:#274a41;font-size:14px;margin-bottom:5px; }
+    #visas #visaAdminList > .panel small { display:inline-block;margin-top:7px;padding:4px 8px;border-radius:20px;background:#f4eddf;color:#927343;font-size:10px; }
+    #visas #visaAdminList > .panel .section-tools { margin:0;gap:6px; }
+    #visas #visaAdminList > .panel button { border:1px solid #e1e9e3;background:#fff;color:#46665b;border-radius:7px;padding:7px 9px;font-size:11px; }
+    #visas #visaAdminList > .panel button:hover { background:#edf5f1;border-color:#bdd3c8; }
+    #visas #visaAdminList > .empty-state { padding:35px 12px;border:1px dashed #dce5de;border-radius:12px;background:#fafcf9; }
+    #visas #visaFormMessage { margin:12px 0 0; }
+    @media(max-width:1050px) { #visas .visa-workspace { grid-template-columns:1fr; } }
+    @media(max-width:650px) {
+      #visas .visa-hero { min-height:155px;padding:24px 20px;border-radius:15px; }
+      #visas .visa-hero h2 { font-size:22px; }
+      #visas .visa-hero-mark { width:58px;height:58px;font-size:27px; }
+      #visas .visa-form-panel,#visas .visa-list-panel { padding:16px; }
+      #visas .visa-fields { grid-template-columns:1fr; }
+      #visas .visa-fields .full { grid-column:auto; }
+      #visas #visaAdminList > .panel > div { align-items:flex-start!important; }
+      #visas #visaAdminList > .panel img { width:82px!important;height:75px!important; }
+    }
+
   </style>
 </head>
 
@@ -801,27 +867,68 @@
         <div class="panel"><h3>ملخص الحجوزات حسب الحالة</h3><div id="reportStatus" class="empty-state">جاري التحميل...</div></div>
       </section>
 <section id="visas" class="section">
-  <div class="page-heading"><div><h2>إدارة التأشيرات</h2><p>إضافة العروض وتعديلها والتحكم بنشرها على الموقع.</p></div></div>
-  <div class="panel"><h3 id="visaFormTitle">إضافة تأشيرة جديدة</h3>
-    <form id="visaAdminForm"><input type="hidden" id="visaEditId">
-      <div class="form-grid">
-        <label>الدولة *<input id="visaCountry" required maxlength="100"></label>
-        <label>نوع التأشيرة *<input id="visaType" required maxlength="100"></label>
-        <label>عنوان العرض *<input id="visaTitle" required maxlength="180"></label>
-        <label>السعر<input id="visaPrice" type="number" min="0" step="0.01"></label>
-        <label>العملة<input id="visaCurrency" value="USD" maxlength="8"></label>
-        <label>مدة المعالجة<input id="visaProcessing"></label>
-        <label>مدة الصلاحية<input id="visaValidity"></label>
-        <label>مدة الإقامة<input id="visaStay"></label>
-        <label style="grid-column:1/-1">رابط الصورة<input id="visaImage" type="url" placeholder="https://..."></label>
-        <label style="grid-column:1/-1">وصف العرض<textarea id="visaDescription" rows="2"></textarea></label>
-        <label style="grid-column:1/-1">المتطلبات والوثائق<textarea id="visaRequirements" rows="3"></textarea></label>
-        <label style="grid-column:1/-1">ملاحظات إضافية<textarea id="visaNotes" rows="2"></textarea></label>
+  <div class="visa-hero">
+    <div class="visa-hero-copy">
+      <span class="visa-eyebrow">ARKAN WORLD · VISA CENTER</span>
+      <h2>مركز إدارة التأشيرات</h2>
+      <p>إدارة عروض التأشيرات، مراجعة تفاصيلها، والتحكم بظهورها على الموقع العام من مكان واحد.</p>
+    </div>
+    <div class="visa-hero-mark" aria-hidden="true">✦</div>
+  </div>
+
+  <div class="visa-workspace">
+    <div class="visa-form-panel">
+      <div class="visa-panel-heading">
+        <div class="visa-heading-icon">＋</div>
+        <div><span class="visa-kicker">إدارة المحتوى</span><h3 id="visaFormTitle">إضافة تأشيرة جديدة</h3><p>أدخل معلومات العرض بدقة، ثم احفظه كمسودة للمراجعة.</p></div>
       </div>
-      <div class="section-tools" style="margin-top:15px"><button class="primary-btn" type="submit" id="visaSaveBtn">حفظ التأشيرة كمسودة</button><button class="secondary-btn" type="button" onclick="resetVisaForm()">إلغاء / تفريغ الحقول</button></div>
-      <p id="visaFormMessage"></p><small>تُحفظ التأشيرة غير منشورة افتراضياً حتى مراجعتها.</small>
-    </form></div>
-  <div class="panel"><h3>التأشيرات المسجلة</h3><div id="visaAdminList">جاري تحميل البيانات...</div></div>
+      <form id="visaAdminForm"><input type="hidden" id="visaEditId">
+        <div class="visa-form-section">
+          <h4><span>01</span> المعلومات الأساسية</h4>
+          <div class="form-grid visa-fields">
+            <label>الدولة <em>*</em><input id="visaCountry" required maxlength="100" placeholder="مثال: المملكة العربية السعودية"></label>
+            <label>نوع التأشيرة <em>*</em><input id="visaType" required maxlength="100" placeholder="سياحية، زيارة، عمل..."></label>
+            <label class="full">عنوان العرض <em>*</em><input id="visaTitle" required maxlength="180" placeholder="عنوان واضح وجذاب يظهر للزوار"></label>
+            <label>السعر<input id="visaPrice" type="number" min="0" step="0.01" placeholder="0.00"></label>
+            <label>العملة<input id="visaCurrency" value="USD" maxlength="8" placeholder="USD"></label>
+          </div>
+        </div>
+        <div class="visa-form-section">
+          <h4><span>02</span> المدد والتفاصيل</h4>
+          <div class="form-grid visa-fields">
+            <label>مدة المعالجة<input id="visaProcessing" placeholder="مثال: 3 - 5 أيام"></label>
+            <label>مدة الصلاحية<input id="visaValidity" placeholder="مثال: 90 يوماً"></label>
+            <label>مدة الإقامة<input id="visaStay" placeholder="مثال: 30 يوماً"></label>
+            <label class="full">رابط صورة التأشيرة<input id="visaImage" type="url" placeholder="https://..."></label>
+          </div>
+        </div>
+        <div class="visa-form-section">
+          <h4><span>03</span> معلومات إضافية</h4>
+          <div class="form-grid visa-fields">
+            <label class="full">وصف العرض<textarea id="visaDescription" rows="3" placeholder="اكتب وصفاً مختصراً وواضحاً للتأشيرة..."></textarea></label>
+            <label class="full">المتطلبات والوثائق<textarea id="visaRequirements" rows="4" placeholder="اذكر الأوراق والمستندات المطلوبة..."></textarea></label>
+            <label class="full">ملاحظات إضافية<textarea id="visaNotes" rows="3" placeholder="أي شروط أو تنبيهات إضافية..."></textarea></label>
+          </div>
+        </div>
+        <div class="visa-form-footer">
+          <div class="visa-draft-note"><span>●</span> الحفظ الأولي يكون كمسودة غير منشورة</div>
+          <div class="visa-form-actions">
+            <button class="primary-btn visa-save-btn" type="submit" id="visaSaveBtn">حفظ التأشيرة كمسودة</button>
+            <button class="secondary-btn visa-reset-btn" type="button" onclick="resetVisaForm()">إلغاء / تفريغ الحقول</button>
+          </div>
+          <p id="visaFormMessage"></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="visa-list-panel">
+      <div class="visa-list-heading">
+        <div><span class="visa-kicker">العروض المسجلة</span><h3>قائمة التأشيرات</h3><p>تابع حالة كل عرض وعدّل بياناته أو انشره عند الجاهزية.</p></div>
+        <button class="secondary-btn visa-refresh-btn" type="button" onclick="loadVisas()">↻ تحديث</button>
+      </div>
+      <div id="visaAdminList" class="visa-admin-list">جاري تحميل البيانات...</div>
+    </div>
+  </div>
 </section>
 <section id="site-media" class="section">
   <div class="page-heading">

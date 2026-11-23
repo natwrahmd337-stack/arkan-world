@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#428177">
+<meta name="theme-color" content="#092b28">
 <title>حسابي | أركان العالم للسياحة والسفر</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,196 +13,335 @@
 
 <style>
 :root{
+  --bg:#092b28;
+  --bg2:#0d3732;
+  --surface:#123d37;
+  --surface2:#17483f;
+  --surface3:#0d332f;
   --teal:#428177;
-  --teal-dark:#315f58;
-  --gold:#a78342;
-  --cream:#edebe0;
-  --white:#fff;
-  --ink:#293b37;
-  --muted:#78847e;
-  --line:#e7e5dc;
-  --shadow:0 15px 45px #263e3510;
+  --gold:#d8bd78;
+  --gold-light:#f0dba4;
+  --white:#f5f5ee;
+  --muted:#a8bcb4;
+  --line:#ffffff1c;
+  --success:#8bd0a2;
+  --danger:#e9a69a;
+  --shadow:0 18px 55px #00000030;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:95px}
 body{
   margin:0;min-height:100vh;
   font-family:'Cairo',Tahoma,sans-serif;
-  background:var(--cream);color:var(--ink)
+  color:var(--white);
+  background:
+    radial-gradient(ellipse at 50% -15%,#28685b55,transparent 48%),
+    radial-gradient(ellipse at 0% 65%,#174b4140,transparent 40%),
+    var(--bg);
 }
 button,input{font-family:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.6;cursor:wait}
+button:disabled{opacity:.55;cursor:wait}
+button:focus-visible,input:focus-visible,summary:focus-visible{
+  outline:2px solid var(--gold);outline-offset:3px
+}
+.app-shell{
+  width:min(100%,850px);
+  min-height:100vh;
+  margin:auto;
+  position:relative;
+  background:linear-gradient(180deg,#103b35d9,#0b302cfa);
+  border-inline:1px solid #ffffff12;
+  box-shadow:0 0 90px #00000024;
+  padding-bottom:100px;
+}
 .topbar{
-  background:white;border-bottom:1px solid var(--line);
-  padding:13px 5%;display:flex;align-items:center;
-  justify-content:space-between;gap:15px;
-  position:sticky;top:0;z-index:10
+  min-height:82px;padding:13px 25px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;background:#092b28ed;
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(16px)
 }
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:52px;height:52px;object-fit:contain}
-.brand h1{font-size:17px;margin:0;font-weight:900;color:var(--teal-dark)}
-.brand span{display:block;color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:700}
-.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-logo{
+  width:48px;height:48px;border:1px solid #d8bd7855;
+  border-radius:15px;background:#ffffff09;
+  display:grid;place-items:center;overflow:hidden;
+  flex-shrink:0
+}
+.brand-logo img{width:85%;height:85%;object-fit:contain}
+.brand h1{font-size:17px;margin:0;font-weight:900;color:var(--white)}
+.brand span{
+  display:block;color:var(--gold);font-size:9px;
+  letter-spacing:2px;font-weight:800
+}
+.top-actions{display:flex;align-items:center;gap:8px}
 .top-actions button{
-  border:1px solid var(--line);background:white;color:var(--teal-dark);
-  border-radius:10px;padding:9px 13px;font-weight:700;font-size:12px
+  border:1px solid var(--line);background:#ffffff08;
+  color:var(--gold-light);border-radius:12px;
+  padding:9px 12px;font-size:11px;font-weight:800;
+  transition:.2s
 }
-.top-actions .home{background:var(--teal);color:white;border-color:var(--teal)}
-.top-actions .logout{background:#fff5f2;color:#a64c40;border-color:#f1d9d3}
-.container{width:min(1120px,92%);margin:35px auto 60px}
+.top-actions button:hover{background:#ffffff14;border-color:#d8bd7866}
+.top-actions .home{background:#d8bd78;color:#183b34;border-color:var(--gold)}
+.top-actions .logout{color:#e9a69a}
+.container{width:100%;padding:25px 24px 35px;margin:auto}
 .welcome{
-  background:linear-gradient(120deg,#428177,#315f58);
-  border-radius:22px;padding:32px;color:white;
-  position:relative;overflow:hidden;box-shadow:var(--shadow)
+  min-height:225px;display:flex;flex-direction:column;
+  justify-content:center;padding:30px 30px;
+  position:relative;overflow:hidden;
+  border:1px solid #d8bd7850;border-radius:25px;
+  background:
+    radial-gradient(circle at 8% 50%,#d8bd781b,transparent 28%),
+    linear-gradient(125deg,#174a41,#0c302d 85%);
+  box-shadow:var(--shadow)
+}
+.welcome:before{
+  content:"✦";position:absolute;left:25px;top:10px;
+  font-size:150px;line-height:1;color:#d8bd780e;
+  transform:rotate(-12deg);pointer-events:none
 }
 .welcome:after{
-  content:"✦";position:absolute;left:45px;top:-55px;
-  font-size:190px;color:#ffffff12;pointer-events:none
+  content:"";position:absolute;left:0;bottom:0;
+  width:45%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)
 }
-.welcome small{color:#e5d5ad;font-weight:700}
-.welcome h2{font-size:clamp(25px,4vw,38px);margin:8px 0;font-weight:900}
-.welcome p{margin:0;color:#e5efeb;line-height:2;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:22px}
-.stat,.panel{
-  background:white;border:1px solid var(--line);
-  border-radius:16px;box-shadow:var(--shadow)
+.welcome-content{position:relative;z-index:1}
+.welcome small{color:var(--gold-light);font-size:12px;font-weight:800}
+.welcome h2{
+  font-size:clamp(25px,5vw,37px);line-height:1.5;
+  margin:8px 0;font-weight:900;color:#fff
 }
-.stat{padding:20px}
-.stat .symbol{font-size:23px}
-.stat strong{display:block;font-size:27px;color:var(--teal);margin:5px 0 0}
-.stat small{color:var(--muted);font-size:12px}
+.welcome h2 span{color:var(--gold-light)}
+.welcome p{margin:5px 0 0;color:#d1e0d9;font-size:13px;line-height:2}
+.welcome-label{
+  display:inline-flex;align-items:center;gap:7px;
+  color:var(--gold-light);font-size:10px;font-weight:800;
+  border:1px solid #d8bd7845;border-radius:30px;
+  padding:6px 12px;margin-top:17px;background:#d8bd780c
+}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:17px}
+.stat{
+  min-height:130px;padding:17px;
+  border:1px solid var(--line);border-radius:18px;
+  background:linear-gradient(145deg,#17483f,#10352f);
+  box-shadow:0 10px 28px #00000018;
+  position:relative;overflow:hidden
+}
+.stat:after{
+  content:"";position:absolute;bottom:-30px;left:-25px;
+  width:90px;height:90px;border-radius:50%;
+  border:1px solid #d8bd781c
+}
+.stat .symbol{
+  width:37px;height:37px;display:grid;place-items:center;
+  border-radius:12px;background:#d8bd7815;
+  border:1px solid #d8bd7838;color:var(--gold-light);
+  font-size:18px
+}
+.stat strong{display:block;font-size:27px;color:var(--gold-light);margin:7px 0 0;font-weight:900}
+.stat small{color:var(--muted);font-size:11px}
 .section-title{
   display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin:32px 0 17px
+  gap:12px;margin:30px 2px 14px
 }
-.section-title h3{margin:0;font-size:20px;color:var(--teal-dark)}
-.section-title span{font-size:12px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.panel{border-radius:17px;padding:23px;min-width:0}
-.panel h3{margin:0 0 18px;color:var(--teal-dark);font-size:17px}
+.section-title h3{margin:0;font-size:19px;color:var(--gold-light);font-weight:900}
+.section-title span{font-size:10px;color:var(--muted)}
+.section-title h3:before{
+  content:"";display:inline-block;width:4px;height:18px;
+  border-radius:5px;background:var(--gold);margin-left:9px;
+  vertical-align:-3px
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.panel{
+  min-width:0;padding:21px;border-radius:19px;
+  border:1px solid var(--line);
+  background:linear-gradient(155deg,#17443d,#10352f);
+  box-shadow:0 13px 35px #0000001c
+}
+.panel h3{margin:0 0 17px;color:var(--gold-light);font-size:16px;font-weight:900}
+.panel-heading{
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:5px
+}
+.panel-heading .heading-icon{
+  width:35px;height:35px;border-radius:11px;
+  display:grid;place-items:center;color:var(--gold-light);
+  background:#d8bd7814;border:1px solid #d8bd7833
+}
 .profile-row{
   display:flex;justify-content:space-between;align-items:center;
   gap:12px;padding:12px 0;border-bottom:1px solid var(--line)
 }
 .profile-row:last-of-type{border-bottom:0}
-.profile-row span{color:var(--muted);font-size:13px}
-.profile-row strong{font-size:13px;text-align:left;overflow-wrap:anywhere}
-.panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.primary-btn,.secondary-btn,.danger-btn{
-  border:0;border-radius:10px;padding:10px 15px;
-  font-size:12px;font-weight:800
+.profile-row span{color:var(--muted);font-size:11px}
+.profile-row strong{
+  font-size:12px;text-align:left;color:#f5f5ee;
+  overflow-wrap:anywhere;max-width:62%
 }
-.primary-btn{background:var(--teal);color:white}
-.secondary-btn{background:#f2f0e8;color:var(--teal-dark);border:1px solid var(--line)}
-.danger-btn{background:#fff0ed;color:#a64c40;border:1px solid #f1d9d3}
+.panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+.primary-btn,.secondary-btn,.danger-btn{
+  border-radius:11px;padding:10px 13px;
+  font-size:11px;font-weight:800;transition:.2s
+}
+.primary-btn{
+  background:linear-gradient(135deg,#e5ce91,#c9a85f);
+  color:#183b34;border:1px solid #f0dba4
+}
+.primary-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.secondary-btn{
+  background:#ffffff08;color:var(--gold-light);
+  border:1px solid #d8bd7845
+}
+.secondary-btn:hover{background:#ffffff13}
+.danger-btn{background:#a64c4020;color:#efb1a7;border:1px solid #a64c4055}
 .form-area{
-  display:none;margin-top:18px;padding-top:17px;
+  display:none;margin-top:17px;padding-top:17px;
   border-top:1px solid var(--line)
 }
-.form-area.open{display:block}
+.form-area.open{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.form-area h3{font-size:14px}
 .field{margin-bottom:13px}
 .field label{
-  display:block;margin-bottom:6px;color:var(--teal-dark);
-  font-size:12px;font-weight:800
+  display:block;margin-bottom:6px;color:var(--gold-light);
+  font-size:11px;font-weight:800
 }
 .field input{
-  width:100%;border:1px solid var(--line);border-radius:10px;
-  padding:12px;background:#fffefa;color:var(--ink);
-  outline:none;font-size:13px
+  width:100%;border:1px solid #ffffff22;border-radius:11px;
+  padding:12px;background:#092b287a;color:#fff;
+  outline:none;font-size:12px
 }
-.field input:focus{border-color:var(--teal)}
-.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px;line-height:1.8}
+.field input::placeholder{color:#8fa69c}
+.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d8bd7815}
+.field small{display:block;color:var(--muted);font-size:10px;margin-top:5px;line-height:1.9}
 .form-buttons{display:flex;gap:8px;flex-wrap:wrap}
-.booking-list{display:grid;gap:13px}
-.booking{border:1px solid var(--line);border-radius:13px;padding:16px;background:#fffefa}
+.booking-list{display:grid;gap:11px}
+.booking{
+  border:1px solid var(--line);border-radius:15px;
+  padding:15px;background:#0b302c88;
+  transition:.2s
+}
+.booking:hover{border-color:#d8bd7855;transform:translateY(-1px)}
 .booking-head{
   display:flex;justify-content:space-between;align-items:center;
-  gap:10px;margin-bottom:10px
+  gap:10px;margin-bottom:12px
 }
-.booking-head strong{color:var(--teal-dark);font-size:14px}
+.booking-head strong{color:var(--gold-light);font-size:13px}
 .status{
-  border-radius:30px;padding:5px 10px;font-size:11px;
-  font-weight:800;background:#f1eee4;color:var(--gold);
-  white-space:nowrap
+  border-radius:30px;padding:5px 10px;font-size:10px;
+  font-weight:800;background:#d8bd7818;color:var(--gold-light);
+  border:1px solid #d8bd7830;white-space:nowrap
 }
 .status.confirmed,.status.approved,.status.active,.status.completed{
-  background:#e9f5ed;color:#28764c
+  background:#8bd0a21a;color:var(--success);border-color:#8bd0a244
 }
-.status.cancelled,.status.rejected{background:#fff0ed;color:#a64c40}
-.booking-info{display:grid;grid-template-columns:1fr 1fr;gap:9px;font-size:12px}
+.status.cancelled,.status.rejected{background:#e9a69a16;color:var(--danger);border-color:#e9a69a44}
+.booking-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px}
 .booking-info div{color:var(--muted)}
-.booking-info strong{display:block;color:var(--ink);margin-top:3px;overflow-wrap:anywhere}
-.booking-details{
-  margin-top:12px;padding-top:10px;border-top:1px solid var(--line)
-}
-.booking-details summary{
-  color:var(--teal);font-size:12px;font-weight:800;cursor:pointer
-}
+.booking-info strong{display:block;color:#f4f3ec;margin-top:4px;overflow-wrap:anywhere}
+.booking-details{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.booking-details summary{color:var(--gold-light);font-size:11px;font-weight:800;cursor:pointer}
 .details-content{padding-top:10px;display:grid;gap:8px}
-.details-content div{font-size:12px;color:var(--muted)}
-.details-content strong{color:var(--ink);margin-right:5px;overflow-wrap:anywhere}
+.details-content div{font-size:11px;color:var(--muted)}
+.details-content strong{color:var(--white);margin-right:5px;overflow-wrap:anywhere}
 .empty{
-  text-align:center;padding:28px 12px;color:var(--muted);
-  font-size:13px;line-height:2;background:#faf9f4;border-radius:12px
+  text-align:center;padding:27px 12px;color:var(--muted);
+  font-size:12px;line-height:2;background:#092b2866;
+  border:1px dashed #ffffff26;border-radius:14px
 }
-.empty .icon{display:block;font-size:30px;margin-bottom:8px}
+.empty .icon{display:block;font-size:29px;margin-bottom:8px;color:var(--gold)}
 .message{
-  display:none;margin:18px 0;padding:13px 16px;
-  border-radius:12px;font-size:13px;line-height:1.9;overflow-wrap:anywhere
+  display:none;margin:17px 0;padding:12px 15px;
+  border-radius:12px;font-size:12px;line-height:1.9;overflow-wrap:anywhere
 }
-.message.error{display:block;background:#fff0ed;border:1px solid #f0d0c9;color:#a64c40}
-.message.success{display:block;background:#e9f5ed;border:1px solid #c7e6d0;color:#28764c}
-.message.info{display:block;background:#edf4f2;border:1px solid #d5e6e1;color:var(--teal-dark)}
-.loading{text-align:center;padding:60px 15px;color:var(--teal-dark)}
+.message.error{display:block;background:#a64c4020;border:1px solid #e9a69a55;color:#ffc2b7}
+.message.success{display:block;background:#28764c25;border:1px solid #8bd0a255;color:#a8e5b8}
+.message.info{display:block;background:#42817724;border:1px solid #42817777;color:#d1e9df}
+.loading{text-align:center;padding:75px 15px;color:var(--gold-light);font-size:13px}
 .spinner{
-  width:35px;height:35px;border:3px solid #42817730;
-  border-top-color:var(--teal);border-radius:50%;
+  width:36px;height:36px;border:3px solid #d8bd7830;
+  border-top-color:var(--gold);border-radius:50%;
   margin:0 auto 14px;animation:spin .8s linear infinite
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px;line-height:2}
-.hidden{display:none!important}
 .security-note{
-  background:#faf9f4;border:1px solid var(--line);
-  border-radius:10px;padding:11px;color:var(--muted);
-  font-size:11px;line-height:1.9;margin-top:13px
+  background:#092b2866;border:1px solid var(--line);
+  border-radius:11px;padding:11px;color:var(--muted);
+  font-size:10px;line-height:1.9;margin-top:13px
 }
-@media(max-width:750px){
-  .grid{grid-template-columns:1fr}
-  .stats{grid-template-columns:1fr 1fr}
-  .welcome{padding:25px 20px}
+.footer{text-align:center;color:#8fa69c;font-size:10px;padding:23px 10px 15px;line-height:2}
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:min(100%,850px);z-index:30;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding:9px 12px calc(9px + env(safe-area-inset-bottom));
+  background:#062522f2;border-top:1px solid #d8bd7830;
+  backdrop-filter:blur(18px)
 }
-@media(max-width:480px){
-  .topbar{padding:10px 4%;align-items:flex-start}
-  .brand img{width:42px;height:42px}
-  .brand h1{font-size:13px}
+.bottom-nav a{
+  text-decoration:none;color:#9eb2a9;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;padding:4px 2px;
+  font-size:9px;font-weight:700;transition:.2s
+}
+.bottom-nav a .nav-icon{font-size:19px;line-height:1.3}
+.bottom-nav a.active{color:var(--gold-light)}
+.bottom-nav a.active .nav-icon{filter:drop-shadow(0 0 7px #d8bd7870)}
+.hidden{display:none!important}
+@media(min-width:851px){
+  .app-shell{border-inline:1px solid #ffffff15}
+}
+@media(max-width:650px){
+  .container{padding:17px 14px 25px}
+  .topbar{padding:10px 14px;min-height:70px}
+  .brand-logo{width:42px;height:42px;border-radius:13px}
+  .brand h1{font-size:14px}
   .brand span{font-size:8px}
-  .top-actions{justify-content:flex-end;max-width:190px}
+  .top-actions{gap:5px}
   .top-actions button{padding:8px 9px;font-size:10px}
-  .stats{gap:9px}
-  .stat{padding:14px}
+  .welcome{min-height:205px;padding:24px 20px;border-radius:20px}
+  .welcome h2{font-size:27px}
+  .welcome p{font-size:11px}
+  .stats{gap:8px;margin-top:12px}
+  .stat{min-height:112px;padding:13px;border-radius:15px}
+  .stat .symbol{width:32px;height:32px;font-size:16px}
   .stat strong{font-size:23px}
-  .panel{padding:17px}
+  .stat small{font-size:10px}
+  .grid{grid-template-columns:1fr}
+  .panel{padding:17px;border-radius:17px}
+  .section-title{margin-top:25px}
+}
+@media(max-width:390px){
+  .topbar{align-items:center}
+  .brand{gap:7px}
+  .brand h1{font-size:12px}
+  .top-actions button{padding:7px;font-size:9px}
   .booking-info{grid-template-columns:1fr}
+  .welcome h2{font-size:23px}
 }
 </style>
 </head>
 
 <body>
+<div class="app-shell">
 
 <header class="topbar">
   <div class="brand">
-    <img src="arkan-logo.png" alt="شعار أركان">
+    <div class="brand-logo">
+      <img src="arkan-logo.png" alt="شعار أركان">
+    </div>
     <div>
       <h1>أركان العالم</h1>
-      <span>TRAVEL & TOURISM</span>
+      <span>TRAVEL • TOURISM</span>
     </div>
   </div>
 
   <div class="top-actions">
     <button class="home" id="homeBtn" type="button">⌂ الرئيسية</button>
     <button id="refreshBtn" type="button">↻ تحديث</button>
-    <button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button>
+    <button class="logout" id="logoutBtn" type="button">خروج</button>
   </div>
 </header>
 
@@ -216,19 +355,22 @@ button:disabled{opacity:.6;cursor:wait}
   <div id="portal" class="hidden">
 
     <section class="welcome">
-      <small>أهلاً بك في عالم أركان</small>
-      <h2>مرحباً، <span id="welcomeName">مسافرنا العزيز</span> ✦</h2>
-      <p>كل رحلاتك وحجوزاتك في مكان واحد. نحن هنا لنجعل رحلتك أسهل وأجمل.</p>
+      <div class="welcome-content">
+        <small>أهلاً بك في عالم أركان</small>
+        <h2>مرحباً، <span id="welcomeName">مسافرنا العزيز</span> ✦</h2>
+        <p>كل رحلاتك وحجوزاتك في مكان واحد. نحن هنا لنجعل رحلتك أسهل وأجمل.</p>
+        <div class="welcome-label">✧ سفر • سياحة • ثقة</div>
+      </div>
     </section>
 
     <div class="stats">
       <div class="stat">
-        <div class="symbol">✈️</div>
+        <div class="symbol">✈</div>
         <strong id="totalBookings">0</strong>
         <small>إجمالي الحجوزات</small>
       </div>
       <div class="stat">
-        <div class="symbol">🧳</div>
+        <div class="symbol">♧</div>
         <strong id="activeBookings">0</strong>
         <small>الحجوزات النشطة</small>
       </div>
@@ -239,7 +381,7 @@ button:disabled{opacity:.6;cursor:wait}
       </div>
     </div>
 
-    <div class="section-title">
+    <div class="section-title" id="profileSection">
       <h3>ملفي الشخصي</h3>
       <span>بيانات حسابك لدى أركان</span>
     </div>
@@ -247,7 +389,10 @@ button:disabled{opacity:.6;cursor:wait}
     <div class="grid">
 
       <section class="panel">
-        <h3>معلومات المسافر</h3>
+        <div class="panel-heading">
+          <span class="heading-icon">♙</span>
+          <h3>معلومات المسافر</h3>
+        </div>
 
         <div class="profile-row">
           <span>الاسم الكامل</span>
@@ -269,7 +414,7 @@ button:disabled{opacity:.6;cursor:wait}
         <div class="panel-actions">
           <button class="primary-btn" id="editProfileBtn" type="button">تعديل بياناتي</button>
           <button class="secondary-btn" id="changeEmailBtn" type="button">تغيير البريد</button>
-          <button class="secondary-btn" id="changePasswordBtn" type="button">تغيير كلمة المرور</button>
+          <button class="secondary-btn" id="changePasswordBtn" type="button">كلمة المرور</button>
         </div>
 
         <div class="form-area" id="profileFormArea">
@@ -336,8 +481,11 @@ button:disabled{opacity:.6;cursor:wait}
         </div>
       </section>
 
-      <section class="panel">
-        <h3>رحلاتي وحجوزاتي</h3>
+      <section class="panel" id="bookingsSection">
+        <div class="panel-heading">
+          <span class="heading-icon">✈</span>
+          <h3>رحلاتي وحجوزاتي</h3>
+        </div>
         <div id="bookingList" class="booking-list">
           <div class="empty">جارٍ تحميل الحجوزات...</div>
         </div>
@@ -355,6 +503,27 @@ button:disabled{opacity:.6;cursor:wait}
   نصحبكم في كل رحلة... معكم في كل وجهة<br>
   © أركان العالم للسياحة والسفر
 </footer>
+
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+  <a href="index.html">
+    <span class="nav-icon">⌂</span>
+    <span>الرئيسية</span>
+  </a>
+  <a href="trips.html">
+    <span class="nav-icon">✈</span>
+    <span>الرحلات</span>
+  </a>
+  <a href="#profileSection" class="active">
+    <span class="nav-icon">♙</span>
+    <span>حسابي</span>
+  </a>
+  <a href="#bookingsSection">
+    <span class="nav-icon">▤</span>
+    <span>حجوزاتي</span>
+  </a>
+</nav>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
@@ -452,7 +621,6 @@ async function checkAccess() {
 
   if (roleError) throw roleError;
 
-  // منع استخدام بوابة المسافر من حسابات الموظفين.
   if (role) {
     await db.auth.signOut();
     window.location.replace("traveler-login.html");
@@ -487,7 +655,6 @@ async function loadProfile() {
 
   let customer = data.customers;
 
-  // التعامل مع احتمال وصول العلاقة على شكل مصفوفة.
   if (Array.isArray(customer)) {
     customer = customer[0] || null;
   }
@@ -536,7 +703,7 @@ function renderBookings(bookings) {
   if (!bookings.length) {
     bookingList.innerHTML = `
       <div class="empty">
-        <span class="icon">🧳</span>
+        <span class="icon">✈</span>
         لا توجد حجوزات مرتبطة بحسابك حالياً.
         <br>
         نتمنى أن تكون رحلتك القادمة معنا قريباً.
@@ -680,12 +847,10 @@ async function initializePortal() {
   }
 }
 
-// العودة إلى الصفحة الرئيسية.
 document.getElementById("homeBtn").addEventListener("click",() => {
   window.location.href = "index.html";
 });
 
-// فتح وإغلاق نماذج الحساب.
 document.getElementById("editProfileBtn").addEventListener("click",() => {
   toggleForm("profileFormArea");
 });
@@ -704,7 +869,6 @@ document.querySelectorAll("[data-close]").forEach(button => {
   });
 });
 
-// حفظ بيانات الملف الشخصي عبر الدالة الآمنة في Supabase.
 document.getElementById("profileForm").addEventListener("submit",async event => {
   event.preventDefault();
 
@@ -733,7 +897,6 @@ document.getElementById("profileForm").addEventListener("submit",async event => 
     await loadProfile();
 
     document.getElementById("profileFormArea").classList.remove("open");
-
     showMessage("تم تحديث بياناتك الشخصية بنجاح.","success");
 
   } catch (error) {
@@ -745,7 +908,6 @@ document.getElementById("profileForm").addEventListener("submit",async event => 
   }
 });
 
-// طلب تغيير البريد الإلكتروني عبر Supabase Auth.
 document.getElementById("emailForm").addEventListener("submit",async event => {
   event.preventDefault();
 
@@ -766,10 +928,7 @@ document.getElementById("emailForm").addEventListener("submit",async event => {
   button.textContent = "جارٍ إرسال الطلب...";
 
   try {
-    const {error} = await db.auth.updateUser({
-      email:newEmail
-    });
-
+    const {error} = await db.auth.updateUser({email:newEmail});
     if (error) throw error;
 
     document.getElementById("emailFormArea").classList.remove("open");
@@ -782,17 +941,13 @@ document.getElementById("emailForm").addEventListener("submit",async event => {
 
   } catch (error) {
     console.error("Email update error:",error);
-    showMessage(
-      error.message || "تعذر إرسال طلب تغيير البريد الإلكتروني.",
-      "error"
-    );
+    showMessage(error.message || "تعذر إرسال طلب تغيير البريد الإلكتروني.","error");
   } finally {
     button.disabled = false;
     button.textContent = "إرسال طلب التغيير";
   }
 });
 
-// تغيير كلمة المرور للحساب المسجل دخوله.
 document.getElementById("passwordForm").addEventListener("submit",async event => {
   event.preventDefault();
 
@@ -814,10 +969,7 @@ document.getElementById("passwordForm").addEventListener("submit",async event =>
   button.textContent = "جارٍ التحديث...";
 
   try {
-    const {error} = await db.auth.updateUser({
-      password:password
-    });
-
+    const {error} = await db.auth.updateUser({password});
     if (error) throw error;
 
     document.getElementById("passwordFormArea").classList.remove("open");
@@ -834,12 +986,10 @@ document.getElementById("passwordForm").addEventListener("submit",async event =>
   }
 });
 
-// تحديث بيانات الحساب والحجوزات.
 document.getElementById("refreshBtn").addEventListener("click",async() => {
   await initializePortal();
 });
 
-// تسجيل الخروج.
 document.getElementById("logoutBtn").addEventListener("click",async() => {
   const button = document.getElementById("logoutBtn");
   button.disabled = true;

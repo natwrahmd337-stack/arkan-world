@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -12,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-:root {
+:root{
   --teal:#428177;
   --teal-dark:#315f58;
   --gold:#a78342;
@@ -25,30 +24,35 @@
 }
 *{box-sizing:border-box}
 body{
-  margin:0;min-height:100vh;font-family:'Cairo',Tahoma,sans-serif;
+  margin:0;min-height:100vh;
+  font-family:'Cairo',Tahoma,sans-serif;
   background:var(--cream);color:var(--ink)
 }
-button{font-family:inherit}
+button,input{font-family:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
 .topbar{
-  background:white;border-bottom:1px solid var(--line);padding:13px 5%;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;position:sticky;top:0;z-index:10
+  background:white;border-bottom:1px solid var(--line);
+  padding:13px 5%;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;
+  position:sticky;top:0;z-index:10
 }
 .brand{display:flex;align-items:center;gap:12px}
 .brand img{width:52px;height:52px;object-fit:contain}
 .brand h1{font-size:17px;margin:0;font-weight:900;color:var(--teal-dark)}
 .brand span{display:block;color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:700}
-.top-actions{display:flex;align-items:center;gap:10px}
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .top-actions button{
   border:1px solid var(--line);background:white;color:var(--teal-dark);
-  border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:700
+  border-radius:10px;padding:9px 13px;font-weight:700;font-size:12px
 }
-.top-actions button:disabled{opacity:.6;cursor:wait}
+.top-actions .home{background:var(--teal);color:white;border-color:var(--teal)}
 .top-actions .logout{background:#fff5f2;color:#a64c40;border-color:#f1d9d3}
 .container{width:min(1120px,92%);margin:35px auto 60px}
 .welcome{
-  background:linear-gradient(120deg,#428177,#315f58);border-radius:22px;
-  padding:32px;color:white;position:relative;overflow:hidden;box-shadow:var(--shadow)
+  background:linear-gradient(120deg,#428177,#315f58);
+  border-radius:22px;padding:32px;color:white;
+  position:relative;overflow:hidden;box-shadow:var(--shadow)
 }
 .welcome:after{
   content:"✦";position:absolute;left:45px;top:-55px;
@@ -57,39 +61,69 @@ button{font-family:inherit}
 .welcome small{color:#e5d5ad;font-weight:700}
 .welcome h2{font-size:clamp(25px,4vw,38px);margin:8px 0;font-weight:900}
 .welcome p{margin:0;color:#e5efeb;line-height:2;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:22px}
+.stat,.panel{
+  background:white;border:1px solid var(--line);
+  border-radius:16px;box-shadow:var(--shadow)
+}
+.stat{padding:20px}
+.stat .symbol{font-size:23px}
+.stat strong{display:block;font-size:27px;color:var(--teal);margin:5px 0 0}
+.stat small{color:var(--muted);font-size:12px}
 .section-title{
   display:flex;align-items:center;justify-content:space-between;
   gap:12px;margin:32px 0 17px
 }
 .section-title h3{margin:0;font-size:20px;color:var(--teal-dark)}
 .section-title span{font-size:12px;color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:22px}
-.stat,.panel{
-  background:white;border:1px solid var(--line);border-radius:16px;
-  box-shadow:var(--shadow)
-}
-.stat{padding:20px}
-.stat .symbol{font-size:23px}
-.stat strong{display:block;font-size:27px;color:var(--teal);margin:5px 0 0}
-.stat small{color:var(--muted);font-size:12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.panel{border-radius:17px;padding:23px}
+.panel{border-radius:17px;padding:23px;min-width:0}
 .panel h3{margin:0 0 18px;color:var(--teal-dark);font-size:17px}
 .profile-row{
   display:flex;justify-content:space-between;align-items:center;
   gap:12px;padding:12px 0;border-bottom:1px solid var(--line)
 }
-.profile-row:last-child{border-bottom:0}
+.profile-row:last-of-type{border-bottom:0}
 .profile-row span{color:var(--muted);font-size:13px}
 .profile-row strong{font-size:13px;text-align:left;overflow-wrap:anywhere}
+.panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.primary-btn,.secondary-btn,.danger-btn{
+  border:0;border-radius:10px;padding:10px 15px;
+  font-size:12px;font-weight:800
+}
+.primary-btn{background:var(--teal);color:white}
+.secondary-btn{background:#f2f0e8;color:var(--teal-dark);border:1px solid var(--line)}
+.danger-btn{background:#fff0ed;color:#a64c40;border:1px solid #f1d9d3}
+.form-area{
+  display:none;margin-top:18px;padding-top:17px;
+  border-top:1px solid var(--line)
+}
+.form-area.open{display:block}
+.field{margin-bottom:13px}
+.field label{
+  display:block;margin-bottom:6px;color:var(--teal-dark);
+  font-size:12px;font-weight:800
+}
+.field input{
+  width:100%;border:1px solid var(--line);border-radius:10px;
+  padding:12px;background:#fffefa;color:var(--ink);
+  outline:none;font-size:13px
+}
+.field input:focus{border-color:var(--teal)}
+.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px;line-height:1.8}
+.form-buttons{display:flex;gap:8px;flex-wrap:wrap}
 .booking-list{display:grid;gap:13px}
 .booking{border:1px solid var(--line);border-radius:13px;padding:16px;background:#fffefa}
 .booking-head{
   display:flex;justify-content:space-between;align-items:center;
   gap:10px;margin-bottom:10px
 }
-.booking-head strong{color:var(--teal-dark);font-size:15px}
-.status{border-radius:30px;padding:5px 10px;font-size:11px;font-weight:800;background:#f1eee4;color:var(--gold)}
+.booking-head strong{color:var(--teal-dark);font-size:14px}
+.status{
+  border-radius:30px;padding:5px 10px;font-size:11px;
+  font-weight:800;background:#f1eee4;color:var(--gold);
+  white-space:nowrap
+}
 .status.confirmed,.status.approved,.status.active,.status.completed{
   background:#e9f5ed;color:#28764c
 }
@@ -97,38 +131,57 @@ button{font-family:inherit}
 .booking-info{display:grid;grid-template-columns:1fr 1fr;gap:9px;font-size:12px}
 .booking-info div{color:var(--muted)}
 .booking-info strong{display:block;color:var(--ink);margin-top:3px;overflow-wrap:anywhere}
+.booking-details{
+  margin-top:12px;padding-top:10px;border-top:1px solid var(--line)
+}
+.booking-details summary{
+  color:var(--teal);font-size:12px;font-weight:800;cursor:pointer
+}
+.details-content{padding-top:10px;display:grid;gap:8px}
+.details-content div{font-size:12px;color:var(--muted)}
+.details-content strong{color:var(--ink);margin-right:5px;overflow-wrap:anywhere}
 .empty{
-  text-align:center;padding:28px 12px;color:var(--muted);font-size:13px;
-  line-height:2;background:#faf9f4;border-radius:12px
+  text-align:center;padding:28px 12px;color:var(--muted);
+  font-size:13px;line-height:2;background:#faf9f4;border-radius:12px
 }
 .empty .icon{display:block;font-size:30px;margin-bottom:8px}
 .message{
-  display:none;margin:18px 0;padding:13px 16px;border-radius:12px;
-  font-size:13px;line-height:1.9;overflow-wrap:anywhere
+  display:none;margin:18px 0;padding:13px 16px;
+  border-radius:12px;font-size:13px;line-height:1.9;overflow-wrap:anywhere
 }
 .message.error{display:block;background:#fff0ed;border:1px solid #f0d0c9;color:#a64c40}
 .message.success{display:block;background:#e9f5ed;border:1px solid #c7e6d0;color:#28764c}
+.message.info{display:block;background:#edf4f2;border:1px solid #d5e6e1;color:var(--teal-dark)}
 .loading{text-align:center;padding:60px 15px;color:var(--teal-dark)}
 .spinner{
-  width:35px;height:35px;border:3px solid #42817730;border-top-color:var(--teal);
-  border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite
+  width:35px;height:35px;border:3px solid #42817730;
+  border-top-color:var(--teal);border-radius:50%;
+  margin:0 auto 14px;animation:spin .8s linear infinite
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px;line-height:2}
 .hidden{display:none!important}
+.security-note{
+  background:#faf9f4;border:1px solid var(--line);
+  border-radius:10px;padding:11px;color:var(--muted);
+  font-size:11px;line-height:1.9;margin-top:13px
+}
 @media(max-width:750px){
   .grid{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr 1fr}
   .welcome{padding:25px 20px}
 }
-@media(max-width:420px){
-  .topbar{padding:10px 4%}
+@media(max-width:480px){
+  .topbar{padding:10px 4%;align-items:flex-start}
   .brand img{width:42px;height:42px}
-  .brand h1{font-size:14px}
-  .top-actions button{padding:8px 9px;font-size:11px}
+  .brand h1{font-size:13px}
+  .brand span{font-size:8px}
+  .top-actions{justify-content:flex-end;max-width:190px}
+  .top-actions button{padding:8px 9px;font-size:10px}
   .stats{gap:9px}
   .stat{padding:14px}
   .stat strong{font-size:23px}
+  .panel{padding:17px}
   .booking-info{grid-template-columns:1fr}
 }
 </style>
@@ -144,19 +197,23 @@ button{font-family:inherit}
       <span>TRAVEL & TOURISM</span>
     </div>
   </div>
+
   <div class="top-actions">
+    <button class="home" id="homeBtn" type="button">⌂ الرئيسية</button>
     <button id="refreshBtn" type="button">↻ تحديث</button>
     <button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button>
   </div>
 </header>
 
 <main class="container">
+
   <div id="loading" class="loading">
     <div class="spinner"></div>
     جارٍ تجهيز حسابك...
   </div>
 
   <div id="portal" class="hidden">
+
     <section class="welcome">
       <small>أهلاً بك في عالم أركان</small>
       <h2>مرحباً، <span id="welcomeName">مسافرنا العزيز</span> ✦</h2>
@@ -166,17 +223,17 @@ button{font-family:inherit}
     <div class="stats">
       <div class="stat">
         <div class="symbol">✈️</div>
-        <strong id="totalBookings">—</strong>
+        <strong id="totalBookings">0</strong>
         <small>إجمالي الحجوزات</small>
       </div>
       <div class="stat">
         <div class="symbol">🧳</div>
-        <strong id="activeBookings">—</strong>
+        <strong id="activeBookings">0</strong>
         <small>الحجوزات النشطة</small>
       </div>
       <div class="stat">
         <div class="symbol">✓</div>
-        <strong id="completedBookings">—</strong>
+        <strong id="completedBookings">0</strong>
         <small>الرحلات المكتملة</small>
       </div>
     </div>
@@ -187,12 +244,95 @@ button{font-family:inherit}
     </div>
 
     <div class="grid">
+
       <section class="panel">
         <h3>معلومات المسافر</h3>
-        <div class="profile-row"><span>الاسم الكامل</span><strong id="profileName">—</strong></div>
-        <div class="profile-row"><span>البريد الإلكتروني</span><strong id="profileEmail">—</strong></div>
-        <div class="profile-row"><span>رقم الهاتف</span><strong id="profilePhone">—</strong></div>
-        <div class="profile-row"><span>المدينة</span><strong id="profileCity">—</strong></div>
+
+        <div class="profile-row">
+          <span>الاسم الكامل</span>
+          <strong id="profileName">—</strong>
+        </div>
+        <div class="profile-row">
+          <span>البريد الإلكتروني</span>
+          <strong id="profileEmail">—</strong>
+        </div>
+        <div class="profile-row">
+          <span>رقم الهاتف</span>
+          <strong id="profilePhone">—</strong>
+        </div>
+        <div class="profile-row">
+          <span>المدينة</span>
+          <strong id="profileCity">—</strong>
+        </div>
+
+        <div class="panel-actions">
+          <button class="primary-btn" id="editProfileBtn" type="button">تعديل بياناتي</button>
+          <button class="secondary-btn" id="changeEmailBtn" type="button">تغيير البريد</button>
+          <button class="secondary-btn" id="changePasswordBtn" type="button">تغيير كلمة المرور</button>
+        </div>
+
+        <div class="form-area" id="profileFormArea">
+          <h3>تعديل البيانات الشخصية</h3>
+          <form id="profileForm">
+            <div class="field">
+              <label for="editFullName">الاسم الكامل</label>
+              <input id="editFullName" type="text" maxlength="150" required>
+            </div>
+            <div class="field">
+              <label for="editPhone">رقم الهاتف</label>
+              <input id="editPhone" type="tel" maxlength="40" required>
+            </div>
+            <div class="field">
+              <label for="editCity">المدينة</label>
+              <input id="editCity" type="text" maxlength="100">
+            </div>
+            <div class="form-buttons">
+              <button class="primary-btn" id="saveProfileBtn" type="submit">حفظ التعديلات</button>
+              <button class="secondary-btn" type="button" data-close="profileFormArea">إلغاء</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="form-area" id="emailFormArea">
+          <h3>طلب تغيير البريد الإلكتروني</h3>
+          <form id="emailForm">
+            <div class="field">
+              <label for="newEmail">البريد الإلكتروني الجديد</label>
+              <input id="newEmail" type="email" autocomplete="email" required>
+              <small>سيُطلب منك تأكيد البريد الجديد وفق إعدادات أمان الحساب.</small>
+            </div>
+            <div class="form-buttons">
+              <button class="primary-btn" id="saveEmailBtn" type="submit">إرسال طلب التغيير</button>
+              <button class="secondary-btn" type="button" data-close="emailFormArea">إلغاء</button>
+            </div>
+          </form>
+          <div class="security-note">
+            إذا فقدت الوصول إلى بريدك الحالي، تواصل مع إدارة أركان لاسترداد الحساب والتحقق من هويتك. لا يمكن تجاوز التحقق من البريد من هذه الصفحة.
+          </div>
+        </div>
+
+        <div class="form-area" id="passwordFormArea">
+          <h3>تغيير كلمة المرور</h3>
+          <form id="passwordForm">
+            <div class="field">
+              <label for="newPassword">كلمة المرور الجديدة</label>
+              <input id="newPassword" type="password" minlength="8" autocomplete="new-password" required>
+              <small>يجب ألا تقل كلمة المرور عن 8 أحرف.</small>
+            </div>
+            <div class="field">
+              <label for="confirmPassword">تأكيد كلمة المرور</label>
+              <input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required>
+            </div>
+            <div class="form-buttons">
+              <button class="primary-btn" id="savePasswordBtn" type="submit">تحديث كلمة المرور</button>
+              <button class="secondary-btn" type="button" data-close="passwordFormArea">إلغاء</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="security-note">
+          بياناتك الشخصية مرتبطة بحسابك لدى أركان. لا يمكن تعديل الملاحظات الداخلية أو بيانات الإدارة من بوابة المسافر.
+        </div>
       </section>
 
       <section class="panel">
@@ -201,10 +341,12 @@ button{font-family:inherit}
           <div class="empty">جارٍ تحميل الحجوزات...</div>
         </div>
       </section>
+
     </div>
 
     <div id="message" class="message" role="status" aria-live="polite"></div>
   </div>
+
 </main>
 
 <footer class="footer">
@@ -228,11 +370,13 @@ const bookingList = document.getElementById("bookingList");
 
 let currentUser = null;
 let currentCustomerId = null;
+let currentProfile = null;
 let loadingData = false;
 
 function showMessage(text, type = "error") {
   message.textContent = text;
   message.className = "message " + type;
+  message.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 function clearMessage() {
@@ -252,6 +396,7 @@ function escapeHTML(value) {
 
 function formatDate(value) {
   if (!value) return "غير محدد";
+
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "غير محدد";
 
@@ -266,10 +411,32 @@ function normalizeStatus(value) {
   return String(value || "").trim().toLowerCase();
 }
 
-async function checkAccess() {
-  if (!db) throw new Error("تعذر الاتصال بخدمة أركان.");
+function statusLabel(value) {
+  const status = normalizeStatus(value);
 
-  const { data, error } = await db.auth.getSession();
+  const labels = {
+    pending:"قيد المراجعة",
+    confirmed:"مؤكد",
+    approved:"تمت الموافقة",
+    active:"نشط",
+    completed:"مكتمل",
+    finished:"مكتمل",
+    done:"مكتمل",
+    cancelled:"ملغي",
+    rejected:"مرفوض",
+    processing:"قيد المعالجة",
+    awaiting_payment:"بانتظار الدفع"
+  };
+
+  return labels[status] || value || "قيد المراجعة";
+}
+
+async function checkAccess() {
+  if (!db) {
+    throw new Error("تعذر الاتصال بخدمة أركان. تحقق من ملف config.js.");
+  }
+
+  const {data,error} = await db.auth.getSession();
   if (error) throw error;
 
   if (!data.session) {
@@ -279,12 +446,12 @@ async function checkAccess() {
 
   currentUser = data.session.user;
 
-  const { data: role, error: roleError } =
+  const {data:role,error:roleError} =
     await db.rpc("arkan_current_role");
 
   if (roleError) throw roleError;
 
-  // يجب أن يكون حساب المسافر غير مرتبط بدور موظف.
+  // منع استخدام بوابة المسافر من حسابات الموظفين.
   if (role) {
     await db.auth.signOut();
     window.location.replace("traveler-login.html");
@@ -295,10 +462,18 @@ async function checkAccess() {
 }
 
 async function loadProfile() {
-  const { data, error } = await db
+  const {data,error} = await db
     .from("customer_accounts")
-    .select("customer_id, full_name, phone, city")
-    .eq("user_id", currentUser.id)
+    .select(`
+      customer_id,
+      customers (
+        full_name,
+        phone,
+        email,
+        city
+      )
+    `)
+    .eq("user_id",currentUser.id)
     .maybeSingle();
 
   if (error) throw error;
@@ -309,22 +484,39 @@ async function loadProfile() {
 
   currentCustomerId = data.customer_id;
 
+  let customer = data.customers;
+
+  // التعامل مع احتمال وصول العلاقة على شكل مصفوفة.
+  if (Array.isArray(customer)) {
+    customer = customer[0] || null;
+  }
+
+  if (!customer) {
+    throw new Error("تعذر قراءة بيانات ملفك الشخصي. تحقق من صلاحيات قاعدة البيانات.");
+  }
+
+  currentProfile = customer;
+
   const name =
-    data.full_name ||
+    customer.full_name ||
     currentUser.user_metadata?.full_name ||
     "مسافرنا العزيز";
 
   document.getElementById("welcomeName").textContent = name;
   document.getElementById("profileName").textContent = name;
   document.getElementById("profileEmail").textContent = currentUser.email || "—";
-  document.getElementById("profilePhone").textContent = data.phone || "—";
-  document.getElementById("profileCity").textContent = data.city || "غير محددة";
+  document.getElementById("profilePhone").textContent = customer.phone || "—";
+  document.getElementById("profileCity").textContent = customer.city || "غير محددة";
+
+  document.getElementById("editFullName").value = customer.full_name || "";
+  document.getElementById("editPhone").value = customer.phone || "";
+  document.getElementById("editCity").value = customer.city || "";
 }
 
 function updateBookingStats(bookings) {
   document.getElementById("totalBookings").textContent = bookings.length;
 
-  const activeStatuses = ["confirmed","pending","approved","active"];
+  const activeStatuses = ["confirmed","pending","approved","active","processing"];
   const completedStatuses = ["completed","finished","done"];
 
   const active = bookings.filter(item =>
@@ -371,16 +563,33 @@ function renderBookings(bookings) {
       ? safeStatus
       : "";
 
+    const details = [
+      ["نوع الحجز",item.booking_type],
+      ["تاريخ إنشاء الطلب",item.created_at ? formatDate(item.created_at) : null],
+      ["تاريخ الرحلة",date ? formatDate(date) : null],
+      ["رقم الحجز",number]
+    ].filter(entry => entry[1] !== null && entry[1] !== undefined && entry[1] !== "");
+
     return `
       <article class="booking">
         <div class="booking-head">
           <strong>${escapeHTML(title)}</strong>
-          <span class="status ${statusClass}">${escapeHTML(rawStatus)}</span>
+          <span class="status ${statusClass}">${escapeHTML(statusLabel(rawStatus))}</span>
         </div>
+
         <div class="booking-info">
           <div>رقم الحجز<strong>${escapeHTML(number)}</strong></div>
           <div>تاريخ الرحلة<strong>${escapeHTML(formatDate(date))}</strong></div>
         </div>
+
+        <details class="booking-details">
+          <summary>عرض تفاصيل الحجز</summary>
+          <div class="details-content">
+            ${details.map(entry => `
+              <div>${escapeHTML(entry[0])}: <strong>${escapeHTML(entry[1])}</strong></div>
+            `).join("")}
+          </div>
+        </details>
       </article>`;
   }).join("");
 }
@@ -392,16 +601,15 @@ async function loadBookings() {
 
   bookingList.innerHTML = '<div class="empty">جارٍ تحميل الحجوزات...</div>';
 
-  // هذا الفلتر يحدد حجوزات المسافر الحالي.
-  // يجب أن تفرض سياسات RLS في Supabase العزل الفعلي بين الحسابات.
-  const { data, error } = await db
+  const {data,error} = await db
     .from("bookings")
     .select("*")
-    .eq("customer_id", currentCustomerId)
-    .order("created_at", { ascending:false });
+    .eq("customer_id",currentCustomerId)
+    .order("created_at",{ascending:false});
 
   if (error) {
-    console.error("Bookings loading error:", error);
+    console.error("Bookings loading error:",error);
+
     bookingList.innerHTML =
       '<div class="empty">تعذر تحميل الحجوزات حالياً. يرجى المحاولة لاحقاً.</div>';
 
@@ -416,8 +624,27 @@ async function loadBookings() {
   renderBookings(bookings);
 }
 
+function closeAllForms() {
+  document.querySelectorAll(".form-area").forEach(area => {
+    area.classList.remove("open");
+  });
+}
+
+function toggleForm(id) {
+  const target = document.getElementById(id);
+  const wasOpen = target.classList.contains("open");
+
+  closeAllForms();
+
+  if (!wasOpen) {
+    target.classList.add("open");
+    target.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+}
+
 async function initializePortal() {
   if (loadingData) return;
+
   loadingData = true;
 
   const refreshButton = document.getElementById("refreshBtn");
@@ -437,31 +664,193 @@ async function initializePortal() {
     await loadBookings();
 
   } catch (error) {
-    console.error("Portal error:", error);
+    console.error("Portal error:",error);
+
     loading.classList.add("hidden");
     portal.classList.remove("hidden");
-    showMessage(error.message || "حدث خطأ أثناء تحميل حساب المسافر.");
+
+    showMessage(
+      error.message || "حدث خطأ أثناء تحميل حساب المسافر.",
+      "error"
+    );
   } finally {
     loadingData = false;
     refreshButton.disabled = false;
   }
 }
 
-document.getElementById("refreshBtn").addEventListener("click", async () => {
+// العودة إلى الصفحة الرئيسية.
+document.getElementById("homeBtn").addEventListener("click",() => {
+  window.location.href = "index.html";
+});
+
+// فتح وإغلاق نماذج الحساب.
+document.getElementById("editProfileBtn").addEventListener("click",() => {
+  toggleForm("profileFormArea");
+});
+
+document.getElementById("changeEmailBtn").addEventListener("click",() => {
+  toggleForm("emailFormArea");
+});
+
+document.getElementById("changePasswordBtn").addEventListener("click",() => {
+  toggleForm("passwordFormArea");
+});
+
+document.querySelectorAll("[data-close]").forEach(button => {
+  button.addEventListener("click",() => {
+    document.getElementById(button.dataset.close).classList.remove("open");
+  });
+});
+
+// حفظ بيانات الملف الشخصي عبر الدالة الآمنة في Supabase.
+document.getElementById("profileForm").addEventListener("submit",async event => {
+  event.preventDefault();
+
+  const button = document.getElementById("saveProfileBtn");
+  const fullName = document.getElementById("editFullName").value.trim();
+  const phone = document.getElementById("editPhone").value.trim();
+  const city = document.getElementById("editCity").value.trim();
+
+  if (!fullName || !phone) {
+    showMessage("الاسم ورقم الهاتف مطلوبان.","error");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ الحفظ...";
+
+  try {
+    const {error} = await db.rpc("update_arkan_customer_profile",{
+      p_full_name:fullName,
+      p_phone:phone,
+      p_city:city
+    });
+
+    if (error) throw error;
+
+    await loadProfile();
+
+    document.getElementById("profileFormArea").classList.remove("open");
+
+    showMessage("تم تحديث بياناتك الشخصية بنجاح.","success");
+
+  } catch (error) {
+    console.error("Profile update error:",error);
+    showMessage(error.message || "تعذر حفظ بياناتك حالياً.","error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "حفظ التعديلات";
+  }
+});
+
+// طلب تغيير البريد الإلكتروني عبر Supabase Auth.
+document.getElementById("emailForm").addEventListener("submit",async event => {
+  event.preventDefault();
+
+  const button = document.getElementById("saveEmailBtn");
+  const newEmail = document.getElementById("newEmail").value.trim();
+
+  if (!newEmail) {
+    showMessage("أدخل البريد الإلكتروني الجديد.","error");
+    return;
+  }
+
+  if (newEmail.toLowerCase() === String(currentUser.email || "").toLowerCase()) {
+    showMessage("هذا هو بريدك الإلكتروني الحالي بالفعل.","info");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ إرسال الطلب...";
+
+  try {
+    const {error} = await db.auth.updateUser({
+      email:newEmail
+    });
+
+    if (error) throw error;
+
+    document.getElementById("emailFormArea").classList.remove("open");
+    document.getElementById("emailForm").reset();
+
+    showMessage(
+      "تم إرسال طلب تغيير البريد. تحقق من رسالة التأكيد واتبع التعليمات لإتمام التغيير. سيبقى البريد الحالي معتمداً حتى اكتمال التحقق.",
+      "success"
+    );
+
+  } catch (error) {
+    console.error("Email update error:",error);
+    showMessage(
+      error.message || "تعذر إرسال طلب تغيير البريد الإلكتروني.",
+      "error"
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "إرسال طلب التغيير";
+  }
+});
+
+// تغيير كلمة المرور للحساب المسجل دخوله.
+document.getElementById("passwordForm").addEventListener("submit",async event => {
+  event.preventDefault();
+
+  const button = document.getElementById("savePasswordBtn");
+  const password = document.getElementById("newPassword").value;
+  const confirmation = document.getElementById("confirmPassword").value;
+
+  if (password.length < 8) {
+    showMessage("كلمة المرور يجب أن تكون 8 أحرف على الأقل.","error");
+    return;
+  }
+
+  if (password !== confirmation) {
+    showMessage("كلمتا المرور غير متطابقتين.","error");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ التحديث...";
+
+  try {
+    const {error} = await db.auth.updateUser({
+      password:password
+    });
+
+    if (error) throw error;
+
+    document.getElementById("passwordFormArea").classList.remove("open");
+    document.getElementById("passwordForm").reset();
+
+    showMessage("تم تحديث كلمة المرور بنجاح.","success");
+
+  } catch (error) {
+    console.error("Password update error:",error);
+    showMessage(error.message || "تعذر تحديث كلمة المرور.","error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "تحديث كلمة المرور";
+  }
+});
+
+// تحديث بيانات الحساب والحجوزات.
+document.getElementById("refreshBtn").addEventListener("click",async() => {
   await initializePortal();
 });
 
-document.getElementById("logoutBtn").addEventListener("click", async () => {
+// تسجيل الخروج.
+document.getElementById("logoutBtn").addEventListener("click",async() => {
   const button = document.getElementById("logoutBtn");
   button.disabled = true;
 
   try {
-    const { error } = await db.auth.signOut();
+    const {error} = await db.auth.signOut();
     if (error) throw error;
 
     window.location.replace("traveler-login.html");
+
   } catch (error) {
-    showMessage(error.message || "تعذر تسجيل الخروج.");
+    showMessage(error.message || "تعذر تسجيل الخروج.","error");
     button.disabled = false;
   }
 });

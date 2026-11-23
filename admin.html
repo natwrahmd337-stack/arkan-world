@@ -263,6 +263,7 @@
     <button class="nav-btn" data-roles="owner,admin,branch_manager,accountant" onclick="showSection('reports',this)">▥ التقارير</button>
 
     <button class="nav-btn" data-roles="owner,admin" onclick="showSection('site-media',this)">▧ إدارة صور الموقع</button>
+    <button class="nav-btn" data-roles="owner,admin" onclick="showSection('visas',this)">🛂 إدارة التأشيرات</button>
 
     <button class="nav-btn" data-roles="owner" onclick="showSection('voices',this)">✍ إدارة المشاركات – اترك أثراً</button>
 
@@ -799,6 +800,29 @@
         </div>
         <div class="panel"><h3>ملخص الحجوزات حسب الحالة</h3><div id="reportStatus" class="empty-state">جاري التحميل...</div></div>
       </section>
+<section id="visas" class="section">
+  <div class="page-heading"><div><h2>إدارة التأشيرات</h2><p>إضافة العروض وتعديلها والتحكم بنشرها على الموقع.</p></div></div>
+  <div class="panel"><h3 id="visaFormTitle">إضافة تأشيرة جديدة</h3>
+    <form id="visaAdminForm"><input type="hidden" id="visaEditId">
+      <div class="form-grid">
+        <label>الدولة *<input id="visaCountry" required maxlength="100"></label>
+        <label>نوع التأشيرة *<input id="visaType" required maxlength="100"></label>
+        <label>عنوان العرض *<input id="visaTitle" required maxlength="180"></label>
+        <label>السعر<input id="visaPrice" type="number" min="0" step="0.01"></label>
+        <label>العملة<input id="visaCurrency" value="USD" maxlength="8"></label>
+        <label>مدة المعالجة<input id="visaProcessing"></label>
+        <label>مدة الصلاحية<input id="visaValidity"></label>
+        <label>مدة الإقامة<input id="visaStay"></label>
+        <label style="grid-column:1/-1">رابط الصورة<input id="visaImage" type="url" placeholder="https://..."></label>
+        <label style="grid-column:1/-1">وصف العرض<textarea id="visaDescription" rows="2"></textarea></label>
+        <label style="grid-column:1/-1">المتطلبات والوثائق<textarea id="visaRequirements" rows="3"></textarea></label>
+        <label style="grid-column:1/-1">ملاحظات إضافية<textarea id="visaNotes" rows="2"></textarea></label>
+      </div>
+      <div class="section-tools" style="margin-top:15px"><button class="primary-btn" type="submit" id="visaSaveBtn">حفظ التأشيرة كمسودة</button><button class="secondary-btn" type="button" onclick="resetVisaForm()">إلغاء / تفريغ الحقول</button></div>
+      <p id="visaFormMessage"></p><small>تُحفظ التأشيرة غير منشورة افتراضياً حتى مراجعتها.</small>
+    </form></div>
+  <div class="panel"><h3>التأشيرات المسجلة</h3><div id="visaAdminList">جاري تحميل البيانات...</div></div>
+</section>
 <section id="site-media" class="section">
   <div class="page-heading">
     <div>
@@ -1039,6 +1063,7 @@ function showSection(id,button){
     "payments-review":["owner","admin","accountant"],
     reports:["owner","admin","branch_manager","accountant"],
  "site-media":["owner","admin"],
+    visas:["owner","admin"],
 voices:["owner"]
   };
 
@@ -1070,6 +1095,7 @@ if(id==="flight-requests")loadFlightRequests();
   if(id==="payments-review")loadPublicPaymentSubmissions();
   if(id==="reports")loadReports();
   if(id==="site-media")loadSiteMedia();
+  if(id==="visas")loadVisas();
   if(id==="voices")loadArkanVoices();
 }
 
@@ -3119,6 +3145,36 @@ async function deleteSiteMedia(id,path){
   }
 }
 
+
+
+// ===== VISA MANAGEMENT =====
+async function loadVisas(){
+ const box=document.getElementById("visaAdminList");if(!box||!db)return;box.textContent="جاري تحميل التأشيرات...";
+ try{
+  const r=await db.from("visas").select("*").order("created_at",{ascending:false});if(r.error)throw r.error;
+  const data=r.data||[];window.arkanVisaCache=data;
+  if(!data.length){box.innerHTML='<div class="empty-state">لا توجد تأشيرات مسجلة حتى الآن.</div>';return;}
+  box.innerHTML=data.map(v=>{
+   const img=v.image_url?'<img src="'+esc(v.image_url)+'" alt="" style="width:90px;height:70px;object-fit:cover;border-radius:8px">':"";
+   const price=v.price==null?"حسب الطلب":esc(v.price)+" "+esc(v.currency||"USD");
+   return '<div class="panel" style="margin:12px 0;padding:14px"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">'+img+'<div style="flex:1;min-width:160px"><strong>'+esc(v.title)+'</strong><div>'+esc(v.country)+' • '+esc(v.visa_type)+'</div><div>'+price+'</div><small>'+(v.is_active?"منشورة":"مسودة / غير منشورة")+'</small></div><div class="section-tools"><button class="secondary-btn" type="button" onclick="editVisa(\''+v.id+'\')">تعديل</button><button class="secondary-btn" type="button" onclick="toggleVisa(\''+v.id+'\','+(v.is_active?"false":"true")+')">'+(v.is_active?"إيقاف النشر":"نشر التأشيرة")+'</button><button class="secondary-btn" type="button" onclick="deleteVisa(\''+v.id+'\')">حذف</button></div></div></div>';
+  }).join("");
+ }catch(e){console.error(e);box.textContent="تعذر تحميل التأشيرات: "+(e.message||"خطأ");}
+}
+function resetVisaForm(){document.getElementById("visaAdminForm").reset();document.getElementById("visaEditId").value="";document.getElementById("visaCurrency").value="USD";document.getElementById("visaFormTitle").textContent="إضافة تأشيرة جديدة";document.getElementById("visaSaveBtn").textContent="حفظ التأشيرة كمسودة";clearMessage("visaFormMessage");}
+function editVisa(id){
+ const v=(window.arkanVisaCache||[]).find(x=>x.id===id);if(!v)return;
+ const vals={visaEditId:v.id,visaCountry:v.country,visaType:v.visa_type,visaTitle:v.title,visaPrice:v.price,visaCurrency:v.currency||"USD",visaProcessing:v.processing_days,visaValidity:v.validity_period,visaStay:v.stay_duration,visaImage:v.image_url,visaDescription:v.description,visaRequirements:v.requirements,visaNotes:v.notes};
+ Object.keys(vals).forEach(k=>document.getElementById(k).value=vals[k]??"");
+ document.getElementById("visaFormTitle").textContent="تعديل بيانات التأشيرة";document.getElementById("visaSaveBtn").textContent="حفظ التعديلات";document.getElementById("visas").scrollIntoView({behavior:"smooth"});
+}
+async function toggleVisa(id,active){try{const r=await db.from("visas").update({is_active:active,updated_at:new Date().toISOString()}).eq("id",id);if(r.error)throw r.error;await loadVisas();}catch(e){alert("تعذر تغيير حالة التأشيرة: "+e.message);}}
+async function deleteVisa(id){if(!confirm("هل أنت متأكد من حذف هذه التأشيرة نهائياً؟"))return;try{const r=await db.from("visas").delete().eq("id",id);if(r.error)throw r.error;await loadVisas();}catch(e){alert("تعذر حذف التأشيرة: "+e.message);}}
+document.getElementById("visaAdminForm").addEventListener("submit",async function(e){
+ e.preventDefault();const btn=document.getElementById("visaSaveBtn");btn.disabled=true;clearMessage("visaFormMessage");const val=id=>document.getElementById(id).value.trim();
+ const payload={country:val("visaCountry"),visa_type:val("visaType"),title:val("visaTitle"),description:val("visaDescription")||null,price:val("visaPrice")===""?null:Number(val("visaPrice")),currency:val("visaCurrency")||"USD",processing_days:val("visaProcessing")||null,validity_period:val("visaValidity")||null,stay_duration:val("visaStay")||null,requirements:val("visaRequirements")||null,notes:val("visaNotes")||null,image_url:val("visaImage")||null,updated_at:new Date().toISOString()};
+ try{const id=val("visaEditId");const r=id?await db.from("visas").update(payload).eq("id",id):await db.from("visas").insert({...payload,is_active:false});if(r.error)throw r.error;showMessage("visaFormMessage",id?"تم حفظ التعديلات بنجاح.":"تمت إضافة التأشيرة كمسودة غير منشورة.","success");resetVisaForm();await loadVisas();}catch(e){console.error(e);showMessage("visaFormMessage",e.message||"تعذر حفظ التأشيرة.");}finally{btn.disabled=false;}
+});
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>

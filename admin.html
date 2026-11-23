@@ -2146,36 +2146,99 @@ async function deleteBooking(id){
   }catch(error){alert(error.message);}
 }
 
-/* TRAVELERS */
-async function manageTravelers(bookingId){
-  const booking=bookingsCache.find(b=>b.id===bookingId);
-  if(!booking)return;
-  const {data,error}=await db.from("travelers").select("*")
-    .eq("booking_id",bookingId).order("created_at");
-  if(error){alert(error.message);return;}
 
-  let message="المسافرون المسجلون:\n";
-  (data||[]).forEach((p,i)=>{
-    message+=(i+1)+". "+p.full_name+
-      (p.passport_number?" - جواز: "+p.passport_number:"")+"\n";
+/* TRAVELERS - SECURE IDENTITY */
+async function manageTravelers(bookingId) {
+  const booking = bookingsCache.find(b => b.id === bookingId);
+  if (!booking) return;
+
+  const { data, error } = await db
+    .from("travelers")
+    .select("id, full_name, nationality, profile_id, created_at")
+    .eq("booking_id", bookingId)
+    .order("created_at");
+
+  if (error) {
+    alert("تعذر تحميل المسافرين: " + error.message);
+    return;
+  }
+
+  let message = "المسافرون المسجلون:\n";
+
+  (data || []).forEach((p, i) => {
+    message += `${i + 1}. ${p.full_name}\n`;
   });
-  message+="\nلإضافة مسافر جديد اضغط موافق، وللإلغاء اضغط إلغاء.";
-  if(!confirm(message))return;
 
-  const fullName=prompt("اسم المسافر الكامل:");
-  if(!fullName||!fullName.trim())return;
-  const passport=prompt("رقم جواز السفر (اختياري):")||null;
-  const nationality=prompt("الجنسية (اختياري):")||null;
-  const payload={
-    booking_id:bookingId,
-    full_name:fullName.trim(),
-    passport_number:passport?.trim()||null,
-    nationality:nationality?.trim()||null
+  message += "\nلإضافة مسافر جديد اضغط موافق، وللإلغاء اضغط إلغاء.";
+  if (!confirm(message)) return;
+
+  const fullName = prompt("اسم المسافر الكامل:");
+  if (!fullName || !fullName.trim()) return;
+
+  const nationality = prompt("الجنسية (اختياري):") || null;
+
+  const passport = prompt("رقم جواز السفر (اختياري):") || "";
+  const passportExpiry = passport.trim()
+    ? prompt("تاريخ انتهاء الجواز بصيغة YYYY-MM-DD (اختياري):") || null
+    : null;
+
+  const visa = prompt("رقم التأشيرة (اختياري):") || "";
+  const visaExpiry = visa.trim()
+    ? prompt("تاريخ انتهاء التأشيرة بصيغة YYYY-MM-DD (اختياري):") || null
+    : null;
+
+  const payload = {
+    booking_id: bookingId,
+    full_name: fullName.trim(),
+    nationality: nationality?.trim() || null
   };
-  const {error:insertError}=await db.from("travelers").insert(payload);
-  if(insertError){alert(insertError.message);return;}
-  alert("تمت إضافة المسافر");
+
+  try {
+    const { data: traveler, error: insertError } = await db
+      .from("travelers")
+      .insert(payload)
+      .select("id, profile_id")
+      .single();
+
+    if (insertError) throw insertError;
+
+    if ((passport.trim() || visa.trim()) && !traveler.profile_id) {
+      throw new Error(
+        "تم إنشاء المسافر، لكن لم يُنشأ ملفه الدائم. لم تُحفظ بيانات الهوية."
+      );
+    }
+
+    if (passport.trim() || visa.trim()) {
+      const { data: identityResult, error: identityError } =
+        await db.functions.invoke("arkan-traveler-identity", {
+          body: {
+            profile_id: traveler.profile_id,
+            passport_number: passport.trim(),
+            passport_expiry: passportExpiry,
+            visa_number: visa.trim(),
+            visa_expiry: visaExpiry
+          }
+        });
+
+      if (identityError || identityResult?.success !== true) {
+        console.error("Identity save error:", identityError);
+        throw new Error(
+          "تم إنشاء المسافر، لكن تعذر حفظ بيانات الجواز أو التأشيرة المشفرة. لا تعاود إنشاء المسافر؛ يلزم إصلاح الحفظ أولاً."
+        );
+      }
+    }
+
+    alert("تمت إضافة المسافر بنجاح" +
+      (passport.trim() || visa.trim()
+        ? " وحُفظت بيانات الهوية عبر خدمة التشفير."
+        : "."));
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message || "حدث خطأ أثناء إضافة المسافر.");
+  }
 }
+
 
 /* PAYMENTS */
 async function loadPaymentOptions(){

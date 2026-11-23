@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -17,8 +17,6 @@
   --bg2:#0d3732;
   --surface:#123d37;
   --surface2:#17483f;
-  --surface3:#0d332f;
-  --teal:#428177;
   --gold:#d8bd78;
   --gold-light:#f0dba4;
   --white:#f5f5ee;
@@ -87,40 +85,139 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .top-actions .home{background:#d8bd78;color:#183b34;border-color:var(--gold)}
 .top-actions .logout{color:#e9a69a}
 .container{width:100%;padding:25px 24px 35px;margin:auto}
-.welcome{
-  min-height:225px;display:flex;flex-direction:column;
-  justify-content:center;padding:30px 30px;
-  position:relative;overflow:hidden;
-  border:1px solid #d8bd7850;border-radius:25px;
+
+/* ARKAN VIP BOARDING PASS */
+.vip-ticket{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:310px;
+  padding:30px;
+  border:1px solid #c9a85f99;
+  border-radius:25px;
   background:
-    radial-gradient(circle at 8% 50%,#d8bd781b,transparent 28%),
-    linear-gradient(125deg,#174a41,#0c302d 85%);
-  box-shadow:var(--shadow)
+    radial-gradient(ellipse at 12% 15%,#d8bd7822,transparent 35%),
+    radial-gradient(ellipse at 90% 100%,#28685b66,transparent 42%),
+    linear-gradient(125deg,#071b19 0%,#10352f 48%,#071b19 100%);
+  box-shadow:0 22px 65px #0008,inset 0 0 35px #d8bd7808;
 }
-.welcome:before{
-  content:"✦";position:absolute;left:25px;top:10px;
-  font-size:150px;line-height:1;color:#d8bd780e;
-  transform:rotate(-12deg);pointer-events:none
+.vip-ticket:before{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border:1px solid #d8bd7838;
+  border-radius:18px;
+  pointer-events:none;
+  z-index:-1;
 }
-.welcome:after{
-  content:"";position:absolute;left:0;bottom:0;
-  width:45%;height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent)
+.vip-ticket:after{
+  content:"";
+  position:absolute;
+  width:330px;height:330px;
+  border:1px solid #d8bd7818;
+  border-radius:50%;
+  left:-130px;top:-150px;
+  box-shadow:0 0 0 18px #d8bd7808,0 0 0 38px #d8bd7805;
+  pointer-events:none;
+  z-index:-1;
 }
-.welcome-content{position:relative;z-index:1}
-.welcome small{color:var(--gold-light);font-size:12px;font-weight:800}
-.welcome h2{
-  font-size:clamp(25px,5vw,37px);line-height:1.5;
-  margin:8px 0;font-weight:900;color:#fff
+.ticket-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding-bottom:20px;
+  border-bottom:1px dashed #d8bd7860;
 }
-.welcome h2 span{color:var(--gold-light)}
-.welcome p{margin:5px 0 0;color:#d1e0d9;font-size:13px;line-height:2}
-.welcome-label{
-  display:inline-flex;align-items:center;gap:7px;
-  color:var(--gold-light);font-size:10px;font-weight:800;
-  border:1px solid #d8bd7845;border-radius:30px;
-  padding:6px 12px;margin-top:17px;background:#d8bd780c
+.ticket-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
+.ticket-brand img{
+  width:57px;height:57px;
+  object-fit:contain;
+  filter:drop-shadow(0 3px 10px #d8bd7840);
+}
+.ticket-brand strong{
+  display:block;color:#f0dba4;
+  font-size:17px;font-weight:900;
+}
+.ticket-brand small{
+  display:block;color:#b9aa7f;
+  font-size:9px;letter-spacing:2px;margin-top:3px;
+}
+.ticket-class{
+  border:1px solid #d8bd7870;
+  background:linear-gradient(135deg,#d8bd7820,#d8bd7808);
+  color:#f0dba4;
+  border-radius:30px;
+  padding:8px 14px;
+  font-size:10px;font-weight:900;
+  letter-spacing:1px;white-space:nowrap;
+}
+.ticket-main{
+  display:grid;
+  grid-template-columns:1fr 125px;
+  align-items:center;
+  gap:15px;
+  padding:25px 0 22px;
+}
+.ticket-greeting{
+  color:#d8bd78;
+  font-size:11px;font-weight:800;
+}
+.ticket-main h2{
+  margin:7px 0;
+  color:#fff9e9;
+  font-size:clamp(25px,5vw,38px);
+  font-weight:900;line-height:1.5;
+  overflow-wrap:anywhere;
+  text-shadow:0 3px 15px #0008;
+}
+.ticket-main h2 span{color:#f0dba4}
+.ticket-main p{
+  margin:0;color:#b9c9bf;
+  font-size:12px;line-height:2;
+}
+.ticket-plane{
+  width:112px;height:112px;
+  display:grid;place-items:center;
+  justify-self:center;
+  border:1px solid #d8bd7840;
+  border-radius:50%;
+  background:radial-gradient(circle,#d8bd781b,transparent 68%);
+  color:#e4ca88;font-size:55px;
+  transform:rotate(-12deg);
+  filter:drop-shadow(0 8px 18px #d8bd7825);
+}
+.ticket-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:12px;
+  padding-top:17px;
+  border-top:1px dashed #d8bd7860;
+}
+.ticket-member-label{
+  display:block;color:#9db5a9;
+  font-size:9px;margin-bottom:4px;
+}
+.ticket-member-number{
+  color:#f0dba4;
+  font-size:16px;font-weight:900;
+  letter-spacing:2px;direction:ltr;
+  display:inline-block;
+}
+.ticket-motto{
+  color:#d8bd78;
+  font-size:10px;font-weight:800;text-align:left;
+}
+.ticket-motto small{
+  display:block;color:#a9bcb1;
+  font-size:9px;font-weight:500;margin-top:4px;
+}
+
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:17px}
 .stat{
   min-height:130px;padding:17px;
@@ -220,8 +317,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .booking-list{display:grid;gap:11px}
 .booking{
   border:1px solid var(--line);border-radius:15px;
-  padding:15px;background:#0b302c88;
-  transition:.2s
+  padding:15px;background:#0b302c88;transition:.2s
 }
 .booking:hover{border-color:#d8bd7855;transform:translateY(-1px)}
 .booking-head{
@@ -290,6 +386,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .bottom-nav a.active{color:var(--gold-light)}
 .bottom-nav a.active .nav-icon{filter:drop-shadow(0 0 7px #d8bd7870)}
 .hidden{display:none!important}
+
 @media(min-width:851px){
   .app-shell{border-inline:1px solid #ffffff15}
 }
@@ -301,9 +398,16 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .brand span{font-size:8px}
   .top-actions{gap:5px}
   .top-actions button{padding:8px 9px;font-size:10px}
-  .welcome{min-height:205px;padding:24px 20px;border-radius:20px}
-  .welcome h2{font-size:27px}
-  .welcome p{font-size:11px}
+  .vip-ticket{min-height:285px;padding:22px 19px;border-radius:21px}
+  .ticket-brand img{width:46px;height:46px}
+  .ticket-brand strong{font-size:14px}
+  .ticket-class{font-size:9px;padding:7px 10px}
+  .ticket-main{grid-template-columns:1fr 82px;gap:8px;padding:23px 0 19px}
+  .ticket-main h2{font-size:25px}
+  .ticket-main p{font-size:10px}
+  .ticket-plane{width:78px;height:78px;font-size:39px}
+  .ticket-member-number{font-size:13px}
+  .ticket-motto{font-size:9px}
   .stats{gap:8px;margin-top:12px}
   .stat{min-height:112px;padding:13px;border-radius:15px}
   .stat .symbol{width:32px;height:32px;font-size:16px}
@@ -319,7 +423,10 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .brand h1{font-size:12px}
   .top-actions button{padding:7px;font-size:9px}
   .booking-info{grid-template-columns:1fr}
-  .welcome h2{font-size:23px}
+  .ticket-class{font-size:8px;padding:6px 8px}
+  .ticket-main{grid-template-columns:1fr 65px}
+  .ticket-plane{width:63px;height:63px;font-size:32px}
+  .ticket-main h2{font-size:22px}
 }
 </style>
 </head>
@@ -354,13 +461,43 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 
   <div id="portal" class="hidden">
 
-    <section class="welcome">
-      <div class="welcome-content">
-        <small>أهلاً بك في عالم أركان</small>
-        <h2>مرحباً، <span id="welcomeName">مسافرنا العزيز</span> ✦</h2>
-        <p>كل رحلاتك وحجوزاتك في مكان واحد. نحن هنا لنجعل رحلتك أسهل وأجمل.</p>
-        <div class="welcome-label">✧ سفر • سياحة • ثقة</div>
+    <!-- بطاقة عضوية أركان VIP -->
+    <section class="vip-ticket">
+
+      <div class="ticket-top">
+        <div class="ticket-brand">
+          <img src="arkan-logo.png" alt="شعار أركان">
+          <div>
+            <strong>أركان العالم</strong>
+            <small>TRAVEL • TOURISM</small>
+          </div>
+        </div>
+
+        <div class="ticket-class">✦ VIP MEMBER</div>
       </div>
+
+      <div class="ticket-main">
+        <div>
+          <div class="ticket-greeting">أهلاً بك في عالم أركان</div>
+          <h2>مرحباً، <span id="welcomeName">مسافرنا العزيز</span></h2>
+          <p>رحلتك تبدأ من هنا... ونحن نصحبك في كل وجهة.</p>
+        </div>
+
+        <div class="ticket-plane" aria-hidden="true">✈</div>
+      </div>
+
+      <div class="ticket-bottom">
+        <div>
+          <span class="ticket-member-label">ARKAN MEMBERSHIP NUMBER</span>
+          <span class="ticket-member-number" id="ticketMember">ARK-000000</span>
+        </div>
+
+        <div class="ticket-motto">
+          سفر • سياحة • ثقة
+          <small>نصحبكم في كل رحلة</small>
+        </div>
+      </div>
+
     </section>
 
     <div class="stats">
@@ -679,6 +816,10 @@ async function loadProfile() {
   document.getElementById("editFullName").value = customer.full_name || "";
   document.getElementById("editPhone").value = customer.phone || "";
   document.getElementById("editCity").value = customer.city || "";
+
+  // رقم عضوية مشتق من معرف حساب المسافر، ثابت لنفس الحساب
+  const membershipId = String(currentCustomerId).replace(/-/g,"").slice(0,6).toUpperCase();
+  document.getElementById("ticketMember").textContent = "ARK-" + membershipId;
 }
 
 function updateBookingStats(bookings) {
@@ -1011,3 +1152,4 @@ initializePortal();
 
 </body>
 </html>
+```

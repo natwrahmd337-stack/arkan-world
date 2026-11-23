@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#073f43">
+<meta name="theme-color" content="#102f24">
 <title>بوابة المسافرين | أركان العالم</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,9 +13,11 @@
 
 <style>
 :root {
-  --teal:#087d79;
-  --deep:#062f35;
+  --green:#183f30;
+  --deep:#0c241b;
+  --green-light:#285b43;
   --gold:#d8b66d;
+  --gold-light:#f1d99e;
   --white:#fff;
 }
 
@@ -26,7 +28,7 @@ body {
   min-height:100vh;
   font-family:'Cairo',Tahoma,sans-serif;
   color:white;
-  background:#062f35;
+  background:var(--deep);
   overflow-x:hidden;
 }
 
@@ -35,11 +37,11 @@ button,input { font-family:inherit; }
 .background {
   position:fixed;
   inset:0;
-  z-index:-3;
+  z-index:-2;
   background:
-    radial-gradient(ellipse at 15% 15%,#1d777044,transparent 45%),
-    radial-gradient(ellipse at 85% 85%,#c49b4930,transparent 40%),
-    linear-gradient(135deg,#041f29,#073e43 55%,#092d36);
+    radial-gradient(ellipse at 15% 15%,#39745245,transparent 45%),
+    radial-gradient(ellipse at 85% 85%,#c49b4925,transparent 40%),
+    linear-gradient(135deg,#091d16,#153c2b 55%,#0b261c);
 }
 
 .background::before,
@@ -73,7 +75,7 @@ button,input { font-family:inherit; }
   inset:0;
   pointer-events:none;
   z-index:-1;
-  opacity:.35;
+  opacity:.3;
   background-image:
     radial-gradient(2px 2px at 20% 30%,#fff8,transparent),
     radial-gradient(2px 2px at 75% 65%,#d8b66d88,transparent),
@@ -142,7 +144,7 @@ button,input { font-family:inherit; }
 .hero h1 span { color:var(--gold); }
 
 .hero p {
-  color:#d5e4df;
+  color:#d5e4dc;
   font-size:17px;
   line-height:2.1;
   max-width:510px;
@@ -176,7 +178,7 @@ button,input { font-family:inherit; }
   max-width:460px;
   justify-self:end;
   padding:35px;
-  border:1px solid #ffffff28;
+  border:1px solid #d8b66d35;
   border-radius:25px;
   background:linear-gradient(145deg,#ffffff16,#ffffff08);
   box-shadow:0 25px 80px #0005;
@@ -203,7 +205,7 @@ button,input { font-family:inherit; }
 }
 
 .card-top p {
-  color:#c2d4d0;
+  color:#cbd8cf;
   font-size:13px;
   margin:5px 0 0;
 }
@@ -211,7 +213,7 @@ button,input { font-family:inherit; }
 .tabs {
   display:flex;
   padding:5px;
-  background:#001f254d;
+  background:#071a12a8;
   border-radius:12px;
   margin-bottom:25px;
 }
@@ -221,7 +223,7 @@ button,input { font-family:inherit; }
   padding:11px;
   border:0;
   border-radius:9px;
-  color:#c6d5d0;
+  color:#c6d5ca;
   background:transparent;
   cursor:pointer;
   font-size:14px;
@@ -229,7 +231,7 @@ button,input { font-family:inherit; }
 }
 
 .tabs button.active {
-  background:linear-gradient(120deg,#0b827d,#075d60);
+  background:linear-gradient(120deg,#285b43,#17402e);
   color:white;
   box-shadow:0 5px 18px #0003;
 }
@@ -249,7 +251,7 @@ button,input { font-family:inherit; }
   height:49px;
   border-radius:10px;
   border:1px solid #ffffff25;
-  background:#001f253f;
+  background:#071a12a8;
   color:white;
   outline:none;
   padding:0 14px;
@@ -257,7 +259,7 @@ button,input { font-family:inherit; }
   transition:.25s;
 }
 
-.field input::placeholder { color:#a8c0ba; }
+.field input::placeholder { color:#a8bdb0; }
 
 .field input:focus {
   border-color:var(--gold);
@@ -270,7 +272,7 @@ button,input { font-family:inherit; }
   border-radius:11px;
   min-height:53px;
   background:linear-gradient(110deg,#d6b36a,#f1d99e,#c69d50);
-  color:#183c3c;
+  color:#183c2c;
   font-size:16px;
   font-weight:900;
   cursor:pointer;
@@ -329,130 +331,9 @@ button,input { font-family:inherit; }
 
 .footer {
   text-align:center;
-  color:#b8ccc6;
+  color:#b8ccc0;
   font-size:11px;
   margin-top:23px;
-}
-
-/* مشهد المطار */
-
-.airport-screen {
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:none;
-  background:#031d25;
-  overflow:hidden;
-}
-
-.airport-screen.active { display:block; }
-
-.airport-video {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  background:#031d25;
-}
-
-.airport-overlay {
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    180deg,
-    #001b2540 0%,
-    #001b2510 45%,
-    #001b25b8 100%
-  );
-}
-
-.airport-brand {
-  position:absolute;
-  top:50%;
-  left:50%;
-  width:min(85%,420px);
-  transform:translate(-50%,-40%);
-  text-align:center;
-  opacity:0;
-  visibility:hidden;
-  transition:opacity 1.2s ease, transform 1.2s ease;
-  z-index:3;
-}
-
-.airport-brand.show {
-  opacity:1;
-  visibility:visible;
-  transform:translate(-50%,-50%);
-}
-
-.airport-brand img {
-  width:125px;
-  height:125px;
-  object-fit:contain;
-  filter:drop-shadow(0 8px 25px #0008);
-}
-
-.airport-brand h2 {
-  color:white;
-  font-size:clamp(25px,5vw,38px);
-  margin:12px 0 5px;
-  font-weight:900;
-  text-shadow:0 3px 15px #0009;
-}
-
-.airport-brand p {
-  color:#f0d99e;
-  font-size:14px;
-  letter-spacing:2px;
-  margin:0;
-}
-
-.airport-controls {
-  position:absolute;
-  z-index:5;
-  left:20px;
-  bottom:22px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-
-.airport-controls button {
-  border:1px solid #ffffff55;
-  background:#001e27a8;
-  color:white;
-  border-radius:30px;
-  padding:11px 18px;
-  font-family:inherit;
-  font-size:13px;
-  cursor:pointer;
-  backdrop-filter:blur(12px);
-}
-
-.airport-controls button:hover {
-  background:#ffffff25;
-}
-
-.airport-sound-hint {
-  position:absolute;
-  z-index:5;
-  right:20px;
-  bottom:27px;
-  color:white;
-  font-size:12px;
-  text-shadow:0 2px 8px #000;
-}
-
-.airport-loading {
-  position:absolute;
-  z-index:2;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  color:#fff;
-  font-size:14px;
-  text-align:center;
 }
 
 @keyframes fadeUp {
@@ -493,16 +374,6 @@ button,input { font-family:inherit; }
   .features { justify-content:center; margin-top:18px; }
   .card { justify-self:center; padding:25px 20px; }
   .page { padding:25px 15px 80px; }
-
-  .airport-controls {
-    left:12px;
-    bottom:15px;
-  }
-
-  .airport-sound-hint {
-    right:12px;
-    bottom:75px;
-  }
 }
 
 @media(max-width:380px) {
@@ -517,13 +388,13 @@ button,input { font-family:inherit; }
 <div class="background"></div>
 <div class="ambient"></div>
 
-<main class="page" id="mainPage">
+<main class="page">
   <div class="layout">
 
     <section class="hero">
 
       <div class="brand">
-      <img src="assets/arkan-logo.png" alt="شعار أركان العالم">
+        <img src="assets/arkan-logo.png" alt="شعار أركان العالم">
         <div class="brand-name">
           أركان العالم
           <span>TRAVEL & TOURISM</span>
@@ -554,7 +425,7 @@ button,input { font-family:inherit; }
     <section class="card">
 
       <div class="card-top">
-      <img src="assets/arkan-logo.png" alt="أركان">
+        <img src="assets/arkan-logo.png" alt="أركان">
         <h2>بوابة المسافرين</h2>
         <p>ابدأ رحلتك معنا، أينما كانت وجهتك</p>
       </div>
@@ -649,58 +520,6 @@ button,input { font-family:inherit; }
   </div>
 </main>
 
-<!-- مشهد المطار -->
-
-<div class="airport-screen" id="airportScreen">
-
-  <div class="airport-loading" id="airportLoading">
-    أهلاً بكم في عالم أركان...
-  </div>
-
-  <video
-    id="airportVideo"
-    class="airport-video"
-    src="assets/airport-terminal.mp4"
-    autoplay
-    muted
-    playsinline
-    preload="auto">
-  </video>
-
-  <audio
-    id="airportChime"
-    src="assets/airport-chime.mp3"
-    preload="auto">
-  </audio>
-
-  <div class="airport-overlay"></div>
-
-  <div class="airport-brand" id="airportBrand">
- <img src="assets/arkan-logo.png" alt="شعار أركان العالم">
-    <h2>أركان العالم</h2>
-    <p>TRAVEL • TOURISM • TRUST</p>
-  </div>
-
-  <div class="airport-sound-hint" id="soundHint">
-    مشوارك القادم يبدأ مع أركان
-  </div>
-
-  <div class="airport-controls">
-    <button id="muteAirportButton" type="button">
-      🔊 كتم الصوت
-    </button>
-
-    <button id="playChimeButton" type="button" class="hidden">
-      ▶ تشغيل الجرس
-    </button>
-
-    <button id="skipAirportButton" type="button">
-      تخطي المشهد ←
-    </button>
-  </div>
-
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 
@@ -716,16 +535,6 @@ const registerTab = document.getElementById("registerTab");
 const message = document.getElementById("message");
 
 let isProcessing = false;
-let flightStarted = false;
-let airportMuted = false;
-let redirectTimer = null;
-
-const airportScreen = document.getElementById("airportScreen");
-const airportVideo = document.getElementById("airportVideo");
-const airportChime = document.getElementById("airportChime");
-const airportBrand = document.getElementById("airportBrand");
-const muteAirportButton = document.getElementById("muteAirportButton");
-const playChimeButton = document.getElementById("playChimeButton");
 
 function showMessage(text, type = "success") {
   message.textContent = text;
@@ -763,102 +572,19 @@ function setLoading(form, loading) {
   if (form === loginForm) {
     button.textContent = loading ? "جارٍ التحقق..." : "تسجيل الدخول ←";
   } else {
-    button.textContent = loading ? "جارٍ إنشاء الحساب..." : "إنشاء حساب والانطلاق ✈";
+    button.textContent = loading
+      ? "جارٍ إنشاء الحساب..."
+      : "إنشاء حساب والانطلاق ✈";
   }
 }
 
-/*
-  مشهد المطار:
-  يبدأ بعد نجاح دخول المسافر أو إنشاء حسابه.
-  بعد انتهاء الفيديو يظهر شعار أركان ثم تفتح الرئيسية.
-*/
+/* الانتقال المباشر إلى بوابة المسافر */
 
-function goToHome() {
-  if (redirectTimer) {
-    clearTimeout(redirectTimer);
-    redirectTimer = null;
-  }
-
-window.location.replace("traveler-portal.html");
+function goToTravelerPortal() {
+  window.location.replace("traveler-portal.html");
 }
 
-function showAirportBrand() {
-  if (!flightStarted) return;
-
-  airportBrand.classList.add("show");
-
-  redirectTimer = setTimeout(() => {
-    goToHome();
-  }, 2500);
-}
-
-async function startFlight() {
-  if (flightStarted) return;
-
-  flightStarted = true;
-
-  document.getElementById("mainPage").style.display = "none";
-  airportScreen.classList.add("active");
-
-  airportVideo.currentTime = 0;
-  airportChime.currentTime = 0;
-
-  // تشغيل الفيديو بصمت لضمان عمله على المتصفحات.
-  try {
-    await airportVideo.play();
-  } catch (error) {
-    console.warn("تعذر تشغيل فيديو المطار:", error);
-    showAirportBrand();
-  }
-
-  // تشغيل جرس المطار.
-  try {
-    await airportChime.play();
-    playChimeButton.classList.add("hidden");
-  } catch (error) {
-    console.warn("تعذر تشغيل جرس المطار تلقائياً:", error);
-    playChimeButton.classList.remove("hidden");
-  }
-}
-
-// انتهاء الفيديو: إظهار شعار أركان.
-airportVideo.addEventListener("ended", showAirportBrand);
-
-// في حال تعذر تحميل الفيديو.
-airportVideo.addEventListener("error", () => {
-  if (flightStarted) {
-    showAirportBrand();
-  }
-});
-
-// تشغيل الجرس يدوياً إذا منعه المتصفح.
-playChimeButton.addEventListener("click", async () => {
-  try {
-    await airportChime.play();
-    playChimeButton.classList.add("hidden");
-  } catch (error) {
-    console.error("تعذر تشغيل الجرس:", error);
-  }
-});
-
-// كتم الصوت وإعادته.
-muteAirportButton.addEventListener("click", () => {
-  airportMuted = !airportMuted;
-  airportChime.muted = airportMuted;
-
-  muteAirportButton.textContent = airportMuted
-    ? "🔇 تشغيل الصوت"
-    : "🔊 كتم الصوت";
-});
-
-// تخطي المشهد والذهاب للرئيسية.
-document.getElementById("skipAirportButton")
-  .addEventListener("click", goToHome);
-
-/*
-  التحقق من الدور يمنع استخدام حساب موظف
-  من خلال بوابة المسافرين.
-*/
+/* التحقق من الدور لمنع دخول حساب الموظف */
 
 async function ensureTravelerRole() {
   const { data, error } = await db.rpc("arkan_current_role");
@@ -873,10 +599,7 @@ async function ensureTravelerRole() {
   }
 }
 
-/*
-  ربط الحساب بملف العميل بعد تأكيد البريد.
-  لا يتم اختيار أي عميل قديم تلقائياً.
-*/
+/* ربط الحساب بملف العميل */
 
 async function finishTravelerAccess(user) {
   await ensureTravelerRole();
@@ -890,7 +613,7 @@ async function finishTravelerAccess(user) {
   if (linkError) throw linkError;
 
   if (existingLink) {
-    startFlight();
+    goToTravelerPortal();
     return;
   }
 
@@ -913,7 +636,7 @@ async function finishTravelerAccess(user) {
 
   if (registerError) throw registerError;
 
-  startFlight();
+  goToTravelerPortal();
 }
 
 /* إنشاء حساب جديد */
